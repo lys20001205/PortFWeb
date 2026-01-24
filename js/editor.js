@@ -1,4 +1,9 @@
 (function() {
+    // Configuration
+    const REPO_OWNER = 'lys20001205';
+    const REPO_NAME = 'PortFWeb';
+    const FILE_PATH = 'index.html';
+
     // State
     let isEditing = false;
     let editorUI = null;
@@ -68,6 +73,9 @@
             #editor-ui button.save-btn {
                 background: #10b981;
             }
+            #editor-ui button.download-btn {
+                background: #6b7280;
+            }
             #editor-ui button:hover {
                 opacity: 0.9;
             }
@@ -126,7 +134,7 @@
         const textSelectors = '[contenteditable="true"]';
         const elements = document.querySelectorAll(textSelectors);
         elements.forEach(el => {
-            el.contentEditable = "false";
+            el.removeAttribute('contenteditable');
             el.classList.remove('editable-active');
         });
 
@@ -143,7 +151,8 @@
             editorUI.id = 'editor-ui';
             editorUI.innerHTML = `
                 <span style="color:white; align-self:center; margin-right:10px;">Editing Mode</span>
-                <button onclick="saveChanges()" class="save-btn">Save Changes</button>
+                <button onclick="saveToGitHub()" class="save-btn" title="Save directly to GitHub">Save to GitHub</button>
+                <button onclick="downloadBackup()" class="download-btn" title="Download local copy">Download Backup</button>
                 <button onclick="toggleEditor()">Exit</button>
             `;
             document.body.appendChild(editorUI);
@@ -158,7 +167,7 @@
         }
     }
 
-    window.saveChanges = function() {
+    function getCleanHTML() {
         // Temporarily disable editing to clean up DOM
         disableEditing();
         document.body.classList.remove('editing-mode');
@@ -175,12 +184,16 @@
 
         // Restore UI state
         injectStyles();
-        document.body.appendChild(ui); // Re-add UI
+        if (ui) document.body.appendChild(ui); // Re-add UI
         showUI();
         enableEditing();
         document.body.classList.add('editing-mode');
 
-        // Download
+        return htmlContent;
+    }
+
+    window.downloadBackup = function() {
+        const htmlContent = getCleanHTML();
         const blob = new Blob([htmlContent], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -190,6 +203,80 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+    };
+
+    // --- GitHub Integration ---
+
+    function utf8_to_b64(str) {
+        return window.btoa(unescape(encodeURIComponent(str)));
+    }
+
+    window.saveToGitHub = async function() {
+        let token = localStorage.getItem('github_pat');
+        if (!token) {
+            token = prompt("Please enter your GitHub Personal Access Token (PAT) with 'repo' scope access. It will be saved locally.");
+            if (token) {
+                localStorage.setItem('github_pat', token);
+            } else {
+                return; // User cancelled
+            }
+        }
+
+        const btn = document.querySelector('#editor-ui .save-btn');
+        const originalText = btn.innerText;
+        btn.innerText = 'Saving...';
+        btn.disabled = true;
+
+        try {
+            const content = getCleanHTML();
+
+            // 1. Get current SHA
+            const getResp = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            if (!getResp.ok) {
+                if (getResp.status === 401 || getResp.status === 403) {
+                     alert("Authentication failed. Please check your token.");
+                     localStorage.removeItem('github_pat');
+                }
+                throw new Error(`Failed to fetch file info: ${getResp.statusText}`);
+            }
+
+            const getData = await getResp.json();
+            const sha = getData.sha;
+
+            // 2. Upload new content
+            const putResp = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: 'Update content via Web Editor',
+                    content: utf8_to_b64(content),
+                    sha: sha
+                })
+            });
+
+            if (!putResp.ok) {
+                throw new Error(`Failed to upload: ${putResp.statusText}`);
+            }
+
+            alert('Successfully saved to GitHub! Render will redeploy your site in a few minutes.');
+
+        } catch (e) {
+            console.error(e);
+            alert('Error: ' + e.message);
+        } finally {
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
     };
 
 })();
