@@ -190,6 +190,9 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+
+        // Instructions for storage
+        alert("Your changes have been downloaded as 'index.html'.\n\nTO SAVE TO RENDER.COM:\n1. Replace the 'index.html' file in your project folder with this downloaded file.\n2. Commit and push your changes to Git.\n3. Render will automatically redeploy your site.");
     };
 
 })();
