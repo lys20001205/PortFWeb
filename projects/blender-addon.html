@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mechanical Rigger - Hard Surface Automation | Yushan Li</title>
-    <meta name="description"
-        content="Blender plugin for automating mechanical rigging via hierarchy, supporting pistons, hinges, and Game Engine export.">
+    <meta name="description" content="Blender plugin for automating mechanical rigging via hierarchy, supporting pistons, hinges, and Game Engine export.">
 
     <!-- Styles -->
     <link rel="stylesheet" href="../css/styles.css">
@@ -33,10 +30,10 @@
     </style>
 </head>
 
-<body>
+<body class="">
 
     <!-- Navigation -->
-    <nav class="nav">
+    <nav class="nav nav-scrolled" style="transform: translateY(0px);">
         <div class="container nav-content">
             <a href="../index.html" class="nav-logo">
                 <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
@@ -49,46 +46,40 @@
     <!-- Hero Section -->
     <section class="hero" style="min-height: 80vh; padding-top: 120px;">
         <div class="bg-grid"></div>
-        <div class="bg-gradient-radial"
-            style="top: -200px; right: -200px; background: radial-gradient(circle, var(--blender-addon-accent) 0%, transparent 70%);">
+        <div class="bg-gradient-radial" style="top: -200px; right: -200px; background: radial-gradient(circle, var(--blender-addon-accent) 0%, transparent 70%);">
         </div>
 
         <div class="container" style="max-width: 900px;">
-            <div class="fade-in" style="margin-bottom: 32px;">
-                <span class="project-card-tag"
-                    style="background: var(--blender-addon-glow); color: var(--blender-addon-accent);">
+            <div class="fade-in visible" style="margin-bottom: 32px;">
+                <span class="project-card-tag" style="background: var(--blender-addon-glow); color: var(--blender-addon-accent);">
                     Pipeline Tools
                 </span>
             </div>
 
-            <h1 class="fade-in"
-                style="font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 24px; animation-delay: 0.1s;">
+            <h1 class="fade-in visible" style="font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 24px; animation-delay: 0.1s;">
                 Mechanical Rigger
             </h1>
 
-            <p class="hero-description fade-in" style="text-align: left; margin: 0 0 32px; animation-delay: 0.2s;">
+            <p class="hero-description fade-in visible" style="text-align: left; margin: 0 0 32px; animation-delay: 0.2s;">
                 A Blender add-on that automates hard-surface rigging by converting <strong>Mesh Hierarchy to
                     Bones</strong>.
                 Includes smart detection for Pistons and Hinges, plus a one-click export pipeline for Unreal Engine.
             </p>
 
             <!-- Meta Info -->
-            <div class="fade-in" style="display: flex; flex-wrap: wrap; gap: 24px; animation-delay: 0.3s;">
+            <div class="fade-in visible" style="display: flex; flex-wrap: wrap; gap: 24px; animation-delay: 0.3s;">
                 <div>
-                    <span
-                        style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Type</span>
-                    <p style="color: var(--text-primary); font-weight: 500;">Open Source Plugin</p>
+                    <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;" class="">Type</span>
+                    <p style="color: var(--text-primary); font-weight: 500;" class="">Open Source Plugin</p>
                 </div>
                 <div>
-                    <span
-                        style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Context</span>
-                    <p style="color: var(--text-primary); font-weight: 500;">Workflow Automation</p>
+                    <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;" class="">Context</span>
+                    <p style="color: var(--text-primary); font-weight: 500;" class="">Workflow Automation</p>
                 </div>
                 <div>
-                    <span
-                        style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Tech
+                    <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;" class="">Tech
                         Stack</span>
-                    <p style="color: var(--text-primary); font-weight: 500;">Python / Blender API</p>
+                    <p style="color: var(--text-primary); font-weight: 500;" class="">Python / Blender API</p>
                 </div>
             </div>
         </div>
@@ -97,24 +88,9 @@
     <!-- Hero Media -->
     <section style="padding: 0 0 80px;">
         <div class="container">
-            <div class="fade-in img-placeholder" style="
-                aspect-ratio: 16/9;
-                background: var(--bg-tertiary);
-                border-radius: 16px;
-                border: 1px solid var(--border-subtle);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: var(--text-muted);
-                overflow: hidden;
-            ">
-                <div style="text-align: center;">
-                    <i class="fas fa-robot" style="font-size: 4rem; margin-bottom: 16px;"></i>
-                    <p>Tool Demo GIF/Video</p>
-                    <p style="font-size: 0.875rem; color: var(--text-muted);">Replace with screen recording of the
-                        add-on in action</p>
-                </div>
-            </div>
+            <div class="fade-in img-placeholder visible" style="aspect-ratio: 16 / 9; background-position-x: ; background-position-y: ; background-size: ; background-repeat: ; background-attachment: ; background-origin: ; background-clip: ; background-color: ; border-radius: 16px; border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; color: var(--text-muted); overflow: hidden;" data-media-type="video">
+                
+            <video class="media-preview" src="https://raw.githubusercontent.com/lys20001205/PortFWeb/main/assets/uploads/1769374002728_ba.mp4" autoplay="" loop="" playsinline="" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; object-fit: cover; z-index: 1;"></video></div>
         </div>
     </section>
 
@@ -136,13 +112,12 @@
                     ">
                         <i class="fas fa-exclamation-triangle" style="color: #ef4444; font-size: 1.25rem;"></i>
                     </div>
-                    <h2 style="font-size: 1.5rem; margin-bottom: 16px;">The Problem</h2>
-                    <p style="color: var(--text-secondary); line-height: 1.8;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 16px;" class="">The Problem</h2>
+                    <p style="color: var(--text-secondary); line-height: 1.8;" class="">
                         Rigging mechanical assets (robots, weapons) manually is tedious.
                         Animators need to <strong>align bones precisely</strong> to pivots, setup standard constraints
                         for
-                        <strong style="color: var(--text-primary);">Pistons</strong> and <strong
-                            style="color: var(--text-primary);">Hinges</strong>,
+                        <strong style="color: var(--text-primary);">Pistons</strong> and <strong style="color: var(--text-primary);">Hinges</strong>,
                         and manage complex hierarchies. Exporting a clean skeletal mesh to Unreal Engine often requires
                         destructive "Apply Transform" steps that break the rig.
                     </p>
@@ -161,8 +136,8 @@
                     ">
                         <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.25rem;"></i>
                     </div>
-                    <h2 style="font-size: 1.5rem; margin-bottom: 16px;">The Solution</h2>
-                    <p style="color: var(--text-secondary); line-height: 1.8;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 16px;" class="">The Solution</h2>
+                    <p style="color: var(--text-secondary); line-height: 1.8;" class="">
                         The Mechanical Rigger plugin <strong>reads the Outliner Hierarchy</strong> to auto-generate the
                         Armature.
                         It detects specific naming conventions (e.g., <code>Piston_01_Cyl</code>) to automatically rig
@@ -181,7 +156,7 @@
     <section style="padding: 80px 0; background: var(--bg-secondary);">
         <div class="container">
             <div class="fade-in">
-                <h2 style="font-size: 2rem; margin-bottom: 48px; text-align: center;">Key Features</h2>
+                <h2 style="font-size: 2rem; margin-bottom: 48px; text-align: center;" class="">Key Features</h2>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
@@ -192,11 +167,11 @@
                     border-radius: 16px;
                     padding: 28px;
                 ">
-                    <h3 style="font-size: 1.125rem; margin-bottom: 12px;">
+                    <h3 style="font-size: 1.125rem; margin-bottom: 12px;" class="">
                         <i class="fas fa-sitemap" style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
                         Hierarchy-Based Rigging
                     </h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;">
+                    <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;" class="">
                         Converts Parent-Child relationships in the Outliner directly into Bone Chains.
                         No need to draw bones manually; just organize your meshes and click Build.
                     </p>
@@ -208,11 +183,11 @@
                     border-radius: 16px;
                     padding: 28px;
                 ">
-                    <h3 style="font-size: 1.125rem; margin-bottom: 12px;">
+                    <h3 style="font-size: 1.125rem; margin-bottom: 12px;" class="">
                         <i class="fas fa-cogs" style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
                         Auto-Piston Setup
                     </h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;">
+                    <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;" class="">
                         Detects <code>Piston_ID_Cyl</code> and <code>_Rod</code> collections. automatically
                         generating the necessary bones and <code>Damped Track</code> constraints for hydraulic
                         cylinders.
@@ -225,11 +200,11 @@
                     border-radius: 16px;
                     padding: 28px;
                 ">
-                    <h3 style="font-size: 1.125rem; margin-bottom: 12px;">
+                    <h3 style="font-size: 1.125rem; margin-bottom: 12px;" class="">
                         <i class="fas fa-clone" style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
                         Smart Mirroring
                     </h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;">
+                    <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;" class="">
                         Tag collections with <code>_Mirrored</code> to generate symmetric rigs (Left/Right).
                         Uses "Linked Duplicates" for the right side, so modeling changes propagate instantly.
                     </p>
@@ -241,12 +216,11 @@
                     border-radius: 16px;
                     padding: 28px;
                 ">
-                    <h3 style="font-size: 1.125rem; margin-bottom: 12px;">
-                        <i class="fas fa-file-export"
-                            style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
+                    <h3 style="font-size: 1.125rem; margin-bottom: 12px;" class="">
+                        <i class="fas fa-file-export" style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
                         Game Engine Export
                     </h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;">
+                    <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;" class="">
                         Bakes the complex Control Rig into a clean, single-mesh Skeletal Mesh.
                         Corrects unit scale and axis orientation for Unreal Engine integration.
                     </p>
@@ -260,8 +234,8 @@
     <section style="padding: 80px 0;">
         <div class="container" style="max-width: 900px;">
             <div class="fade-in">
-                <h2 style="font-size: 2rem; margin-bottom: 24px;">Implementation</h2>
-                <p style="color: var(--text-secondary); margin-bottom: 32px;">
+                <h2 style="font-size: 2rem; margin-bottom: 24px;" class="">Implementation</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 32px;" class="">
                     Regex-based validation ensures the user follows naming conventions for automatic Piston and
                     Mirroring setup:
                 </p>
@@ -291,33 +265,33 @@
                         font-size: 0.875rem;
                         line-height: 1.7;
                         color: #e5e7eb;
-                    "><code><span style="color: #c084fc;">def</span> <span style="color: #60a5fa;">validate_selection</span>(context):
-    <span style="color: #fbbf24;">"""Checks selected objects for Naming Conventions (Pistons)."""</span>
+                    "><code><span style="color: #c084fc;" class="">def</span> <span style="color: #60a5fa;" class="">validate_selection</span>(context):
+    <span style="color: #fbbf24;" class="">"""Checks selected objects for Naming Conventions (Pistons)."""</span>
     
-    <span style="color: #6b7280;"># Regex to find Piston_ID_Type in Collection Name</span>
-    piston_pattern = re.<span style="color: #c084fc;">compile</span>(<span style="color: #a5f3fc;">r"Piston_(.+?)_(Cyl|Rod)"</span>)
+    <span style="color: #6b7280;" class=""># Regex to find Piston_ID_Type in Collection Name</span>
+    piston_pattern = re.<span style="color: #c084fc;" class="">compile</span>(<span style="color: #a5f3fc;" class="">r"Piston_(.+?)_(Cyl|Rod)"</span>)
     pistons = {}
 
-    <span style="color: #c084fc;">for</span> obj <span style="color: #c084fc;">in</span> context.selected_objects:
-        <span style="color: #c084fc;">if</span> <span style="color: #c084fc;">not</span> obj.users_collection: <span style="color: #c084fc;">continue</span>
+    <span style="color: #c084fc;" class="">for</span> obj <span style="color: #c084fc;" class="">in</span> context.selected_objects:
+        <span style="color: #c084fc;" class="">if</span> <span style="color: #c084fc;" class="">not</span> obj.users_collection: <span style="color: #c084fc;" class="">continue</span>
         col = obj.users_collection[0]
         
-        <span style="color: #6b7280;"># Remove _Mirrored suffix for check</span>
-        clean_col_name = col.name.replace(<span style="color: #a5f3fc;">"_Mirrored"</span>, <span style="color: #a5f3fc;">""</span>)
+        <span style="color: #6b7280;" class=""># Remove _Mirrored suffix for check</span>
+        clean_col_name = col.name.replace(<span style="color: #a5f3fc;" class="">"_Mirrored"</span>, <span style="color: #a5f3fc;" class="">""</span>)
         match = piston_pattern.match(clean_col_name)
 
-        <span style="color: #c084fc;">if</span> match:
-            pid = match.group(1)   <span style="color: #6b7280;"># ID</span>
-            ptype = match.group(2) <span style="color: #6b7280;"># Cyl or Rod</span>
+        <span style="color: #c084fc;" class="">if</span> match:
+            pid = match.group(1)   <span style="color: #6b7280;" class=""># ID</span>
+            ptype = match.group(2) <span style="color: #6b7280;" class=""># Cyl or Rod</span>
             
-            <span style="color: #c084fc;">if</span> pid <span style="color: #c084fc;">not</span> <span style="color: #c084fc;">in</span> pistons:
-                pistons[pid] = <span style="color: #c084fc;">set</span>()
+            <span style="color: #c084fc;" class="">if</span> pid <span style="color: #c084fc;" class="">not</span> <span style="color: #c084fc;" class="">in</span> pistons:
+                pistons[pid] = <span style="color: #c084fc;" class="">set</span>()
             pistons[pid].add(ptype)
             
-    <span style="color: #6b7280;"># Verify Pairs</span>
-    <span style="color: #c084fc;">for</span> pid, types <span style="color: #c084fc;">in</span> pistons.items():
-        <span style="color: #c084fc;">if</span> <span style="color: #a5f3fc;">"Cyl"</span> <span style="color: #c084fc;">in</span> types <span style="color: #c084fc;">and</span> <span style="color: #a5f3fc;">"Rod"</span> <span style="color: #c084fc;">not</span> <span style="color: #c084fc;">in</span> types:
-            errors.append(<span style="color: #a5f3fc;">f"Piston '{pid}' missing Rod."</span>)</code></pre>
+    <span style="color: #6b7280;" class=""># Verify Pairs</span>
+    <span style="color: #c084fc;" class="">for</span> pid, types <span style="color: #c084fc;" class="">in</span> pistons.items():
+        <span style="color: #c084fc;" class="">if</span> <span style="color: #a5f3fc;" class="">"Cyl"</span> <span style="color: #c084fc;" class="">in</span> types <span style="color: #c084fc;" class="">and</span> <span style="color: #a5f3fc;" class="">"Rod"</span> <span style="color: #c084fc;" class="">not</span> <span style="color: #c084fc;" class="">in</span> types:
+            errors.append(<span style="color: #a5f3fc;" class="">f"Piston '{pid}' missing Rod."</span>)</code></pre>
                 </div>
             </div>
         </div>
@@ -327,27 +301,24 @@
     <section style="padding: 80px 0; background: var(--bg-secondary);">
         <div class="container" style="max-width: 800px; text-align: center;">
             <div class="fade-in">
-                <h2 style="font-size: 2rem; margin-bottom: 48px;">Results</h2>
+                <h2 style="font-size: 2rem; margin-bottom: 48px;" class="">Results</h2>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;">
                 <div class="fade-in">
-                    <p
-                        style="font-size: 3rem; font-weight: 700; color: var(--blender-addon-accent); margin-bottom: 8px;">
+                    <p style="font-size: 3rem; font-weight: 700; color: var(--blender-addon-accent); margin-bottom: 8px;" class="">
                         80%</p>
-                    <p style="color: var(--text-secondary);">Rigging Time Saved</p>
+                    <p style="color: var(--text-secondary);" class="">Rigging Time Saved</p>
                 </div>
                 <div class="fade-in">
-                    <p
-                        style="font-size: 3rem; font-weight: 700; color: var(--blender-addon-accent); margin-bottom: 8px;">
+                    <p style="font-size: 3rem; font-weight: 700; color: var(--blender-addon-accent); margin-bottom: 8px;" class="">
                         Auto</p>
-                    <p style="color: var(--text-secondary);">Piston Constraints</p>
+                    <p style="color: var(--text-secondary);" class="">Piston Constraints</p>
                 </div>
                 <div class="fade-in">
-                    <p
-                        style="font-size: 3rem; font-weight: 700; color: var(--blender-addon-accent); margin-bottom: 8px;">
+                    <p style="font-size: 3rem; font-weight: 700; color: var(--blender-addon-accent); margin-bottom: 8px;" class="">
                         1-Click</p>
-                    <p style="color: var(--text-secondary);">Unreal Export</p>
+                    <p style="color: var(--text-secondary);" class="">Unreal Export</p>
                 </div>
             </div>
         </div>
@@ -356,14 +327,13 @@
     <!-- Navigation Footer -->
     <section style="padding: 80px 0; border-top: 1px solid var(--border-subtle);">
         <div class="container">
-            <div
-                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;">
                 <a href="system-purge.html" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i>
-                    <span>Previous Project</span>
+                    <span class="">Previous Project</span>
                 </a>
                 <a href="mecha-toy.html" class="btn btn-primary">
-                    <span>Next Project</span>
+                    <span class="">Next Project</span>
                     <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
@@ -373,7 +343,7 @@
     <!-- Footer -->
     <footer class="footer" style="padding: 40px 0;">
         <div class="container" style="text-align: center;">
-            <p style="margin-top: 48px; color: var(--text-muted); font-size: 0.875rem;">
+            <p style="margin-top: 48px; color: var(--text-muted); font-size: 0.875rem;" class="">
                 © 2026 Yushan Li Portfolio
             </p>
         </div>
@@ -383,12 +353,10 @@
     <script src="../js/animations.js"></script>
 
     <!-- Visual Editor -->
-    <button onclick="toggleEditor()" class="no-print"
-        style="position: fixed; bottom: 20px; right: 20px; background: #3b82f6; color: white; border: none; padding: 12px 16px; border-radius: 50%; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3);"
-        title="Toggle Visual Editor">
+    <button onclick="toggleEditor()" class="no-print" style="position: fixed; bottom: 20px; right: 20px; background: #3b82f6; color: white; border: none; padding: 12px 16px; border-radius: 50%; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3);" title="Toggle Visual Editor">
         <i class="fas fa-pen"></i>
     </button>
     <script src="../js/editor.js"></script>
-</body>
 
-</html>
+
+</body></html>
