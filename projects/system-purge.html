@@ -145,6 +145,21 @@
                 #dev-log-container::-webkit-scrollbar-thumb:hover {
                     background: var(--system-purge-accent);
                 }
+            </style><style>
+                #dev-log-container::-webkit-scrollbar {
+                    width: 8px;
+                }
+                #dev-log-container::-webkit-scrollbar-track {
+                    background: rgba(0,0,0,0.1);
+                    border-radius: 4px;
+                }
+                #dev-log-container::-webkit-scrollbar-thumb {
+                    background: var(--border-subtle);
+                    border-radius: 4px;
+                }
+                #dev-log-container::-webkit-scrollbar-thumb:hover {
+                    background: var(--system-purge-accent);
+                }
             </style></head>
 
 <body class="">
@@ -358,7 +373,7 @@
                 </div>
 
                 <!-- GAS Card -->
-                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="background: var(--bg-card); border-color: var(--system-purge-accent); border-top-style: ; border-top-width: ; border-right-style: ; border-right-width: ; border-bottom-style: ; border-bottom-width: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 16px; padding: 32px; cursor: pointer; transition: 0.2s;">
+                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="background: var(--bg-card); border-color: var(--system-purge-accent); border-radius: 16px; padding: 32px; cursor: pointer; transition: 0.2s;">
                     <div style="display: flex; align-items: flex-start; gap: 24px;">
                         <div style="
                             width: 48px;
@@ -384,7 +399,7 @@
                     </div>
 
                     <!-- Expandable Detail -->
-                    <div class="tech-detail" style="max-height: 706px; overflow: hidden; transition: max-height 0.4s ease-out; margin-top: 0px; padding-left: 72px;">
+                    <div class="tech-detail" style="max-height: 707px; overflow: hidden; transition: max-height 0.4s ease-out; margin-top: 0px; padding-left: 72px;">
                         <div style="padding-top: 24px; color: var(--text-secondary); line-height: 1.7; border-top: 1px solid var(--border-subtle); margin-top: 24px;">
                             <p class="">Utilizes <code>UAuraAbilitySystemComponent</code> and multiple
                                 <code>AttributeSets</code>
@@ -405,19 +420,9 @@
                             </ul>
 
                             <!-- Editable Media -->
-                            <div class="img-placeholder" style="
-                                aspect-ratio: 16/9;
-                                background: var(--bg-tertiary);
-                                border: 1px solid var(--border-subtle);
-                                border-radius: 12px;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                color: var(--text-muted);
-                                margin-top: 24px;
-                            ">
-                                <i class="fas fa-image" style="margin-right: 8px;"></i>
-                                <span class="">Add GAS Demo GIF/Video</span>
+                            <div class="img-placeholder" style="aspect-ratio: 16 / 9; background-image: url(&quot;https://raw.githubusercontent.com/lys20001205/PortFWeb/main/assets/uploads/1769376470792_unnamed.jpg&quot;); background-position: center center; background-size: cover; background-repeat: ; background-attachment: ; background-origin: ; background-clip: ; background-color: ; border: 1px solid var(--border-subtle); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); margin-top: 24px;" data-media-type="image">
+                                
+                                
                             </div>
                         </div>
                     </div>
