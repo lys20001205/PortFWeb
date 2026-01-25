@@ -85,6 +85,14 @@
                 content: 'DRAG TO MOVE';
                 background: #10b981;
             }
+            .media-preview {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
 
             /* Main Editor UI */
             #editor-ui {
@@ -548,7 +556,7 @@
                     video.src = evt.target.result;
                     video.autoplay = true;
                     video.loop = true;
-                    video.muted = true;
+                    video.muted = true; // Force mute
                     video.playsInline = true;
                     video.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1;';
 
@@ -792,6 +800,9 @@
                 // No entries? append
                 logContainer.appendChild(newNode);
             }
+
+            // Perform Sort
+            sortDevLogEntries();
 
             // Scroll to top of container
             logContainer.scrollTop = 0;
@@ -1066,7 +1077,7 @@
             video.src = url;
             video.autoplay = true;
             video.loop = true;
-            video.muted = true;
+            video.muted = true; // Force mute
             video.playsInline = true;
             video.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1;';
 
@@ -1174,5 +1185,36 @@
 
     // Initialize styles immediately (to hide .add-entry-trigger by default)
     injectStyles();
+
+    // Expose sort function
+    window.sortDevLogEntries = function () {
+        const container = document.getElementById('dev-log-container');
+        if (!container) return;
+
+        const entries = Array.from(container.querySelectorAll('.dev-log-entry'));
+
+        entries.sort((a, b) => {
+            const dateSpanA = a.querySelector('span'); // The first span is the date
+            const dateSpanB = b.querySelector('span');
+
+            if (!dateSpanA || !dateSpanB) return 0;
+
+            const dateA = new Date(dateSpanA.innerText);
+            const dateB = new Date(dateSpanB.innerText);
+
+            // Sort Descending (Newest First)
+            return dateB - dateA;
+        });
+
+        // Detach and re-append in order
+        entries.forEach(entry => container.appendChild(entry));
+    };
+
+    // Run sort on valid load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', window.sortDevLogEntries);
+    } else {
+        window.sortDevLogEntries();
+    }
 
 })();

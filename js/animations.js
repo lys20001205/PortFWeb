@@ -7,7 +7,47 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavbar();
     initProjectCards();
     initSmoothScroll();
+    initSmoothScroll();
+    initGlobalMute();
 });
+
+/* ============================================
+   Global Mute
+   ============================================ */
+function initGlobalMute() {
+    const media = document.querySelectorAll('video, audio');
+    media.forEach(el => {
+        el.muted = true;
+        el.volume = 0;
+    });
+
+    // Watch for new elements
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.addedNodes) {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1) { // Element
+                        if (node.tagName === 'VIDEO' || node.tagName === 'AUDIO') {
+                            node.muted = true;
+                            node.volume = 0;
+                        }
+                        // Check children
+                        const nestedMedia = node.querySelectorAll('video, audio');
+                        nestedMedia.forEach(el => {
+                            el.muted = true;
+                            el.volume = 0;
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
 
 /* ============================================
    Scroll-triggered Animations

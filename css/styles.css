@@ -798,6 +798,13 @@ section {
     }
 }
 
+.img-placeholder {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--bg-tertiary);
+    /* Default background */
+}
+
 .scale-in {
     animation: scaleIn 0.5s var(--ease-out-expo) forwards;
 }
