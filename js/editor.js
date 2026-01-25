@@ -694,7 +694,7 @@
             if (newImg) {
                 newImg.onclick = function (e) {
                     if (!isEditing) return;
-                    if (isDragMode) return;
+                    // if (isDragMode) return;
                     e.preventDefault();
                     e.stopPropagation();
                     openImageToolbar(newImg);
@@ -803,7 +803,7 @@
             if (newImg) {
                 newImg.onclick = function (e) {
                     if (!isEditing) return;
-                    if (isDragMode) return;
+                    // if (isDragMode) return;
                     e.preventDefault();
                     e.stopPropagation();
                     openImageToolbar(newImg);
@@ -849,7 +849,7 @@
 
             newImg.onclick = function (e) {
                 if (!isEditing) return;
-                if (isDragMode) return;
+                // if (isDragMode) return;
                 e.preventDefault();
                 e.stopPropagation();
                 openImageToolbar(newImg);
