@@ -209,8 +209,8 @@
     };
 
     function enableEditing() {
-        // Text Elements
-        const textSelectors = '.slide h1, .slide h2, .slide h3, .slide h4, .slide h5, .slide h6, .slide p, .slide span, .slide li, .slide a, .meta-value, .meta-label';
+        // Text Elements - expanded selectors for new page structure
+        const textSelectors = '.slide h1, .slide h2, .slide h3, .slide h4, .slide h5, .slide h6, .slide p, .slide span, .slide li, .slide a, .meta-value, .meta-label, section h1, section h2, section h3, section h4, section p, section span, section li, .hero h1, .hero p, .hero-description, .hero-badge span, .about-content h2, .about-content p, .project-card h3, .project-card p, .section-header h2, .section-header p, .footer h2, .footer p, .skill-tag';
         const elements = document.querySelectorAll(textSelectors);
         elements.forEach(el => {
             el.contentEditable = "true";

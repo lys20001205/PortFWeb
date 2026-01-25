@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blender Rigging Addon - Pipeline Automation | qqme111</title>
+    <meta name="description"
+        content="Python add-on for Blender automating weight painting for mechanical joints, reducing production setup time by 80%.">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Project-specific accent override - orange for Blender */
+        :root {
+            --project-accent: var(--blender-addon-accent);
+            --project-glow: var(--blender-addon-glow);
+        }
+
+        .accent-border {
+            border-color: var(--project-accent);
+        }
+
+        .accent-text {
+            color: var(--project-accent);
+        }
+
+        .accent-bg {
+            background-color: var(--project-accent);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container nav-content">
+            <a href="../index.html" class="nav-logo">
+                <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
+                Back to Portfolio
+            </a>
+            <span class="font-mono" style="color: var(--text-muted); font-size: 0.875rem;">BLENDER ADDON</span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" style="min-height: 80vh; padding-top: 120px;">
+        <div class="bg-grid"></div>
+        <div class="bg-gradient-radial"
+            style="top: -200px; right: -200px; background: radial-gradient(circle, var(--blender-addon-accent) 0%, transparent 70%);">
+        </div>
+
+        <div class="container" style="max-width: 900px;">
+            <div class="fade-in" style="margin-bottom: 32px;">
+                <span class="project-card-tag"
+                    style="background: var(--blender-addon-glow); color: var(--blender-addon-accent);">
+                    Pipeline Tools
+                </span>
+            </div>
+
+            <h1 class="fade-in"
+                style="font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 24px; animation-delay: 0.1s;">
+                Blender Rigging Addon
+            </h1>
+
+            <p class="hero-description fade-in" style="text-align: left; margin: 0 0 32px; animation-delay: 0.2s;">
+                A Python add-on automating weight painting for mechanical joints in Blender,
+                reducing asset production setup time by 80% for mecha and robot models.
+            </p>
+
+            <!-- Meta Info -->
+            <div class="fade-in" style="display: flex; flex-wrap: wrap; gap: 24px; animation-delay: 0.3s;">
+                <div>
+                    <span
+                        style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Type</span>
+                    <p style="color: var(--text-primary); font-weight: 500;">Individual Project</p>
+                </div>
+                <div>
+                    <span
+                        style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Context</span>
+                    <p style="color: var(--text-primary); font-weight: 500;">Work Optimization</p>
+                </div>
+                <div>
+                    <span
+                        style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Tech
+                        Stack</span>
+                    <p style="color: var(--text-primary); font-weight: 500;">Python / Blender API</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Media -->
+    <section style="padding: 0 0 80px;">
+        <div class="container">
+            <div class="fade-in" style="
+                aspect-ratio: 16/9;
+                background: var(--bg-tertiary);
+                border-radius: 16px;
+                border: 1px solid var(--border-subtle);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--text-muted);
+                overflow: hidden;
+            ">
+                <div style="text-align: center;">
+                    <i class="fas fa-robot" style="font-size: 4rem; margin-bottom: 16px;"></i>
+                    <p>Tool Demo GIF/Video</p>
+                    <p style="font-size: 0.875rem; color: var(--text-muted);">Replace with screen recording of the
+                        add-on in action</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem / Solution -->
+    <section style="padding: 80px 0;">
+        <div class="container" style="max-width: 900px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px;">
+
+                <div class="fade-in-left">
+                    <div style="
+                        width: 48px;
+                        height: 48px;
+                        background: rgba(239, 68, 68, 0.1);
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-bottom: 24px;
+                    ">
+                        <i class="fas fa-exclamation-triangle" style="color: #ef4444; font-size: 1.25rem;"></i>
+                    </div>
+                    <h2 style="font-size: 1.5rem; margin-bottom: 16px;">The Problem</h2>
+                    <p style="color: var(--text-secondary); line-height: 1.8;">
+                        Manual weight painting for standard mechanical joints was consuming approximately
+                        <strong style="color: var(--text-primary);">30% of total asset production time</strong>.
+                        For complex mecha models with dozens of joints, this meant hours of repetitive work
+                        that followed predictable patterns.
+                    </p>
+                </div>
+
+                <div class="fade-in-right">
+                    <div style="
+                        width: 48px;
+                        height: 48px;
+                        background: rgba(16, 185, 129, 0.1);
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-bottom: 24px;
+                    ">
+                        <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.25rem;"></i>
+                    </div>
+                    <h2 style="font-size: 1.5rem; margin-bottom: 16px;">The Solution</h2>
+                    <p style="color: var(--text-secondary); line-height: 1.8;">
+                        Developed a Python add-on that auto-generates weights based on vertex groups
+                        and bone proximity, <strong style="color: var(--text-primary);">reducing setup time by
+                            80%</strong>.
+                        The tool handles common mechanical joint types with smart defaults while remaining
+                        fully customizable for edge cases.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section style="padding: 80px 0; background: var(--bg-secondary);">
+        <div class="container">
+            <div class="fade-in">
+                <h2 style="font-size: 2rem; margin-bottom: 48px; text-align: center;">Key Features</h2>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+
+                <div class="fade-in" style="
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-subtle);
+                    border-radius: 16px;
+                    padding: 28px;
+                ">
+                    <h3 style="font-size: 1.125rem; margin-bottom: 12px;">
+                        <i class="fas fa-magic" style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
+                        Auto Weight Generation
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;">
+                        Analyzes mesh topology and bone hierarchy to automatically assign vertex weights
+                        with appropriate falloff for mechanical joints.
+                    </p>
+                </div>
+
+                <div class="fade-in" style="
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-subtle);
+                    border-radius: 16px;
+                    padding: 28px;
+                ">
+                    <h3 style="font-size: 1.125rem; margin-bottom: 12px;">
+                        <i class="fas fa-cogs" style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
+                        Joint Type Presets
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;">
+                        Pre-configured settings for common joint types: hinges, ball joints, pistons,
+                        and sliding mechanisms with one-click application.
+                    </p>
+                </div>
+
+                <div class="fade-in" style="
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-subtle);
+                    border-radius: 16px;
+                    padding: 28px;
+                ">
+                    <h3 style="font-size: 1.125rem; margin-bottom: 12px;">
+                        <i class="fas fa-sliders-h" style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
+                        Fine-tuning Controls
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;">
+                        Adjust proximity threshold, falloff curve, and influence limits for
+                        precise control when automatic settings need refinement.
+                    </p>
+                </div>
+
+                <div class="fade-in" style="
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-subtle);
+                    border-radius: 16px;
+                    padding: 28px;
+                ">
+                    <h3 style="font-size: 1.125rem; margin-bottom: 12px;">
+                        <i class="fas fa-layer-group"
+                            style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
+                        Batch Processing
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;">
+                        Process entire armatures or selected bone chains at once, dramatically
+                        speeding up workflow for complex models.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Example -->
+    <section style="padding: 80px 0;">
+        <div class="container" style="max-width: 900px;">
+            <div class="fade-in">
+                <h2 style="font-size: 2rem; margin-bottom: 24px;">Implementation</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 32px;">
+                    The core weight calculation using vertex-to-bone distance mapping:
+                </p>
+
+                <div style="
+                    background: #1e1e1e;
+                    border-radius: 12px;
+                    border: 1px solid var(--border-subtle);
+                    overflow: hidden;
+                ">
+                    <div style="
+                        padding: 12px 16px;
+                        background: var(--bg-tertiary);
+                        border-bottom: 1px solid var(--border-subtle);
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    ">
+                        <i class="fab fa-python" style="color: #3776ab;"></i>
+                        <span class="font-mono"
+                            style="color: var(--text-muted); font-size: 0.875rem;">auto_weight.py</span>
+                    </div>
+                    <pre style="
+                        padding: 24px;
+                        margin: 0;
+                        overflow-x: auto;
+                        font-family: var(--font-mono);
+                        font-size: 0.875rem;
+                        line-height: 1.7;
+                        color: #e5e7eb;
+                    "><code><span style="color: #c084fc;">def</span> <span style="color: #60a5fa;">calculate_weights</span>(mesh, armature, settings):
+    <span style="color: #fbbf24;">"""Generate vertex weights based on bone proximity."""</span>
+    
+    <span style="color: #c084fc;">for</span> bone <span style="color: #c084fc;">in</span> armature.pose.bones:
+        <span style="color: #6b7280;"># Get bone head/tail in world space</span>
+        head = armature.matrix_world @ bone.head
+        tail = armature.matrix_world @ bone.tail
+        
+        <span style="color: #c084fc;">for</span> vert <span style="color: #c084fc;">in</span> mesh.data.vertices:
+            <span style="color: #6b7280;"># Calculate distance to bone axis</span>
+            dist = point_to_line_distance(vert.co, head, tail)
+            
+            <span style="color: #6b7280;"># Apply falloff curve</span>
+            weight = falloff_curve(dist, settings.threshold)
+            
+            <span style="color: #c084fc;">if</span> weight > <span style="color: #a5f3fc;">0.001</span>:
+                assign_weight(mesh, bone.name, vert.index, weight)</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results -->
+    <section style="padding: 80px 0; background: var(--bg-secondary);">
+        <div class="container" style="max-width: 800px; text-align: center;">
+            <div class="fade-in">
+                <h2 style="font-size: 2rem; margin-bottom: 48px;">Results</h2>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;">
+                <div class="fade-in">
+                    <p
+                        style="font-size: 3rem; font-weight: 700; color: var(--blender-addon-accent); margin-bottom: 8px;">
+                        80%</p>
+                    <p style="color: var(--text-secondary);">Time Saved</p>
+                </div>
+                <div class="fade-in">
+                    <p
+                        style="font-size: 3rem; font-weight: 700; color: var(--blender-addon-accent); margin-bottom: 8px;">
+                        5+</p>
+                    <p style="color: var(--text-secondary);">Joint Presets</p>
+                </div>
+                <div class="fade-in">
+                    <p
+                        style="font-size: 3rem; font-weight: 700; color: var(--blender-addon-accent); margin-bottom: 8px;">
+                        1-Click</p>
+                    <p style="color: var(--text-secondary);">Batch Process</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Footer -->
+    <section style="padding: 80px 0; border-top: 1px solid var(--border-subtle);">
+        <div class="container">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;">
+                <a href="system-purge.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Previous Project</span>
+                </a>
+                <a href="mecha-toy.html" class="btn btn-primary">
+                    <span>Next Project</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" style="padding: 40px 0;">
+        <div class="container" style="text-align: center;">
+            <p style="color: var(--text-muted); font-size: 0.875rem;">
+                © 2026 qqme111 Portfolio
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/animations.js"></script>
+
+    <!-- Visual Editor -->
+    <button onclick="toggleEditor()" class="no-print"
+        style="position: fixed; bottom: 20px; right: 20px; background: #3b82f6; color: white; border: none; padding: 12px 16px; border-radius: 50%; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3);"
+        title="Toggle Visual Editor">
+        <i class="fas fa-pen"></i>
+    </button>
+    <script src="../js/editor.js"></script>
+</body>
+
+</html>
