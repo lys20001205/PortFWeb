@@ -226,6 +226,7 @@
                 // If in drag mode (content), don't reopen toolbar
                 if (isDragMode) return;
 
+                e.preventDefault(); // Prevent parent link navigation
                 e.stopPropagation();
                 openImageToolbar(el);
             };
