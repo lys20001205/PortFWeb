@@ -62,12 +62,27 @@
                 #dev-log-container::-webkit-scrollbar-thumb:hover {
                     background: var(--system-purge-accent);
                 }
+            </style><style>
+                #dev-log-container::-webkit-scrollbar {
+                    width: 8px;
+                }
+                #dev-log-container::-webkit-scrollbar-track {
+                    background: rgba(0,0,0,0.1);
+                    border-radius: 4px;
+                }
+                #dev-log-container::-webkit-scrollbar-thumb {
+                    background: var(--border-subtle);
+                    border-radius: 4px;
+                }
+                #dev-log-container::-webkit-scrollbar-thumb:hover {
+                    background: var(--system-purge-accent);
+                }
             </style></head>
 
 <body class="">
 
     <!-- Navigation -->
-    <nav class="nav nav-scrolled" style="transform: translateY(-100%);">
+    <nav class="nav nav-scrolled" style="transform: translateY(0px);">
         <div class="container nav-content">
             <a href="../index.html" class="nav-logo">
                 <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
@@ -168,15 +183,7 @@
             <div style="display: flex; flex-direction: column; gap: 24px; max-width: 800px; margin: 0 auto;">
 
                 <!-- Chaos Physics Card -->
-                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="
-                    background: var(--bg-card);
-                    border: 1px solid var(--border-subtle);
-                    border-radius: 16px;
-                    padding: 32px;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                    position: relative;
-                ">
+                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="background: var(--bg-card); border-color: var(--system-purge-accent); border-top-style: ; border-top-width: ; border-right-style: ; border-right-width: ; border-bottom-style: ; border-bottom-width: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 16px; padding: 32px; cursor: pointer; transition: 0.2s; position: relative;">
                     <div style="display: flex; align-items: flex-start; gap: 24px;">
                         <div style="
                             width: 48px;
@@ -193,7 +200,7 @@
                         <div style="flex: 1;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                                 <h3 style="font-size: 1.25rem; margin: 0;" class="">Chaos Hover Physics</h3>
-                                <i class="fas fa-chevron-down tech-arrow" style="color: var(--text-muted); transition: transform 0.3s;"></i>
+                                <i class="fas fa-chevron-down tech-arrow" style="color: var(--text-muted); transition: transform 0.3s; transform: rotate(180deg);"></i>
                             </div>
                             <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;" class="">
                                 Custom 5-point suspension system with PD-Control orientation and Root Motion
@@ -203,13 +210,7 @@
                     </div>
 
                     <!-- Expandable Detail -->
-                    <div class="tech-detail" style="
-                        max-height: 0;
-                        overflow: hidden;
-                        transition: max-height 0.4s ease-out;
-                        margin-top: 0;
-                        padding-left: 72px; /* Align with text */
-                    ">
+                    <div class="tech-detail" style="max-height: 706px; overflow: hidden; transition: max-height 0.4s ease-out; margin-top: 0px; padding-left: 72px;">
                         <div style="padding-top: 24px; color: var(--text-secondary); line-height: 1.7; border-top: 1px solid var(--border-subtle); margin-top: 24px;">
                             <p class="">Analyzed from <code>ChaosHoverMode.cpp</code>, this module replaces standard
                                 movement
@@ -588,37 +589,17 @@
     <!-- Dev Blog -->
     <section style="padding: 80px 0; background: var(--bg-tertiary);">
         <div class="container" style="max-width: 800px;">
-            <div class="fade-in" style="text-align: center;">
+            <div class="fade-in visible" style="text-align: center;">
                 <h2 style="font-size: 2rem; margin-bottom: 24px;" class="">Development Log</h2>
 
-                <button id="dev-log-toggle" onclick="toggleDevLog()" style="
-                    background: transparent;
-                    border: 1px solid var(--system-purge-accent);
-                    color: var(--system-purge-accent);
-                    padding: 8px 16px;
-                    border-radius: 20px;
-                    cursor: pointer;
-                    font-size: 0.875rem;
-                    margin-bottom: 32px;
-                    transition: all 0.2s;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 8px;
-                ">
-                    <span class="">Show Dev Log</span>
-                    <i class="fas fa-chevron-down"></i>
+                <button id="dev-log-toggle" onclick="toggleDevLog()" style="background: var(--system-purge-accent); border: 1px solid var(--system-purge-accent); color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 0.875rem; margin-bottom: 32px; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px;">
+                    <span class="">Hide Dev Log</span>
+                    <i class="fas fa-chevron-up"></i>
                 </button>
             </div>
 
             <!-- Scrollable Container -->
-            <div id="dev-log-container" style="
-                max-height: 0;
-                overflow-y: auto;
-                transition: max-height 0.5s ease-in-out, opacity 0.5s ease;
-                opacity: 0;
-                padding-right: 16px; /* Space for scrollbar */
-                border-radius: 8px;
-            ">
+            <div id="dev-log-container" style="max-height: 600px; overflow-y: auto; transition: max-height 0.5s ease-in-out, opacity 0.5s; opacity: 1; padding-right: 16px; border-radius: 8px;">
 
                 <!-- Add Entry Button (Visible only in Edit Mode) -->
                 <button class="add-entry-trigger" onclick="addDevDiaryEntry()" style="margin-bottom: 32px; width: 100%;">
@@ -626,7 +607,7 @@
                 </button>
 
                 <!-- Blog Entry Template -->
-                <div class="dev-log-entry fade-in" style="
+                <div class="dev-log-entry fade-in visible" style="
                     border-left: 2px solid var(--border-subtle);
                     padding-left: 32px;
                     margin-bottom: 64px;
@@ -645,8 +626,7 @@
                     "></div>
 
                     <div style="margin-bottom: 16px;">
-                        <span style="color: var(--system-purge-accent); font-family: var(--font-mono); font-size: 0.875rem;" class="">March
-                            15, 2024</span>
+                        <span style="color: var(--system-purge-accent); font-family: var(--font-mono); font-size: 0.875rem;" class="">Dec 11, 2025</span>
                         <h3 style="font-size: 1.5rem; margin-top: 8px;" class="">Network Replication Refactor</h3>
                     </div>
 
@@ -656,20 +636,10 @@
                         The previous implementation had rubber-banding issues when ping exceeded 100ms.
                     </p>
 
-                    <div class="img-placeholder" style="
-                        aspect-ratio: 16/9;
-                        background: var(--bg-card);
-                        border: 1px solid var(--border-subtle);
-                        border-radius: 12px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        color: var(--text-muted);
-                        margin-bottom: 24px;
-                    ">
-                        <i class="fas fa-image" style="margin-right: 8px;"></i>
-                        <span class="">Add Progress Image</span>
-                    </div>
+                    <div class="img-placeholder" style="aspect-ratio: 16 / 9; background-position-x: ; background-position-y: ; background-size: ; background-repeat: ; background-attachment: ; background-origin: ; background-clip: ; background-color: ; border: 1px solid var(--border-subtle); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); margin-bottom: 24px;" data-media-type="video">
+                        
+                        
+                    <video class="media-preview" src="https://raw.githubusercontent.com/lys20001205/PortFWeb/main/assets/uploads/1769374266111_4_6.mp4" autoplay="" loop="" playsinline="" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; object-fit: cover; z-index: 1;"></video></div>
 
                     <p style="color: var(--text-secondary); line-height: 1.8;" class="">
                         Moved the simulation step to a shared function that both client and server can call.
@@ -678,7 +648,7 @@
                 </div>
 
                 <!-- Blog Entry 2 -->
-                <div class="dev-log-entry fade-in" style="
+                <div class="dev-log-entry fade-in visible" style="
                     border-left: 2px solid var(--border-subtle);
                     padding-left: 32px;
                     margin-bottom: 0;
