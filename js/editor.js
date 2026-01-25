@@ -14,6 +14,13 @@
     // Image Editing State
     let currentEditingImage = null;
     let pendingFile = null;
+    let isDragMode = false;
+
+    // Drag State
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let initialPosX = 50;
+    let initialPosY = 50;
 
     function injectStyles() {
         if (document.getElementById('editor-styles')) return;
@@ -51,6 +58,14 @@
             }
             .editable-img:hover::after {
                 display: block;
+            }
+            .editable-img.drag-active {
+                cursor: move !important;
+                outline: 4px dashed #10b981;
+            }
+            .editable-img.drag-active::after {
+                content: 'DRAG TO MOVE';
+                background: #10b981;
             }
 
             /* Main Editor UI */
@@ -150,6 +165,9 @@
             el.classList.add('editable-img');
             el.onclick = function(e) {
                 if(!isEditing) return;
+                // If in drag mode, don't reopen toolbar, let the drag handler work (or stop propagation)
+                if(isDragMode) return;
+
                 e.stopPropagation();
                 openImageToolbar(el);
             };
@@ -169,6 +187,9 @@
             el.classList.remove('editable-img');
             el.onclick = null;
         });
+
+        // Force exit drag mode
+        if(isDragMode) toggleDragMode();
     }
 
     function showUI() {
@@ -210,14 +231,9 @@
                 <input type="range" id="img-scale" min="10" max="200" value="100">
             </div>
 
-            <div class="control-group">
-                <label>Position X <span id="val-pos-x">50%</span></label>
-                <input type="range" id="img-pos-x" min="0" max="100" value="50">
-            </div>
-
-            <div class="control-group">
-                <label>Position Y <span id="val-pos-y">50%</span></label>
-                <input type="range" id="img-pos-y" min="0" max="100" value="50">
+            <div class="control-group" style="text-align:center;">
+                <button id="btn-drag-toggle" onclick="toggleDragMode()" style="background:#8b5cf6; width:100%;">Enable Drag Move</button>
+                <p style="font-size:10px; color:#6b7280; margin-top:4px;">(Click to drag image)</p>
             </div>
 
             <div class="status-msg" id="img-status-msg"></div>
@@ -231,10 +247,7 @@
 
         // Event Listeners
         document.getElementById('img-upload-input').addEventListener('change', handleFileSelect);
-
         document.getElementById('img-scale').addEventListener('input', updateImageStyle);
-        document.getElementById('img-pos-x').addEventListener('input', updateImageStyle);
-        document.getElementById('img-pos-y').addEventListener('input', updateImageStyle);
     }
 
     window.openImageToolbar = function(el) {
@@ -247,6 +260,9 @@
         document.getElementById('img-status-msg').innerText = '';
         document.getElementById('img-status-msg').className = 'status-msg';
         document.getElementById('btn-upload-img').style.display = 'none'; // Hide upload until file selected
+
+        // Ensure Drag Mode is OFF when opening
+        if (isDragMode) toggleDragMode();
 
         // Parse current styles to set slider values
         // Size
@@ -261,24 +277,101 @@
                 document.getElementById('val-scale').innerText = num + '%';
             }
         }
-
-        // Position
-        let pos = el.style.backgroundPosition || '50% 50%';
-        let parts = pos.split(' ');
-        let x = 50, y = 50;
-        if (parts.length >= 1) x = parseInt(parts[0]) || 50;
-        if (parts.length >= 2) y = parseInt(parts[1]) || 50;
-
-        document.getElementById('img-pos-x').value = x;
-        document.getElementById('val-pos-x').innerText = x + '%';
-        document.getElementById('img-pos-y').value = y;
-        document.getElementById('val-pos-y').innerText = y + '%';
     }
 
     window.closeImageToolbar = function() {
         document.getElementById('image-toolbar').style.display = 'none';
+        if(isDragMode) toggleDragMode(); // Ensure we exit drag mode
         currentEditingImage = null;
     }
+
+    // --- Drag Logic ---
+
+    window.toggleDragMode = function() {
+        if(!currentEditingImage) return;
+
+        isDragMode = !isDragMode;
+        const btn = document.getElementById('btn-drag-toggle');
+
+        if(isDragMode) {
+            btn.innerText = "Confirm Position";
+            btn.style.background = "#10b981"; // Green
+            currentEditingImage.classList.add('drag-active');
+
+            // Parse current position
+            let pos = currentEditingImage.style.backgroundPosition || '50% 50%';
+            let parts = pos.split(' ');
+            initialPosX = parseFloat(parts[0]) || 50;
+            initialPosY = parseFloat(parts[1]) || 50;
+
+            // Attach Drag Listeners
+            currentEditingImage.addEventListener('mousedown', onDragStart);
+        } else {
+            btn.innerText = "Enable Drag Move";
+            btn.style.background = "#8b5cf6"; // Purple
+            currentEditingImage.classList.remove('drag-active');
+
+            // Remove Drag Listeners
+            currentEditingImage.removeEventListener('mousedown', onDragStart);
+        }
+    };
+
+    function onDragStart(e) {
+        if (!isDragMode) return;
+        e.preventDefault();
+
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+
+        // Update initial pos in case it changed
+        let pos = currentEditingImage.style.backgroundPosition || '50% 50%';
+        let parts = pos.split(' ');
+        initialPosX = parseFloat(parts[0]) || 50;
+        initialPosY = parseFloat(parts[1]) || 50;
+
+        window.addEventListener('mousemove', onDragMove);
+        window.addEventListener('mouseup', onDragEnd);
+    }
+
+    function onDragMove(e) {
+        if (!isDragMode) return;
+        e.preventDefault();
+
+        const deltaX = e.clientX - dragStartX;
+        const deltaY = e.clientY - dragStartY;
+
+        // Convert pixels to percentage change
+        // We assume typical range. Moving Right (+X) -> means shifting viewport Left -> decreasing %.
+        // Sensitivity factor: 0.2 works well for "feeling"
+        const rect = currentEditingImage.getBoundingClientRect();
+        const percentChangeX = (deltaX / rect.width) * 100 * -1;
+        const percentChangeY = (deltaY / rect.height) * 100 * -1;
+
+        let newX = initialPosX + percentChangeX;
+        let newY = initialPosY + percentChangeY;
+
+        // Clamp 0-100? No, background-position can go beyond
+        // But usually we want to stay within reasonable bounds.
+        // Let's not clamp for maximum freedom.
+
+        currentEditingImage.style.backgroundPosition = `${newX.toFixed(1)}% ${newY.toFixed(1)}%`;
+    }
+
+    function onDragEnd(e) {
+        window.removeEventListener('mousemove', onDragMove);
+        window.removeEventListener('mouseup', onDragEnd);
+
+        // Update "initial" to current so next drag starts from here
+        // (Actually, logic uses initialPos + delta. If we stop, we need to commit the new position
+        // as the new baseline if we drag again without toggling off/on)
+        let pos = currentEditingImage.style.backgroundPosition || '50% 50%';
+        let parts = pos.split(' ');
+        initialPosX = parseFloat(parts[0]) || 50;
+        initialPosY = parseFloat(parts[1]) || 50;
+    }
+
+    // --- End Drag Logic ---
+
 
     function handleFileSelect(e) {
         if (!e.target.files || !e.target.files[0]) return;
@@ -297,10 +390,6 @@
                 // Update sliders
                 document.getElementById('img-scale').value = 100;
                 document.getElementById('val-scale').innerText = 'Cover';
-                document.getElementById('img-pos-x').value = 50;
-                document.getElementById('val-pos-x').innerText = '50%';
-                document.getElementById('img-pos-y').value = 50;
-                document.getElementById('val-pos-y').innerText = '50%';
 
                 // Show Upload Button
                 document.getElementById('btn-upload-img').style.display = 'inline-block';
@@ -314,16 +403,15 @@
         if (!currentEditingImage) return;
 
         const scale = document.getElementById('img-scale').value;
-        const posX = document.getElementById('img-pos-x').value;
-        const posY = document.getElementById('img-pos-y').value;
+
+        // Preserve current position
+        const currentPos = currentEditingImage.style.backgroundPosition || '50% 50%';
 
         // Visual feedback
         document.getElementById('val-scale').innerText = scale + '%';
-        document.getElementById('val-pos-x').innerText = posX + '%';
-        document.getElementById('val-pos-y').innerText = posY + '%';
 
         currentEditingImage.style.backgroundSize = `${scale}%`;
-        currentEditingImage.style.backgroundPosition = `${posX}% ${posY}%`;
+        currentEditingImage.style.backgroundPosition = currentPos;
     }
 
     function showStatus(msg, type) {
@@ -361,8 +449,6 @@
         enableEditing();
         document.body.classList.add('editing-mode');
 
-        // If toolbar was open, might need to re-open or let it close.
-        // For simplicity, we let it stay closed or re-init in hidden state
         if(toolbar) toolbar.style.display = 'none';
 
         return htmlContent;
