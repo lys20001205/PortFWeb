@@ -1217,4 +1217,90 @@
         window.sortDevLogEntries();
     }
 
+    // --- Secret Trigger Logic ---
+    function initSecretTriggers() {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // 1. URL Parameter Trigger
+        if (urlParams.get('edit') === 'true') {
+            console.log('Editor enabled via URL parameter');
+            enableSecretEditor();
+        }
+
+        // 2. Logo Click Trigger (5 clicks in 2 seconds)
+        const logo = document.querySelector('.nav-logo');
+        if (logo) {
+            let clickCount = 0;
+            let resetTimer = null;
+
+            logo.addEventListener('click', (e) => {
+                // We don't prevent default, so it still goes home, 
+                // but if they click fast enough it might just count up before navigating?
+                // Actually, if it's a link to # or ./, it might reload or stay.
+                // If it reloads, count is lost.
+                // The logo href is "#" in index.html, so it effectively stays on page (scrolls to top).
+                // Safest to e.preventDefault() ONLY if we are in the middle of a combo?
+                // Or just let them click. If href="#" it's fine.
+
+                // e.preventDefault(); // Optional: prevent jump to top if desired during secret code entry
+
+                clickCount++;
+
+                if (resetTimer) clearTimeout(resetTimer);
+
+                if (clickCount >= 5) {
+                    console.log('Secret trigger activated!');
+                    enableSecretEditor();
+                    clickCount = 0;
+                    alert('Visual Editor Enabled');
+                } else {
+                    resetTimer = setTimeout(() => {
+                        clickCount = 0;
+                    }, 2000); // 2 seconds window
+                }
+            });
+        }
+
+        // 3. Keyboard Shortcut (Ctrl + Alt + E)
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.altKey && (e.key === 'e' || e.key === 'E')) {
+                console.log('Editor enabled via shortcut');
+                enableSecretEditor();
+            }
+        });
+    }
+
+    function enableSecretEditor() {
+        // Check if button already exists
+        if (document.getElementById('floating-edit-btn')) return;
+
+        const btn = document.createElement('button');
+        btn.id = 'floating-edit-btn';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+        btn.className = 'no-print';
+        btn.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: #3b82f6; color: white; border: none; padding: 12px 16px; border-radius: 50%; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform 0.2s;';
+        btn.title = "Toggle Visual Editor";
+
+        btn.onmouseover = () => btn.style.transform = 'scale(1.1)';
+        btn.onmouseout = () => btn.style.transform = 'scale(1)';
+
+        btn.onclick = function () {
+            window.toggleEditor();
+        };
+
+        document.body.appendChild(btn);
+
+        // Also immediately toggle the editor if desired, or just show the button?
+        // Let's just show the button so they can toggle it when ready.
+        // But if they used the shortcut/url they probably want it OPEN.
+        // For now, just showing the button is safer/less intrusive.
+    }
+
+    // Run Init
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSecretTriggers);
+    } else {
+        initSecretTriggers();
+    }
+
 })();
