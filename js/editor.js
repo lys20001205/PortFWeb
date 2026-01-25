@@ -339,6 +339,13 @@
     }
 
     function debugAction(action) {
+        // Only show debug output if we are in editing mode
+        if (!isEditing) {
+            const existingOverlay = document.getElementById('debug-overlay');
+            if (existingOverlay) existingOverlay.style.display = 'none';
+            return;
+        }
+
         let overlay = document.getElementById('debug-overlay');
         if (!overlay) {
             overlay = document.createElement('div');
