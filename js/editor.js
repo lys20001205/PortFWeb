@@ -25,13 +25,13 @@
     // Image Editing State
     let currentEditingImage = null;
     let pendingFile = null;
-    let isDragMode = false;
+    // let isDragMode = false; // logic removed
 
-    // Drag State (Image Content)
-    let dragStartX = 0;
-    let dragStartY = 0;
-    let initialPosX = 50;
-    let initialPosY = 50;
+    // Drag State (Image Content) - REMOVED
+    // let dragStartX = 0;
+    // let dragStartY = 0;
+    // let initialPosX = 50;
+    // let initialPosY = 50;
 
     // Drag State (Toolbar Window)
     let toolbarDragStartX = 0;
@@ -288,8 +288,8 @@
             el.classList.add('editable-img');
             el.onclick = function (e) {
                 if (!isEditing) return;
-                // If in drag mode (content), don't reopen toolbar
-                if (isDragMode) return;
+                // Drag mode removed check
+                // if (isDragMode) return;
 
                 e.preventDefault(); // Prevent parent link navigation
                 e.stopPropagation();
@@ -312,7 +312,8 @@
             el.onclick = null;
         });
 
-        if (isDragMode) toggleDragMode();
+        if (isDragMode) toggleDragMode(); // Was cleanup, likely harmless but function is gone so remove call
+        // if (isDragMode) toggleDragMode();
     }
 
     function showUI() {
@@ -382,9 +383,14 @@
                 <input type="range" id="img-scale" min="10" max="200" value="100">
             </div>
 
-            <div class="control-group" style="text-align:center;">
-                <button id="btn-drag-toggle" onclick="toggleDragMode()" style="background:#8b5cf6; width:100%;">Enable Drag Move</button>
-                <p style="font-size:10px; color:#6b7280; margin-top:4px;">(Click to drag image)</p>
+            <div class="control-group">
+                <label>Position X <span id="val-pos-x">50%</span></label>
+                <input type="range" id="img-pos-x" min="0" max="100" value="50">
+            </div>
+
+            <div class="control-group">
+                <label>Position Y <span id="val-pos-y">50%</span></label>
+                <input type="range" id="img-pos-y" min="0" max="100" value="50">
             </div>
 
             <div class="status-msg" id="img-status-msg"></div>
@@ -399,6 +405,8 @@
         // Event Listeners
         document.getElementById('img-upload-input').addEventListener('change', handleFileSelect);
         document.getElementById('img-scale').addEventListener('input', updateImageStyle);
+        document.getElementById('img-pos-x').addEventListener('input', updateImageStyle);
+        document.getElementById('img-pos-y').addEventListener('input', updateImageStyle);
 
         // Toolbar Drag Listener
         document.getElementById('toolbar-header').addEventListener('mousedown', onToolbarDragStart);
@@ -466,8 +474,6 @@
         document.getElementById('img-status-msg').className = 'status-msg';
         document.getElementById('btn-upload-img').style.display = 'none';
 
-        if (isDragMode) toggleDragMode();
-
         // Parse current styles
         let size = el.style.backgroundSize;
         if (!size || size === 'cover') {
@@ -480,83 +486,31 @@
                 document.getElementById('val-scale').innerText = num + '%';
             }
         }
+
+        // Parse Position
+        let pos = el.style.backgroundPosition || '50% 50%';
+        let parts = pos.split(' ');
+        let posX = parseFloat(parts[0]) || 50;
+        let posY = parseFloat(parts[1]) || 50;
+
+        document.getElementById('img-pos-x').value = posX;
+        document.getElementById('val-pos-x').innerText = Math.round(posX) + '%';
+
+        document.getElementById('img-pos-y').value = posY;
+        document.getElementById('val-pos-y').innerText = Math.round(posY) + '%';
     }
 
     window.closeImageToolbar = function () {
         document.getElementById('image-toolbar').style.display = 'none';
-        if (isDragMode) toggleDragMode();
         currentEditingImage = null;
     }
 
     // --- Content Drag Logic (Image) ---
-
-    window.toggleDragMode = function () {
-        if (!currentEditingImage) return;
-
-        isDragMode = !isDragMode;
-        const btn = document.getElementById('btn-drag-toggle');
-
-        if (isDragMode) {
-            btn.innerText = "Confirm Position";
-            btn.style.background = "#10b981"; // Green
-            currentEditingImage.classList.add('drag-active');
-
-            let pos = currentEditingImage.style.backgroundPosition || '50% 50%';
-            let parts = pos.split(' ');
-            initialPosX = parseFloat(parts[0]) || 50;
-            initialPosY = parseFloat(parts[1]) || 50;
-
-            currentEditingImage.addEventListener('mousedown', onDragStart);
-        } else {
-            btn.innerText = "Enable Drag Move";
-            btn.style.background = "#8b5cf6"; // Purple
-            currentEditingImage.classList.remove('drag-active');
-            currentEditingImage.removeEventListener('mousedown', onDragStart);
-        }
-    };
-
-    function onDragStart(e) {
-        if (!isDragMode) return;
-        e.preventDefault();
-
-        dragStartX = e.clientX;
-        dragStartY = e.clientY;
-
-        let pos = currentEditingImage.style.backgroundPosition || '50% 50%';
-        let parts = pos.split(' ');
-        initialPosX = parseFloat(parts[0]) || 50;
-        initialPosY = parseFloat(parts[1]) || 50;
-
-        window.addEventListener('mousemove', onDragMove);
-        window.addEventListener('mouseup', onDragEnd);
-    }
-
-    function onDragMove(e) {
-        if (!isDragMode) return;
-        e.preventDefault();
-
-        const deltaX = e.clientX - dragStartX;
-        const deltaY = e.clientY - dragStartY;
-
-        const rect = currentEditingImage.getBoundingClientRect();
-        const percentChangeX = (deltaX / rect.width) * 100 * -1;
-        const percentChangeY = (deltaY / rect.height) * 100 * -1;
-
-        let newX = initialPosX + percentChangeX;
-        let newY = initialPosY + percentChangeY;
-
-        currentEditingImage.style.backgroundPosition = `${newX.toFixed(1)}% ${newY.toFixed(1)}%`;
-    }
-
-    function onDragEnd(e) {
-        window.removeEventListener('mousemove', onDragMove);
-        window.removeEventListener('mouseup', onDragEnd);
-
-        let pos = currentEditingImage.style.backgroundPosition || '50% 50%';
-        let parts = pos.split(' ');
-        initialPosX = parseFloat(parts[0]) || 50;
-        initialPosY = parseFloat(parts[1]) || 50;
-    }
+    // REMOVED in favor of sliders
+    // window.toggleDragMode = ...
+    // function onDragStart(e) ...
+    // function onDragMove(e) ...
+    // function onDragEnd(e) ...
 
     // --- End Content Drag Logic ---
 
@@ -623,12 +577,15 @@
         if (!currentEditingImage) return;
 
         const scale = document.getElementById('img-scale').value;
-        const currentPos = currentEditingImage.style.backgroundPosition || '50% 50%';
+        const posX = document.getElementById('img-pos-x').value;
+        const posY = document.getElementById('img-pos-y').value;
 
         document.getElementById('val-scale').innerText = scale + '%';
+        document.getElementById('val-pos-x').innerText = posX + '%';
+        document.getElementById('val-pos-y').innerText = posY + '%';
 
         currentEditingImage.style.backgroundSize = `${scale}%`;
-        currentEditingImage.style.backgroundPosition = currentPos;
+        currentEditingImage.style.backgroundPosition = `${posX}% ${posY}%`;
     }
 
     function showStatus(msg, type) {
@@ -985,7 +942,10 @@
 
             const mediaType = isVideo ? 'Video' : 'Image';
             showStatus("Success! URL updated.", "status-success");
-            alert(`${mediaType} uploaded successfully! \n\nThe URL has been updated to the GitHub version.\n\nIMPORTANT: Click 'Save Page' in the main menu to persist this change to your website.`);
+            alert(`${mediaType} uploaded successfully! \n\nThe URL has been updated to the GitHub version.\n\nSaving page automatically...`);
+
+            // Auto Save
+            saveToGitHub();
 
             pendingFile = null;
             btn.style.display = 'none';
