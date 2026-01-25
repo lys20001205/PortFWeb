@@ -2,7 +2,7 @@
 <html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Purge - Vehicle Combat Prototype | qqme111</title>
+    <title>System Purge - Vehicle Combat Prototype | Yushan Li</title>
     <meta name="description" content="A high-speed vehicle combat prototype featuring physics-based drifting, modular weapon attachments, and networked replication in Unreal Engine 5.">
 
     <!-- Styles -->
@@ -47,22 +47,45 @@
             background: var(--system-purge-accent);
         }
     </style>
+    <style>
+        #dev-log-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #dev-log-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        #dev-log-container::-webkit-scrollbar-thumb {
+            background: var(--border-subtle);
+            border-radius: 4px;
+        }
+
+        #dev-log-container::-webkit-scrollbar-thumb:hover {
+            background: var(--system-purge-accent);
+        }
+    </style>
+    <style>
+        #dev-log-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #dev-log-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        #dev-log-container::-webkit-scrollbar-thumb {
+            background: var(--border-subtle);
+            border-radius: 4px;
+        }
+
+        #dev-log-container::-webkit-scrollbar-thumb:hover {
+            background: var(--system-purge-accent);
+        }
+    </style>
 <style>
-                #dev-log-container::-webkit-scrollbar {
-                    width: 8px;
-                }
-                #dev-log-container::-webkit-scrollbar-track {
-                    background: rgba(0,0,0,0.1);
-                    border-radius: 4px;
-                }
-                #dev-log-container::-webkit-scrollbar-thumb {
-                    background: var(--border-subtle);
-                    border-radius: 4px;
-                }
-                #dev-log-container::-webkit-scrollbar-thumb:hover {
-                    background: var(--system-purge-accent);
-                }
-            </style><style>
                 #dev-log-container::-webkit-scrollbar {
                     width: 8px;
                 }
@@ -82,7 +105,7 @@
 <body class="">
 
     <!-- Navigation -->
-    <nav class="nav nav-scrolled" style="transform: translateY(0px);">
+    <nav class="nav nav-scrolled" style="transform: translateY(-100%);">
         <div class="container nav-content">
             <a href="../index.html" class="nav-logo">
                 <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
@@ -166,7 +189,8 @@
                     <span style="color: var(--system-purge-accent);" class="">Ranger</span> (Mobile Base).
                     Players must physically transport collected resources back to the Ranger to fund team-wide upgrades,
                     creating a tense risk-reward loop.
-                <br><br>This project is still under development.</p>
+                    <br><br>This project is still under development.
+                </p>
             </div>
         </div>
     </section>
@@ -228,7 +252,8 @@
                                     vehicle to terrain without snapping.</li>
                                 <li class=""><strong>Root Motion Mix:</strong>
                                     <code>FChaosMoverHoverRootMotionInput</code>
-                                    blends animation data with physics forces.</li>
+                                    blends animation data with physics forces.
+                                </li>
                             </ul>
 
                             <!-- Editable Media -->
@@ -607,7 +632,55 @@
                 </button>
 
                 <!-- Blog Entry Template -->
-                <div class="dev-log-entry fade-in visible" style="
+                
+
+                <!-- Blog Entry 2 -->
+                
+
+            <div class="dev-log-entry fade-in visible" style="
+                    border-left: 2px solid var(--border-subtle);
+                    padding-left: 32px;
+                    margin-bottom: 64px;
+                    position: relative;
+                    opacity: 1;
+                ">
+                    <!-- Timeline Dot -->
+                    <div style="
+                        position: absolute;
+                        left: -11px;
+                        top: 0;
+                        width: 20px;
+                        height: 20px;
+                        background: var(--system-purge-accent);
+                        border-radius: 50%;
+                        border: 4px solid var(--bg-tertiary);
+                    "></div>
+
+                    <div style="margin-bottom: 16px;">
+                        <span class="" style="color: var(--system-purge-accent); font-family: var(--font-mono); font-size: 0.875rem;">January 26, 2024</span>
+                        <h3 class="" style="font-size: 1.5rem; margin-top: 8px;">New Entry Title</h3>
+                    </div>
+
+                    <p class="" style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 24px;">
+                        Description of the work done...
+                    </p>
+
+                    <div class="img-placeholder" onclick="openImageToolbar(this)" style="
+                        aspect-ratio: 16/9;
+                        background: var(--bg-card);
+                        border: 2px dashed var(--border-medium);
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: var(--text-muted);
+                        margin-bottom: 24px;
+                        cursor: pointer;
+                    ">
+                        <i class="fas fa-image" style="margin-right: 8px;"></i>
+                        <span class="">Placeholder Image</span>
+                    </div>
+                </div><div class="dev-log-entry fade-in visible" style="
                     border-left: 2px solid var(--border-subtle);
                     padding-left: 32px;
                     margin-bottom: 64px;
@@ -637,18 +710,16 @@
                     </p>
 
                     <div class="img-placeholder" style="aspect-ratio: 16 / 9; background-position-x: ; background-position-y: ; background-size: ; background-repeat: ; background-attachment: ; background-origin: ; background-clip: ; background-color: ; border: 1px solid var(--border-subtle); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); margin-bottom: 24px;" data-media-type="video">
-                        
-                        
-                    <video class="media-preview" src="https://raw.githubusercontent.com/lys20001205/PortFWeb/main/assets/uploads/1769374266111_4_6.mp4" autoplay="" loop="" playsinline="" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; object-fit: cover; z-index: 1;"></video></div>
+
+
+                        <video class="media-preview" src="https://raw.githubusercontent.com/lys20001205/PortFWeb/main/assets/uploads/1769374266111_4_6.mp4" autoplay="" loop="" playsinline="" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; object-fit: cover; z-index: 1;"></video>
+                    </div>
 
                     <p style="color: var(--text-secondary); line-height: 1.8;" class="">
                         Moved the simulation step to a shared function that both client and server can call.
                         Testing confirms much smoother results.
                     </p>
-                </div>
-
-                <!-- Blog Entry 2 -->
-                <div class="dev-log-entry fade-in visible" style="
+                </div><div class="dev-log-entry fade-in visible" style="
                     border-left: 2px solid var(--border-subtle);
                     padding-left: 32px;
                     margin-bottom: 0;
@@ -691,9 +762,7 @@
                         <i class="fas fa-image" style="margin-right: 8px;"></i>
                         <span class="">Add Weapon Test GIF</span>
                     </div>
-                </div>
-
-            </div>
+                </div></div>
         </div>
 
         <script>
@@ -764,7 +833,7 @@
     <footer class="footer" style="padding: 40px 0;">
         <div class="container" style="text-align: center;">
             <p style="color: var(--text-muted); font-size: 0.875rem;" class="">
-                © 2026 qqme111 Portfolio
+                © 2026 Yushan Li Portfolio
             </p>
         </div>
     </footer>
@@ -777,6 +846,8 @@
         <i class="fas fa-pen"></i>
     </button>
     <script src="../js/editor.js"></script>
+
+
 
 
 
