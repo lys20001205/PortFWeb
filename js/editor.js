@@ -312,7 +312,7 @@
             el.onclick = null;
         });
 
-        if (isDragMode) toggleDragMode(); // Was cleanup, likely harmless but function is gone so remove call
+        // if (isDragMode) toggleDragMode(); // Was cleanup, likely harmless but function is gone so remove call
         // if (isDragMode) toggleDragMode();
     }
 
