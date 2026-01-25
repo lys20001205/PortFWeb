@@ -609,6 +609,9 @@
         const styles = document.getElementById('editor-styles');
         if (styles) styles.remove();
 
+        const debugOverlay = document.getElementById('debug-overlay');
+        if (debugOverlay) debugOverlay.remove();
+
         const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
 
         injectStyles();
