@@ -1,210 +1,342 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>qqme111 - Technical Game Designer Portfolio</title>
-    <meta name="description"
-        content="Technical Game Designer specializing in Unreal Engine 5, C++, and Python. Creating the bridge between complex systems and high-fidelity visual art.">
+    <title>System Purge - Vehicle Combat Prototype | qqme111</title>
+    <meta name="description" content="A high-speed vehicle combat prototype featuring physics-based drifting, modular weapon attachments, and networked replication in Unreal Engine 5.">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Project-specific accent override */
+        :root {
+            --project-accent: var(--system-purge-accent);
+            --project-glow: var(--system-purge-glow);
+        }
+
+        .accent-border {
+            border-color: var(--project-accent);
+        }
+
+        .accent-text {
+            color: var(--project-accent);
+        }
+
+        .accent-bg {
+            background-color: var(--project-accent);
+        }
+    </style>
 </head>
 
-<body>
+<body class="">
 
     <!-- Navigation -->
-    <nav class="nav">
+    <nav class="nav nav-scrolled" style="transform: translateY(-100%);">
         <div class="container nav-content">
-            <a href="#" class="nav-logo">qqme111</a>
-            <ul class="nav-links">
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+            <a href="../index.html" class="nav-logo">
+                <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
+                Back to Portfolio
+            </a>
+            <span class="font-mono" style="color: var(--text-muted); font-size: 0.875rem;">SYSTEM PURGE</span>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" style="min-height: 80vh; padding-top: 120px;">
         <div class="bg-grid"></div>
-        <div class="bg-gradient-radial" style="top: -200px; right: -200px;"></div>
+        <div class="bg-gradient-radial" style="top: -200px; right: -200px; background: radial-gradient(circle, var(--system-purge-accent) 0%, transparent 70%);">
+        </div>
 
-        <div class="container hero-content">
-            <div class="hero-badge">
-                <span>Available for opportunities</span>
+        <div class="container" style="max-width: 900px;">
+            <div class="fade-in visible" style="margin-bottom: 32px;">
+                <span class="project-card-tag" style="background: var(--system-purge-glow); color: var(--system-purge-accent);">
+                    Game Development
+                </span>
             </div>
 
-            <h1>Technical Game<br>Designer</h1>
+            <h1 class="fade-in visible" style="font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 24px; animation-delay: 0.1s;">
+                System Purge
+            </h1>
 
-            <p class="hero-description">
-                I build the bridge between complex game systems and high-fidelity visual art.
-                Specializing in Unreal Engine 5, C++, and pipeline tools.
+            <p class="hero-description fade-in visible" style="text-align: left; margin: 0 0 32px; animation-delay: 0.2s;">
+                A high-speed vehicle combat prototype featuring physics-based drifting,
+                modular weapon attachments, and networked replication architecture built in Unreal Engine 5.
             </p>
 
-            <div class="hero-cta">
-                <a href="#projects" class="btn btn-primary">
-                    <span>View Projects</span>
-                    <i class="fas fa-arrow-down"></i>
-                </a>
-                <a href="#contact" class="btn btn-secondary">
-                    <span>Get in Touch</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Featured Projects</h2>
-                <p>A selection of work showcasing technical design, game development, and pipeline automation.</p>
-            </div>
-
-            <div class="projects-grid stagger-children">
-
-                <!-- System Purge -->
-                <a href="projects/system-purge.html" class="project-card system-purge">
-                    <div class="project-card-image img-placeholder">
-                        <i class="fas fa-gamepad"></i>
-                        <!-- Replace with actual image -->
-                        <!-- <img src="assets/system-purge-hero.jpg" alt="System Purge"> -->
-                    </div>
-                    <div class="project-card-content">
-                        <span class="project-card-tag">Game Development</span>
-                        <h3>System Purge</h3>
-                        <p>High-speed vehicle combat prototype with physics-based drifting and networked replication in
-                            UE5.</p>
-                    </div>
-                    <div class="project-card-arrow">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </a>
-
-                <!-- Blender Addon -->
-                <a href="projects/blender-addon.html" class="project-card blender-addon">
-                    <div class="project-card-image img-placeholder">
-                        <i class="fas fa-robot"></i>
-                        <!-- Replace with actual image -->
-                        <!-- <img src="assets/blender-addon-hero.jpg" alt="Blender Rigging Addon"> -->
-                    </div>
-                    <div class="project-card-content">
-                        <span class="project-card-tag">Pipeline Tools</span>
-                        <h3>Blender Rigging Addon</h3>
-                        <p>Python add-on automating weight painting for mechanical joints, reducing setup time by 80%.
-                        </p>
-                    </div>
-                    <div class="project-card-arrow">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </a>
-
-                <!-- Mecha Toy Design -->
-                <a href="projects/mecha-toy.html" class="project-card mecha-toy">
-                    <div class="project-card-image img-placeholder">
-                        <i class="fas fa-cube"></i>
-                        <!-- Replace with actual image -->
-                        <!-- <img src="assets/mecha-toy-hero.jpg" alt="Mecha Toy Design"> -->
-                    </div>
-                    <div class="project-card-content">
-                        <span class="project-card-tag">3D Production</span>
-                        <h3>Mecha Toy Design</h3>
-                        <p>Professional 3D interpretation bridging 2D concept art to manufacturing-ready models.</p>
-                    </div>
-                    <div class="project-card-arrow">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </a>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="relative overflow-hidden">
-        <div class="bg-gradient-radial" style="bottom: -300px; left: -300px;"></div>
-
-        <div class="container">
-            <div class="about-grid">
-                <div class="about-image fade-in-left img-placeholder">
-                    <!-- Replace with actual photo -->
-                    <img src="https://raw.githubusercontent.com/lys20001205/PortFWeb/main/assets/uploads/1769355339060_IMG_5588.jpeg"
-                        alt="Profile Photo">
+            <!-- Meta Info -->
+            <div class="fade-in visible" style="display: flex; flex-wrap: wrap; gap: 24px; animation-delay: 0.3s;">
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;" class="">Type</span>
+                    <p style="color: var(--text-primary); font-weight: 500;" class="">Individual Project</p>
                 </div>
-
-                <div class="about-content fade-in-right">
-                    <h2>The Bridge Between<br>Logic & Art</h2>
-
-                    <p>
-                        I am a Technical Designer focused on the intersection of complex game systems
-                        and high-fidelity visual art. With a background in professional 3D production
-                        and solo game development, I specialize in building robust tools and gameplay
-                        mechanics that empower creative visions.
-                    </p>
-
-                    <p>
-                        My work spans from physics-based vehicle systems in Unreal Engine to
-                        custom Python toolsets for Blender, always with a focus on creating
-                        efficient, maintainable solutions.
-                    </p>
-
-                    <div class="skills-list">
-                        <span class="skill-tag">C++</span>
-                        <span class="skill-tag">Unreal Engine 5</span>
-                        <span class="skill-tag">Python</span>
-                        <span class="skill-tag">Blender</span>
-                        <span class="skill-tag">Technical Art</span>
-                        <span class="skill-tag">Game Design</span>
-                    </div>
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;" class="">Role</span>
+                    <p style="color: var(--text-primary); font-weight: 500;" class="">Solo Developer</p>
+                </div>
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;" class="">Engine</span>
+                    <p style="color: var(--text-primary); font-weight: 500;" class="">Unreal Engine 5</p>
+                </div>
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;" class="">Duration</span>
+                    <p style="color: var(--text-primary); font-weight: 500;" class="">2024 - Present</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact / Footer -->
-    <footer id="contact" class="footer">
-        <div class="container footer-content">
-            <div>
-                <h2>Let's Connect</h2>
-                <p>Open to opportunities in game development and technical design.</p>
+    <!-- Hero Media -->
+    <section style="padding: 0 0 80px;">
+        <div class="container">
+            <div class="fade-in img-placeholder visible" style="aspect-ratio: 16 / 9; background-position-x: ; background-position-y: ; background-size: ; background-repeat: ; background-attachment: ; background-origin: ; background-clip: ; background-color: ; border-radius: 16px; border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; color: var(--text-muted); overflow: hidden;" data-media-type="video">
+                
+            <video class="media-preview" src="https://raw.githubusercontent.com/lys20001205/PortFWeb/main/assets/uploads/1769356115125_6_5.mp4" autoplay="" loop="" playsinline="" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; object-fit: cover; z-index: 1;"></video></div>
+        </div>
+    </section>
+
+    <!-- Overview -->
+    <section style="padding: 80px 0;">
+        <div class="container" style="max-width: 800px;">
+            <div class="fade-in visible">
+                <h2 style="font-size: 2rem; margin-bottom: 24px;" class="">Overview</h2>
+                <p style="color: var(--text-secondary); font-size: 1.125rem; line-height: 1.8; margin-bottom: 24px;" class="">
+                    System Purge is a personal project exploring advanced vehicle physics and combat mechanics
+                    in Unreal Engine 5. The goal is to create an arcade-style driving experience that feels
+                    responsive and satisfying while maintaining a robust networked architecture for multiplayer support.
+                </p>
+                <p style="color: var(--text-secondary); font-size: 1.125rem; line-height: 1.8;" class="">
+                    This project serves as a technical showcase for my C++ programming skills, physics system
+                    implementation, and understanding of UE5's replication framework.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Implementation -->
+    <section style="padding: 80px 0; background: var(--bg-secondary);">
+        <div class="container">
+            <div class="fade-in visible">
+                <h2 style="font-size: 2rem; margin-bottom: 48px; text-align: center;" class="">Technical Implementation</h2>
             </div>
 
-            <a href="mailto:your.email@example.com" class="btn btn-primary">
-                <i class="fas fa-envelope"></i>
-                <span>Get in Touch</span>
-            </a>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px;">
 
-            <div class="social-links">
-                <a href="#" class="social-link" aria-label="GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="#" class="social-link" aria-label="LinkedIn">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="#" class="social-link" aria-label="ArtStation">
-                    <i class="fab fa-artstation"></i>
-                </a>
+                <!-- Physics Card -->
+                <div class="fade-in img-placeholder visible" style="
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-subtle);
+                    border-radius: 16px;
+                    padding: 32px;
+                ">
+                    <div style="
+                        width: 48px;
+                        height: 48px;
+                        background: var(--system-purge-glow);
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-bottom: 24px;
+                    ">
+                        <i class="fas fa-car" style="color: var(--system-purge-accent); font-size: 1.25rem;"></i>
+                    </div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 12px;" class="">Custom Physics Model</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;" class="">
+                        Implemented a custom drift physics system using slip angle calculations and
+                        tire friction curves to achieve arcade-style handling within a realistic physics engine.
+                    </p>
+                </div>
+
+                <!-- Replication Card -->
+                <div class="fade-in img-placeholder visible" style="
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-subtle);
+                    border-radius: 16px;
+                    padding: 32px;
+                ">
+                    <div style="
+                        width: 48px;
+                        height: 48px;
+                        background: var(--system-purge-glow);
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-bottom: 24px;
+                    ">
+                        <i class="fas fa-network-wired" style="color: var(--system-purge-accent); font-size: 1.25rem;"></i>
+                    </div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 12px;" class="">Network Replication</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;" class="">
+                        Server-authoritative movement with client-side prediction and lag compensation.
+                        Designed for smooth gameplay even under high latency conditions.
+                    </p>
+                </div>
+
+                <!-- Weapons Card -->
+                <div class="fade-in img-placeholder visible" style="
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-subtle);
+                    border-radius: 16px;
+                    padding: 32px;
+                ">
+                    <div style="
+                        width: 48px;
+                        height: 48px;
+                        background: var(--system-purge-glow);
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-bottom: 24px;
+                    ">
+                        <i class="fas fa-crosshairs" style="color: var(--system-purge-accent); font-size: 1.25rem;"></i>
+                    </div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 12px;" class="">Modular Weapon System</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;" class="">
+                        Data-driven weapon system using Data Assets, allowing easy iteration on weapon
+                        stats, projectile behaviors, and visual effects without code changes.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Snippet -->
+    <section style="padding: 80px 0;">
+        <div class="container" style="max-width: 900px;">
+            <div class="fade-in visible">
+                <h2 style="font-size: 2rem; margin-bottom: 24px;" class="">Code Highlight</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 32px;" class="">
+                    The core drift mechanics implementation using slip angle calculations:
+                </p>
+
+                <div style="
+                    background: #1e1e1e;
+                    border-radius: 12px;
+                    border: 1px solid var(--border-subtle);
+                    overflow: hidden;
+                ">
+                    <div style="
+                        padding: 12px 16px;
+                        background: var(--bg-tertiary);
+                        border-bottom: 1px solid var(--border-subtle);
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    ">
+                        <i class="fas fa-code" style="color: var(--text-muted);"></i>
+                        <span class="font-mono" style="color: var(--text-muted); font-size: 0.875rem;">VehicleMovement.cpp</span>
+                    </div>
+                    <pre style="
+                        padding: 24px;
+                        margin: 0;
+                        overflow-x: auto;
+                        font-family: var(--font-mono);
+                        font-size: 0.875rem;
+                        line-height: 1.7;
+                        color: #e5e7eb;
+                    "><code><span style="color: #c084fc;" class="">void</span> ACombatVehicle::CalculateDriftForces(<span style="color: #c084fc;" class="">float</span> DeltaTime)
+{
+    <span style="color: #6b7280;" class="">// Get local velocity relative to actor rotation</span>
+    FVector LocalVel = GetActorTransform().InverseTransformVector(Velocity);
+
+    <span style="color: #6b7280;" class="">// Calculate slip angle based on lateral velocity</span>
+    <span style="color: #c084fc;" class="">float</span> SlipAngle = FMath::Atan2(LocalVel.Y, LocalVel.X);
+
+    <span style="color: #6b7280;" class="">// Apply counter-force based on friction curve</span>
+    <span style="color: #c084fc;" class="">float</span> GripFactor = TireFrictionCurve-&gt;GetFloatValue(SlipAngle);
+    AddForce(GetActorRightVector() * -LocalVel.Y * GripFactor);
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section style="padding: 80px 0; background: var(--bg-secondary);">
+        <div class="container">
+            <div class="fade-in visible">
+                <h2 style="font-size: 2rem; margin-bottom: 48px; text-align: center;" class="">Gallery</h2>
             </div>
 
-            <p style="margin-top: 48px; color: var(--text-muted); font-size: 0.875rem;">
-                © 2026 Portfolio Submission
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+                <div class="fade-in img-placeholder visible" style="
+                    aspect-ratio: 16/9;
+                    background: var(--bg-tertiary);
+                    border-radius: 12px;
+                    border: 1px solid var(--border-subtle);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--text-muted);
+                ">
+                    <span class="">Screenshot 1</span>
+                </div>
+                <div class="fade-in img-placeholder visible" style="
+                    aspect-ratio: 16/9;
+                    background: var(--bg-tertiary);
+                    border-radius: 12px;
+                    border: 1px solid var(--border-subtle);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--text-muted);
+                ">
+                    <span class="">Screenshot 2</span>
+                </div>
+                <div class="fade-in img-placeholder visible" style="
+                    aspect-ratio: 16/9;
+                    background: var(--bg-tertiary);
+                    border-radius: 12px;
+                    border: 1px solid var(--border-subtle);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--text-muted);
+                ">
+                    <span class="">Screenshot 3</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Footer -->
+    <section style="padding: 80px 0; border-top: 1px solid var(--border-subtle);">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;">
+                <a href="../index.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="">Back to Projects</span>
+                </a>
+                <a href="blender-addon.html" class="btn btn-primary">
+                    <span class="">Next Project</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" style="padding: 40px 0;">
+        <div class="container" style="text-align: center;">
+            <p style="color: var(--text-muted); font-size: 0.875rem;" class="">
+                © 2026 qqme111 Portfolio
             </p>
         </div>
     </footer>
 
     <!-- Scripts -->
-    <script src="js/animations.js"></script>
+    <script src="../js/animations.js"></script>
 
     <!-- Visual Editor -->
-    <button onclick="toggleEditor()" class="no-print"
-        style="position: fixed; bottom: 20px; right: 20px; background: #3b82f6; color: white; border: none; padding: 12px 16px; border-radius: 50%; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3);"
-        title="Toggle Visual Editor">
+    <button onclick="toggleEditor()" class="no-print" style="position: fixed; bottom: 20px; right: 20px; background: #3b82f6; color: white; border: none; padding: 12px 16px; border-radius: 50%; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3);" title="Toggle Visual Editor">
         <i class="fas fa-pen"></i>
     </button>
-    <script src="js/editor.js"></script>
-</body>
+    <script src="../js/editor.js"></script>
 
-</html>
+
+</body></html>
