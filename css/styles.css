@@ -13,42 +13,42 @@
     --bg-secondary: #111114;
     --bg-tertiary: #18181b;
     --bg-card: #1c1c20;
-    
+
     /* Text Colors */
     --text-primary: #ffffff;
     --text-secondary: #a1a1aa;
     --text-muted: #71717a;
-    
+
     /* Accent Colors */
     --accent-blue: #3b82f6;
     --accent-purple: #8b5cf6;
     --accent-cyan: #06b6d4;
     --accent-emerald: #10b981;
-    
+
     /* Project Theme Colors */
     --system-purge-accent: #ef4444;
     --system-purge-glow: rgba(239, 68, 68, 0.2);
-    
+
     --blender-addon-accent: #f97316;
     --blender-addon-glow: rgba(249, 115, 22, 0.2);
-    
+
     --mecha-toy-accent: #3b82f6;
     --mecha-toy-glow: rgba(59, 130, 246, 0.2);
-    
+
     /* Borders */
     --border-subtle: rgba(255, 255, 255, 0.06);
     --border-medium: rgba(255, 255, 255, 0.1);
-    
+
     /* Shadows */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
     --shadow-glow: 0 0 60px var(--accent-blue);
-    
+
     /* Typography */
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
-    
+
     /* Transitions */
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
@@ -60,7 +60,9 @@
 /* ============================================
    Base Reset & Body
    ============================================ */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -83,7 +85,12 @@ body {
 /* ============================================
    Typography
    ============================================ */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1.2;
@@ -527,7 +534,7 @@ section {
     opacity: 0;
     transform: translateY(40px);
     transition: opacity 0.8s var(--ease-out-expo),
-                transform 0.8s var(--ease-out-expo);
+        transform 0.8s var(--ease-out-expo);
 }
 
 .fade-in.visible {
@@ -539,7 +546,7 @@ section {
     opacity: 0;
     transform: translateX(-40px);
     transition: opacity 0.8s var(--ease-out-expo),
-                transform 0.8s var(--ease-out-expo);
+        transform 0.8s var(--ease-out-expo);
 }
 
 .fade-in-left.visible {
@@ -551,7 +558,7 @@ section {
     opacity: 0;
     transform: translateX(40px);
     transition: opacity 0.8s var(--ease-out-expo),
-                transform 0.8s var(--ease-out-expo);
+        transform 0.8s var(--ease-out-expo);
 }
 
 .fade-in-right.visible {
@@ -560,16 +567,30 @@ section {
 }
 
 /* Stagger children animations */
-.stagger-children > * {
+.stagger-children>* {
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s var(--ease-out-expo),
-                transform 0.6s var(--ease-out-expo);
+        transform 0.6s var(--ease-out-expo);
 }
 
-.stagger-children.visible > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: translateY(0); }
-.stagger-children.visible > *:nth-child(2) { transition-delay: 100ms; opacity: 1; transform: translateY(0); }
-.stagger-children.visible > *:nth-child(3) { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
+.stagger-children.visible>*:nth-child(1) {
+    transition-delay: 0ms;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stagger-children.visible>*:nth-child(2) {
+    transition-delay: 100ms;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stagger-children.visible>*:nth-child(3) {
+    transition-delay: 200ms;
+    opacity: 1;
+    transform: translateY(0);
+}
 
 /* ============================================
    Keyframe Animations
@@ -579,6 +600,7 @@ section {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -586,27 +608,36 @@ section {
 }
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.5;
     }
 }
 
 @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-10px);
     }
 }
 
 @keyframes glow {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 20px var(--accent-blue);
     }
+
     50% {
         box-shadow: 0 0 40px var(--accent-blue);
     }
@@ -638,7 +669,7 @@ section {
 .bg-grid {
     position: absolute;
     inset: 0;
-    background-image: 
+    background-image:
         linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
     background-size: 60px 60px;
@@ -663,27 +694,27 @@ section {
     section {
         padding: 80px 0;
     }
-    
+
     .hero h1 {
         font-size: 2.5rem;
     }
-    
+
     .hero-description {
         font-size: 1rem;
     }
-    
+
     .hero-cta {
         flex-direction: column;
     }
-    
+
     .nav-links {
         display: none;
     }
-    
+
     .about-content h2 {
         font-size: 2rem;
     }
-    
+
     .section-header h2 {
         font-size: 2rem;
     }
@@ -692,8 +723,81 @@ section {
 /* ============================================
    Utility Classes
    ============================================ */
-.relative { position: relative; }
-.overflow-hidden { overflow: hidden; }
-.text-center { text-align: center; }
-.mb-8 { margin-bottom: 32px; }
-.mt-16 { margin-top: 64px; }
+.relative {
+    position: relative;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mb-8 {
+    margin-bottom: 32px;
+}
+
+.mt-16 {
+    margin-top: 64px;
+}
+
+/* ============================================
+   Gallery Zoom Effect
+   ============================================ */
+.gallery-zoom-item {
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), z-index 0s;
+    position: relative;
+    z-index: 1;
+    cursor: zoom-in;
+    background: var(--bg-tertiary);
+    /* Defaults */
+    --zoom-scale: 1;
+    --zoom-tx: 0px;
+    --zoom-scale: 1;
+    --zoom-tx: 0px;
+    --zoom-ty: 0px;
+}
+
+/* Subtle hover hint */
+.gallery-zoom-item:not(.zoomed):hover {
+    transform: scale(1.05);
+    border-color: var(--text-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 50;
+    /* Slightly raised but below Full Zoom */
+}
+
+.gallery-zoom-item.zoomed {
+    transform: translate(var(--zoom-tx), var(--zoom-ty)) scale(var(--zoom-scale));
+    z-index: 1000;
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.9), 0 20px 50px rgba(0, 0, 0, 0.5);
+    border-color: var(--text-primary);
+    transition-delay: 0s;
+    /* Instant z-index change typically preferred, or keep sync */
+}
+
+/* Ensure z-index delay on exit so it stays on top while shrinking back */
+.gallery-zoom-item:not(.zoomed) {
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), z-index 0s 0.4s;
+}
+
+/* ============================================
+   New Entry Animations
+   ============================================ */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.scale-in {
+    animation: scaleIn 0.5s var(--ease-out-expo) forwards;
+}

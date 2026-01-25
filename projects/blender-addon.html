@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blender Rigging Addon - Pipeline Automation | qqme111</title>
+    <title>Mechanical Rigger - Hard Surface Automation | qqme111</title>
     <meta name="description"
-        content="Python add-on for Blender automating weight painting for mechanical joints, reducing production setup time by 80%.">
+        content="Blender plugin for automating mechanical rigging via hierarchy, supporting pistons, hinges, and Game Engine export.">
 
     <!-- Styles -->
     <link rel="stylesheet" href="../css/styles.css">
@@ -63,12 +63,13 @@
 
             <h1 class="fade-in"
                 style="font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 24px; animation-delay: 0.1s;">
-                Blender Rigging Addon
+                Mechanical Rigger
             </h1>
 
             <p class="hero-description fade-in" style="text-align: left; margin: 0 0 32px; animation-delay: 0.2s;">
-                A Python add-on automating weight painting for mechanical joints in Blender,
-                reducing asset production setup time by 80% for mecha and robot models.
+                A Blender add-on that automates hard-surface rigging by converting <strong>Mesh Hierarchy to
+                    Bones</strong>.
+                Includes smart detection for Pistons and Hinges, plus a one-click export pipeline for Unreal Engine.
             </p>
 
             <!-- Meta Info -->
@@ -76,12 +77,12 @@
                 <div>
                     <span
                         style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Type</span>
-                    <p style="color: var(--text-primary); font-weight: 500;">Individual Project</p>
+                    <p style="color: var(--text-primary); font-weight: 500;">Open Source Plugin</p>
                 </div>
                 <div>
                     <span
                         style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Context</span>
-                    <p style="color: var(--text-primary); font-weight: 500;">Work Optimization</p>
+                    <p style="color: var(--text-primary); font-weight: 500;">Workflow Automation</p>
                 </div>
                 <div>
                     <span
@@ -137,10 +138,13 @@
                     </div>
                     <h2 style="font-size: 1.5rem; margin-bottom: 16px;">The Problem</h2>
                     <p style="color: var(--text-secondary); line-height: 1.8;">
-                        Manual weight painting for standard mechanical joints was consuming approximately
-                        <strong style="color: var(--text-primary);">30% of total asset production time</strong>.
-                        For complex mecha models with dozens of joints, this meant hours of repetitive work
-                        that followed predictable patterns.
+                        Rigging mechanical assets (robots, weapons) manually is tedious.
+                        Animators need to <strong>align bones precisely</strong> to pivots, setup standard constraints
+                        for
+                        <strong style="color: var(--text-primary);">Pistons</strong> and <strong
+                            style="color: var(--text-primary);">Hinges</strong>,
+                        and manage complex hierarchies. Exporting a clean skeletal mesh to Unreal Engine often requires
+                        destructive "Apply Transform" steps that break the rig.
                     </p>
                 </div>
 
@@ -159,11 +163,13 @@
                     </div>
                     <h2 style="font-size: 1.5rem; margin-bottom: 16px;">The Solution</h2>
                     <p style="color: var(--text-secondary); line-height: 1.8;">
-                        Developed a Python add-on that auto-generates weights based on vertex groups
-                        and bone proximity, <strong style="color: var(--text-primary);">reducing setup time by
-                            80%</strong>.
-                        The tool handles common mechanical joint types with smart defaults while remaining
-                        fully customizable for edge cases.
+                        The Mechanical Rigger plugin <strong>reads the Outliner Hierarchy</strong> to auto-generate the
+                        Armature.
+                        It detects specific naming conventions (e.g., <code>Piston_01_Cyl</code>) to automatically rig
+                        complex mechanisms
+                        with correct constraints. Finally, it includes a non-destructive
+                        <strong style="color: var(--text-primary);">Batch Exporter</strong> that bakes the rig for Game
+                        Engines.
                     </p>
                 </div>
 
@@ -187,12 +193,12 @@
                     padding: 28px;
                 ">
                     <h3 style="font-size: 1.125rem; margin-bottom: 12px;">
-                        <i class="fas fa-magic" style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
-                        Auto Weight Generation
+                        <i class="fas fa-sitemap" style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
+                        Hierarchy-Based Rigging
                     </h3>
                     <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;">
-                        Analyzes mesh topology and bone hierarchy to automatically assign vertex weights
-                        with appropriate falloff for mechanical joints.
+                        Converts Parent-Child relationships in the Outliner directly into Bone Chains.
+                        No need to draw bones manually; just organize your meshes and click Build.
                     </p>
                 </div>
 
@@ -204,11 +210,12 @@
                 ">
                     <h3 style="font-size: 1.125rem; margin-bottom: 12px;">
                         <i class="fas fa-cogs" style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
-                        Joint Type Presets
+                        Auto-Piston Setup
                     </h3>
                     <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;">
-                        Pre-configured settings for common joint types: hinges, ball joints, pistons,
-                        and sliding mechanisms with one-click application.
+                        Detects <code>Piston_ID_Cyl</code> and <code>_Rod</code> collections. automatically
+                        generating the necessary bones and <code>Damped Track</code> constraints for hydraulic
+                        cylinders.
                     </p>
                 </div>
 
@@ -219,12 +226,12 @@
                     padding: 28px;
                 ">
                     <h3 style="font-size: 1.125rem; margin-bottom: 12px;">
-                        <i class="fas fa-sliders-h" style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
-                        Fine-tuning Controls
+                        <i class="fas fa-clone" style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
+                        Smart Mirroring
                     </h3>
                     <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;">
-                        Adjust proximity threshold, falloff curve, and influence limits for
-                        precise control when automatic settings need refinement.
+                        Tag collections with <code>_Mirrored</code> to generate symmetric rigs (Left/Right).
+                        Uses "Linked Duplicates" for the right side, so modeling changes propagate instantly.
                     </p>
                 </div>
 
@@ -235,13 +242,13 @@
                     padding: 28px;
                 ">
                     <h3 style="font-size: 1.125rem; margin-bottom: 12px;">
-                        <i class="fas fa-layer-group"
+                        <i class="fas fa-file-export"
                             style="color: var(--blender-addon-accent); margin-right: 8px;"></i>
-                        Batch Processing
+                        Game Engine Export
                     </h3>
                     <p style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7;">
-                        Process entire armatures or selected bone chains at once, dramatically
-                        speeding up workflow for complex models.
+                        Bakes the complex Control Rig into a clean, single-mesh Skeletal Mesh.
+                        Corrects unit scale and axis orientation for Unreal Engine integration.
                     </p>
                 </div>
 
@@ -255,7 +262,8 @@
             <div class="fade-in">
                 <h2 style="font-size: 2rem; margin-bottom: 24px;">Implementation</h2>
                 <p style="color: var(--text-secondary); margin-bottom: 32px;">
-                    The core weight calculation using vertex-to-bone distance mapping:
+                    Regex-based validation ensures the user follows naming conventions for automatic Piston and
+                    Mirroring setup:
                 </p>
 
                 <div style="
@@ -273,8 +281,7 @@
                         gap: 8px;
                     ">
                         <i class="fab fa-python" style="color: #3776ab;"></i>
-                        <span class="font-mono"
-                            style="color: var(--text-muted); font-size: 0.875rem;">auto_weight.py</span>
+                        <span class="font-mono" style="color: var(--text-muted); font-size: 0.875rem;">utils.py</span>
                     </div>
                     <pre style="
                         padding: 24px;
@@ -284,23 +291,33 @@
                         font-size: 0.875rem;
                         line-height: 1.7;
                         color: #e5e7eb;
-                    "><code><span style="color: #c084fc;">def</span> <span style="color: #60a5fa;">calculate_weights</span>(mesh, armature, settings):
-    <span style="color: #fbbf24;">"""Generate vertex weights based on bone proximity."""</span>
+                    "><code><span style="color: #c084fc;">def</span> <span style="color: #60a5fa;">validate_selection</span>(context):
+    <span style="color: #fbbf24;">"""Checks selected objects for Naming Conventions (Pistons)."""</span>
     
-    <span style="color: #c084fc;">for</span> bone <span style="color: #c084fc;">in</span> armature.pose.bones:
-        <span style="color: #6b7280;"># Get bone head/tail in world space</span>
-        head = armature.matrix_world @ bone.head
-        tail = armature.matrix_world @ bone.tail
+    <span style="color: #6b7280;"># Regex to find Piston_ID_Type in Collection Name</span>
+    piston_pattern = re.<span style="color: #c084fc;">compile</span>(<span style="color: #a5f3fc;">r"Piston_(.+?)_(Cyl|Rod)"</span>)
+    pistons = {}
+
+    <span style="color: #c084fc;">for</span> obj <span style="color: #c084fc;">in</span> context.selected_objects:
+        <span style="color: #c084fc;">if</span> <span style="color: #c084fc;">not</span> obj.users_collection: <span style="color: #c084fc;">continue</span>
+        col = obj.users_collection[0]
         
-        <span style="color: #c084fc;">for</span> vert <span style="color: #c084fc;">in</span> mesh.data.vertices:
-            <span style="color: #6b7280;"># Calculate distance to bone axis</span>
-            dist = point_to_line_distance(vert.co, head, tail)
+        <span style="color: #6b7280;"># Remove _Mirrored suffix for check</span>
+        clean_col_name = col.name.replace(<span style="color: #a5f3fc;">"_Mirrored"</span>, <span style="color: #a5f3fc;">""</span>)
+        match = piston_pattern.match(clean_col_name)
+
+        <span style="color: #c084fc;">if</span> match:
+            pid = match.group(1)   <span style="color: #6b7280;"># ID</span>
+            ptype = match.group(2) <span style="color: #6b7280;"># Cyl or Rod</span>
             
-            <span style="color: #6b7280;"># Apply falloff curve</span>
-            weight = falloff_curve(dist, settings.threshold)
+            <span style="color: #c084fc;">if</span> pid <span style="color: #c084fc;">not</span> <span style="color: #c084fc;">in</span> pistons:
+                pistons[pid] = <span style="color: #c084fc;">set</span>()
+            pistons[pid].add(ptype)
             
-            <span style="color: #c084fc;">if</span> weight > <span style="color: #a5f3fc;">0.001</span>:
-                assign_weight(mesh, bone.name, vert.index, weight)</code></pre>
+    <span style="color: #6b7280;"># Verify Pairs</span>
+    <span style="color: #c084fc;">for</span> pid, types <span style="color: #c084fc;">in</span> pistons.items():
+        <span style="color: #c084fc;">if</span> <span style="color: #a5f3fc;">"Cyl"</span> <span style="color: #c084fc;">in</span> types <span style="color: #c084fc;">and</span> <span style="color: #a5f3fc;">"Rod"</span> <span style="color: #c084fc;">not</span> <span style="color: #c084fc;">in</span> types:
+            errors.append(<span style="color: #a5f3fc;">f"Piston '{pid}' missing Rod."</span>)</code></pre>
                 </div>
             </div>
         </div>
@@ -318,19 +335,19 @@
                     <p
                         style="font-size: 3rem; font-weight: 700; color: var(--blender-addon-accent); margin-bottom: 8px;">
                         80%</p>
-                    <p style="color: var(--text-secondary);">Time Saved</p>
+                    <p style="color: var(--text-secondary);">Rigging Time Saved</p>
                 </div>
                 <div class="fade-in">
                     <p
                         style="font-size: 3rem; font-weight: 700; color: var(--blender-addon-accent); margin-bottom: 8px;">
-                        5+</p>
-                    <p style="color: var(--text-secondary);">Joint Presets</p>
+                        Auto</p>
+                    <p style="color: var(--text-secondary);">Piston Constraints</p>
                 </div>
                 <div class="fade-in">
                     <p
                         style="font-size: 3rem; font-weight: 700; color: var(--blender-addon-accent); margin-bottom: 8px;">
                         1-Click</p>
-                    <p style="color: var(--text-secondary);">Batch Process</p>
+                    <p style="color: var(--text-secondary);">Unreal Export</p>
                 </div>
             </div>
         </div>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,8 +24,15 @@
             min-height: 100vh;
         }
 
-        h1, h2, h3 { letter-spacing: -0.02em; }
-        .code-font { font-family: 'JetBrains Mono', monospace; }
+        h1,
+        h2,
+        h3 {
+            letter-spacing: -0.02em;
+        }
+
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
 
         .img-placeholder {
             background-color: #1e1e24;
@@ -36,6 +44,7 @@
         }
     </style>
 </head>
+
 <body class="bg-zinc-950 text-gray-200">
 
     <!-- Navigation -->
@@ -61,25 +70,34 @@
         </header>
 
         <!-- Diary Entries Container -->
-        <div class="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-zinc-800 before:to-transparent">
+        <div id="dev-diary-list"
+            class="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-zinc-800 before:to-transparent">
+
+            <!-- Editor Add Button -->
+            <!-- Editor Add Button (Always Visible) -->
+            <button class="primary-add-btn z-50 relative" onclick="addDevDiaryEntry()">+ Add New Entry</button>
 
             <!-- ENTRY 1 -->
             <article class="relative flex flex-col items-center md:justify-between md:flex-row gap-8 group">
                 <!-- Timeline Dot -->
-                <div class="absolute left-0 md:left-1/2 w-4 h-4 bg-zinc-900 border-2 border-blue-500 rounded-full transform -translate-x-1.5 md:-translate-x-2 mt-6 z-10 group-hover:scale-125 transition-transform"></div>
+                <div
+                    class="absolute left-0 md:left-1/2 w-4 h-4 bg-zinc-900 border-2 border-blue-500 rounded-full transform -translate-x-1.5 md:-translate-x-2 mt-6 z-10 group-hover:scale-125 transition-transform">
+                </div>
 
                 <!-- Date/Title (Left on Desktop) -->
                 <div class="w-full md:w-5/12 text-left md:text-right md:pr-8">
                     <span class="text-blue-500 font-mono text-sm font-bold">FEBRUARY 15, 2024</span>
                     <h3 class="text-2xl font-bold text-white mt-1">Implemented Drift Physics</h3>
                     <p class="text-gray-400 mt-2 text-sm leading-relaxed">
-                        Finally nailed the friction curve for the drifting mechanic. It required a custom sub-stepping solution to prevent jitter at high frame rates.
+                        Finally nailed the friction curve for the drifting mechanic. It required a custom sub-stepping
+                        solution to prevent jitter at high frame rates.
                     </p>
                 </div>
 
                 <!-- Content (Right on Desktop) -->
                 <div class="w-full md:w-5/12 md:pl-8">
-                    <div class="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden shadow-xl img-placeholder h-48 md:h-64 group-hover:border-blue-500/30 transition-colors">
+                    <div
+                        class="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden shadow-xl img-placeholder h-48 md:h-64 group-hover:border-blue-500/30 transition-colors">
                         <!-- GIF / Image goes here -->
                         <div class="text-center">
                             <i class="fas fa-car-side text-4xl mb-2 text-zinc-600"></i>
@@ -92,20 +110,24 @@
             <!-- ENTRY 2 (Reversed Layout for Visual Interest on Desktop) -->
             <article class="relative flex flex-col items-center md:justify-between md:flex-row-reverse gap-8 group">
                 <!-- Timeline Dot -->
-                <div class="absolute left-0 md:left-1/2 w-4 h-4 bg-zinc-900 border-2 border-zinc-600 rounded-full transform -translate-x-1.5 md:-translate-x-2 mt-6 z-10 group-hover:border-blue-500 transition-colors"></div>
+                <div
+                    class="absolute left-0 md:left-1/2 w-4 h-4 bg-zinc-900 border-2 border-zinc-600 rounded-full transform -translate-x-1.5 md:-translate-x-2 mt-6 z-10 group-hover:border-blue-500 transition-colors">
+                </div>
 
                 <!-- Date/Title (Right on Desktop) -->
                 <div class="w-full md:w-5/12 text-left md:pl-8">
                     <span class="text-gray-500 font-mono text-sm font-bold">JANUARY 20, 2024</span>
                     <h3 class="text-2xl font-bold text-white mt-1">Weapon System Replication</h3>
                     <p class="text-gray-400 mt-2 text-sm leading-relaxed">
-                        Refactored the weapon firing logic to be server-authoritative. Still dealing with some latency issues on the client-side projectiles, but the hit registration is solid.
+                        Refactored the weapon firing logic to be server-authoritative. Still dealing with some latency
+                        issues on the client-side projectiles, but the hit registration is solid.
                     </p>
                 </div>
 
                 <!-- Content (Left on Desktop) -->
                 <div class="w-full md:w-5/12 md:pr-8">
-                    <div class="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden shadow-xl img-placeholder h-48 md:h-64 group-hover:border-blue-500/30 transition-colors">
+                    <div
+                        class="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden shadow-xl img-placeholder h-48 md:h-64 group-hover:border-blue-500/30 transition-colors">
                         <!-- GIF / Image goes here -->
                         <div class="text-center">
                             <i class="fas fa-crosshairs text-4xl mb-2 text-zinc-600"></i>
@@ -115,9 +137,12 @@
                 </div>
             </article>
 
-             <!-- ENTRY TEMPLATE (Copy this block to add new entries) -->
-             <article class="relative flex flex-col items-center md:justify-between md:flex-row gap-8 group opacity-50 hover:opacity-100 transition-opacity">
-                <div class="absolute left-0 md:left-1/2 w-4 h-4 bg-zinc-900 border-2 border-zinc-700 rounded-full transform -translate-x-1.5 md:-translate-x-2 mt-6 z-10"></div>
+            <!-- ENTRY TEMPLATE (Copy this block to add new entries) -->
+            <article
+                class="relative flex flex-col items-center md:justify-between md:flex-row gap-8 group opacity-50 hover:opacity-100 transition-opacity">
+                <div
+                    class="absolute left-0 md:left-1/2 w-4 h-4 bg-zinc-900 border-2 border-zinc-700 rounded-full transform -translate-x-1.5 md:-translate-x-2 mt-6 z-10">
+                </div>
 
                 <div class="w-full md:w-5/12 text-left md:text-right md:pr-8">
                     <span class="text-gray-600 font-mono text-sm font-bold">DATE HERE</span>
@@ -128,7 +153,8 @@
                 </div>
 
                 <div class="w-full md:w-5/12 md:pl-8">
-                    <div class="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden shadow-xl img-placeholder h-48 md:h-64">
+                    <div
+                        class="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden shadow-xl img-placeholder h-48 md:h-64">
                         <span class="text-xs text-zinc-600">Placeholder Image/GIF</span>
                     </div>
                 </div>
@@ -144,10 +170,13 @@
     </footer>
 
     <!-- Visual Editor Trigger -->
-    <button onclick="toggleEditor()" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg z-50 hover:bg-blue-700 transition-all" title="Toggle Visual Editor">
+    <button onclick="toggleEditor()"
+        class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg z-50 hover:bg-blue-700 transition-all"
+        title="Toggle Visual Editor">
         <i class="fas fa-pen"></i>
     </button>
     <script src="js/editor.js"></script>
 
 </body>
+
 </html>

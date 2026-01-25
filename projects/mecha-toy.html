@@ -92,70 +92,7 @@
         </div>
     </section>
 
-    <!-- Before/After Comparison -->
-    <section style="padding: 0 0 80px;">
-        <div class="container">
-            <div class="fade-in img-placeholder" style="
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 4px;
-                border-radius: 16px;
-                overflow: hidden;
-                border: 1px solid var(--border-subtle);
-            ">
-                <!-- Input: 2D Concept -->
-                <div style="
-                    aspect-ratio: 4/3;
-                    background: var(--bg-tertiary);
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    color: var(--text-muted);
-                    position: relative;
-                ">
-                    <div style="
-                        position: absolute;
-                        top: 16px;
-                        left: 16px;
-                        background: var(--bg-primary);
-                        padding: 6px 12px;
-                        border-radius: 4px;
-                        font-size: 0.75rem;
-                        font-family: var(--font-mono);
-                    ">INPUT</div>
-                    <i class="fas fa-image" style="font-size: 3rem; margin-bottom: 12px;"></i>
-                    <p>2D Concept Art</p>
-                </div>
 
-                <!-- Output: 3D Model -->
-                <div style="
-                    aspect-ratio: 4/3;
-                    background: var(--bg-secondary);
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    color: var(--text-muted);
-                    position: relative;
-                ">
-                    <div style="
-                        position: absolute;
-                        top: 16px;
-                        left: 16px;
-                        background: var(--mecha-toy-accent);
-                        color: white;
-                        padding: 6px 12px;
-                        border-radius: 4px;
-                        font-size: 0.75rem;
-                        font-family: var(--font-mono);
-                    ">OUTPUT</div>
-                    <i class="fas fa-cube" style="font-size: 3rem; margin-bottom: 12px;"></i>
-                    <p>3D Production Model</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Overview -->
     <section style="padding: 80px 0;">
@@ -359,8 +296,12 @@
                 <h2 style="font-size: 2rem; margin-bottom: 48px; text-align: center;">Gallery</h2>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
-                <div class="fade-in img-placeholder" style="
+            <div id="gallery-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+                <!-- Editor Add Button -->
+                <button class="add-entry-trigger" style="grid-column: 1 / -1; margin-bottom: 20px;"
+                    onclick="addGalleryEntry()">+ Add New Render</button>
+                <div class="fade-in img-placeholder gallery-zoom-item" style="
                     aspect-ratio: 1;
                     background: var(--bg-tertiary);
                     border-radius: 12px;
@@ -372,7 +313,7 @@
                 ">
                     <span>Render 1</span>
                 </div>
-                <div class="fade-in img-placeholder" style="
+                <div class="fade-in img-placeholder gallery-zoom-item" style="
                     aspect-ratio: 1;
                     background: var(--bg-tertiary);
                     border-radius: 12px;
@@ -384,7 +325,7 @@
                 ">
                     <span>Render 2</span>
                 </div>
-                <div class="fade-in img-placeholder" style="
+                <div class="fade-in img-placeholder gallery-zoom-item" style="
                     aspect-ratio: 1;
                     background: var(--bg-tertiary);
                     border-radius: 12px;
@@ -436,6 +377,7 @@
         <i class="fas fa-pen"></i>
     </button>
     <script src="../js/editor.js"></script>
+    <script src="../js/gallery.js"></script>
 </body>
 
 </html>

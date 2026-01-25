@@ -196,7 +196,59 @@
                 font-size: 11px;
                 color: #9ca3af;
                 word-break: break-all;
+                word-break: break-all;
                 flex: 1;
+            }
+            .add-entry-trigger {
+                display: none; /* Hidden by default */
+                background: #10b981;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 6px;
+                font-weight: bold;
+                cursor: pointer;
+                margin: 20px auto;
+                width: fit-content;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            }
+            #debug-overlay {
+                position: fixed;
+                top: 10px;
+                left: 10px;
+                background: rgba(0, 0, 0, 0.8);
+                color: #0f0;
+                font-family: monospace;
+                padding: 5px 10px;
+                border-radius: 4px;
+                z-index: 99999;
+                pointer-events: none;
+                font-size: 12px;
+                display: none;
+                border: 1px solid #0f0;
+            }
+            .primary-add-btn {
+                display: block; /* Always visible */
+                background: #3b82f6; /* Blue to distinguish */
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 6px;
+                font-weight: bold;
+                cursor: pointer;
+                margin: 20px auto;
+                width: fit-content;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+                transition: background 0.2s;
+            }
+            .primary-add-btn:hover {
+                background: #2563eb;
+            }
+            .editing-mode .add-entry-trigger {
+                display: block; /* Visible in edit mode */
+            }
+            .add-entry-trigger:hover {
+                background: #059669;
             }
         `;
         document.head.appendChild(styleElement);
@@ -210,7 +262,9 @@
             injectStyles();
             body.classList.add('editing-mode');
             enableEditing();
+
             showUI();
+            debugAction('Editor Enabled');
         } else {
             body.classList.remove('editing-mode');
             disableEditing();
@@ -221,7 +275,7 @@
 
     function enableEditing() {
         // Text Elements - expanded selectors for new page structure
-        const textSelectors = '.slide h1, .slide h2, .slide h3, .slide h4, .slide h5, .slide h6, .slide p, .slide span, .slide li, .slide a, .meta-value, .meta-label, section h1, section h2, section h3, section h4, section p, section span, section li, .hero h1, .hero p, .hero-description, .hero-badge span, .about-content h2, .about-content p, .project-card h3, .project-card p, .section-header h2, .section-header p, .footer h2, .footer p, .skill-tag';
+        const textSelectors = '.slide h1, .slide h2, .slide h3, .slide h4, .slide h5, .slide h6, .slide p, .slide span, .slide li, .slide a, .meta-value, .meta-label, section h1, section h2, section h3, section h4, section p, section span, section li, .hero h1, .hero p, .hero-description, .hero-badge span, .about-content h2, .about-content p, .project-card h3, .project-card p, .section-header h2, .section-header p, .footer h2, .footer p, .skill-tag, .nav-logo';
         const elements = document.querySelectorAll(textSelectors);
         elements.forEach(el => {
             el.contentEditable = "true";
@@ -281,6 +335,21 @@
     function hideUI() {
         const ui = document.getElementById('editor-ui');
         if (ui) ui.style.display = 'none';
+        debugAction('UI Hidden');
+    }
+
+    function debugAction(action) {
+        let overlay = document.getElementById('debug-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'debug-overlay';
+            document.body.appendChild(overlay);
+        }
+        overlay.style.display = 'block';
+        const time = new Date().toLocaleTimeString();
+        overlay.innerText = `[${time}] User Action: ${action}`;
+
+        // Optional: fade out logic could go here, but keeping it simple/persistent for now
     }
 
     function createImageToolbar() {
@@ -609,6 +678,221 @@
         alert('GitHub token cleared! You will be prompted for a new token on the next save/upload operation.');
     };
 
+    // --- Dynamic Entry Management ---
+
+    window.addDevDiaryEntry = function () {
+        debugAction('Add Dev Diary Entry Clicked');
+        const listContainer = document.getElementById('dev-diary-list'); // Standalone
+        const logContainer = document.getElementById('dev-log-container'); // System Purge
+
+        const date = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+        if (listContainer) {
+            // --- Standalone Dev Diary Logic ---
+            const div = document.createElement('div');
+            div.innerHTML = `
+                 <article class="relative flex flex-col items-center md:justify-between md:flex-row gap-8 group">
+                    <!-- Timeline Dot -->
+                    <div class="absolute left-0 md:left-1/2 w-4 h-4 bg-zinc-900 border-2 border-zinc-700 rounded-full transform -translate-x-1.5 md:-translate-x-2 mt-6 z-10"></div>
+    
+                    <!-- Date/Title -->
+                    <div class="w-full md:w-5/12 text-left md:text-right md:pr-8">
+                        <span class="text-blue-500 font-mono text-sm font-bold editable-active" contenteditable="true">${date.toUpperCase()}</span>
+                        <h3 class="text-2xl font-bold text-white mt-1 editable-active" contenteditable="true">New Entry Title</h3>
+                        <p class="text-gray-400 mt-2 text-sm leading-relaxed editable-active" contenteditable="true">
+                            Description of the work done...
+                        </p>
+                    </div>
+    
+                    <!-- Content -->
+                    <div class="w-full md:w-5/12 md:pl-8">
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden shadow-xl img-placeholder h-48 md:h-64 editable-img" onclick="openImageToolbar(this)">
+                            <div class="text-center">
+                                <i class="fas fa-image text-4xl mb-2 text-zinc-600"></i>
+                                <span class="block text-xs text-zinc-500 editable-active" contenteditable="true">Placeholder</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            `;
+
+            if (listContainer.firstChild) {
+                listContainer.insertBefore(div.firstElementChild, listContainer.firstChild);
+            } else {
+                listContainer.appendChild(div.firstElementChild);
+            }
+
+            // Ensure visibility
+            const newEntry = listContainer.firstElementChild;
+            newEntry.style.opacity = '1';
+
+            const newImg = newEntry.querySelector('.editable-img');
+            if (newImg) {
+                newImg.onclick = function (e) {
+                    if (!isEditing) return;
+                    if (isDragMode) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openImageToolbar(newImg);
+                };
+            }
+        }
+        else if (logContainer) {
+            debugAction('Creating System Purge Entry');
+            // --- System Purge Dev Log Logic ---
+
+            // Ensure container is open and has enough space
+            // We keep it at a reasonable height (600px) so the "Hide" button remains visible
+            // and the content scrolls within the box.
+            const currentHeight = parseInt(logContainer.style.maxHeight) || 0;
+            if (currentHeight < 600) {
+                logContainer.style.maxHeight = '600px';
+            }
+            logContainer.style.opacity = '1';
+
+            // Update toggle button state to match "Open"
+            const btn = document.getElementById('dev-log-toggle');
+            if (btn) {
+                const icon = btn.querySelector('i');
+                const text = btn.querySelector('span');
+                if (text) text.innerText = 'Hide Dev Log';
+                if (icon) icon.className = 'fas fa-chevron-up';
+                btn.style.background = 'var(--system-purge-accent)';
+                btn.style.color = 'white';
+            }
+
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <div class="dev-log-entry fade-in visible" style="
+                    border-left: 2px solid var(--border-subtle);
+                    padding-left: 32px;
+                    margin-bottom: 64px;
+                    position: relative;
+                    opacity: 1;
+                ">
+                    <!-- Timeline Dot -->
+                    <div style="
+                        position: absolute;
+                        left: -11px;
+                        top: 0;
+                        width: 20px;
+                        height: 20px;
+                        background: var(--system-purge-accent);
+                        border-radius: 50%;
+                        border: 4px solid var(--bg-tertiary);
+                    "></div>
+
+                    <div style="margin-bottom: 16px;">
+                        <span class="editable-active" contenteditable="true" style="color: var(--system-purge-accent); font-family: var(--font-mono); font-size: 0.875rem;">${date}</span>
+                        <h3 class="editable-active" contenteditable="true" style="font-size: 1.5rem; margin-top: 8px;">New Entry Title</h3>
+                    </div>
+
+                    <p class="editable-active" contenteditable="true" style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 24px;">
+                        Description of the work done...
+                    </p>
+
+                    <div class="img-placeholder editable-img" onclick="openImageToolbar(this)" style="
+                        aspect-ratio: 16/9;
+                        background: var(--bg-card);
+                        border: 2px dashed var(--border-medium);
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: var(--text-muted);
+                        margin-bottom: 24px;
+                        cursor: pointer;
+                    ">
+                        <i class="fas fa-image" style="margin-right: 8px;"></i>
+                        <span class="editable-active" contenteditable="true">Placeholder Image</span>
+                    </div>
+                </div>
+            `;
+
+            // Insert after the "Add Button" (which is the first child in my new structure)
+            // or just prepend to container (if button is first, new entry goes after it?)
+            // Usually logs are newest first. 
+            // My HTML update put the button as the *first* child of container.
+            // So we want to insert 'after' the button.
+
+            // Capture the node before insertion logic moves it
+            const newNode = div.firstElementChild;
+            const firstEntry = logContainer.querySelector('.dev-log-entry');
+
+            if (firstEntry) {
+                logContainer.insertBefore(newNode, firstEntry);
+            } else {
+                // No entries? append
+                logContainer.appendChild(newNode);
+            }
+
+            // Scroll to top of container
+            logContainer.scrollTop = 0;
+
+            // Force main window to scroll to the new entry to ensure visibility
+            setTimeout(() => {
+                newNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                debugAction('Entry Added & Scrolled');
+            }, 100);
+
+            const newImg = newNode.querySelector('.editable-img');
+            if (newImg) {
+                newImg.onclick = function (e) {
+                    if (!isEditing) return;
+                    if (isDragMode) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openImageToolbar(newImg);
+                };
+            }
+
+            // Enable editing on new elements immediately since we know we are in edit mode
+            const editables = newNode.querySelectorAll('[contenteditable]');
+            editables.forEach(el => el.classList.add('editable-active'));
+            if (newImg) newImg.classList.add('editable-img');
+        }
+    };
+
+    window.addGalleryEntry = function () {
+        const container = document.getElementById('gallery-grid');
+        if (!container) return;
+
+        const div = document.createElement('div');
+        div.innerHTML = `
+            <div class="scale-in img-placeholder editable-img gallery-zoom-item" style="
+                aspect-ratio: 1;
+                background: var(--bg-tertiary);
+                border-radius: 12px;
+                border: 1px solid var(--border-subtle);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--text-muted);
+            ">
+                <span class="editable-active" contenteditable="true">New Render</span>
+            </div>
+        `;
+
+        // Append to end of grid
+        container.appendChild(div.firstElementChild);
+
+        // Ensure visibility
+        const newImg = container.lastElementChild;
+        if (newImg) {
+            newImg.addEventListener('animationend', () => {
+                newImg.classList.remove('scale-in');
+            });
+
+            newImg.onclick = function (e) {
+                if (!isEditing) return;
+                if (isDragMode) return;
+                e.preventDefault();
+                e.stopPropagation();
+                openImageToolbar(newImg);
+            };
+        }
+    };
+
     // --- GitHub Integration ---
 
     function utf8_to_b64(str) {
@@ -642,6 +926,7 @@
     }
 
     window.uploadImageToGitHub = async function () {
+        debugAction('Upload Image Initiated');
         if (!pendingFile || !currentEditingImage) return;
 
         const token = getGitHubToken();
@@ -842,6 +1127,7 @@
     };
 
     window.saveToGitHub = async function () {
+        debugAction('Save to GitHub Initiated');
         const token = getGitHubToken();
         if (!token) return;
 
@@ -915,5 +1201,8 @@
             btn.disabled = false;
         }
     };
+
+    // Initialize styles immediately (to hide .add-entry-trigger by default)
+    injectStyles();
 
 })();

@@ -135,6 +135,14 @@
                     This project serves as a technical showcase for my C++ programming skills, physics system
                     implementation, and understanding of UE5's replication framework.
                 </p>
+                <p style="color: var(--text-secondary); font-size: 1.125rem; line-height: 1.8; margin-top: 24px;">
+                    <strong>Core mechanics</strong> revolve around a three-class dynamic:
+                    <span style="color: var(--system-purge-accent);">Speeder</span> (Scout/Harvest),
+                    <span style="color: var(--system-purge-accent);">Smasher</span> (Tank/CC), and
+                    <span style="color: var(--system-purge-accent);">Ranger</span> (Mobile Base).
+                    Players must physically transport collected resources back to the Ranger to fund team-wide upgrades,
+                    creating a tense risk-reward loop.
+                </p>
             </div>
         </div>
     </section>
@@ -142,193 +150,624 @@
     <!-- Technical Implementation -->
     <section style="padding: 80px 0; background: var(--bg-secondary);">
         <div class="container">
-            <div class="fade-in">
-                <h2 style="font-size: 2rem; margin-bottom: 48px; text-align: center;">Technical Implementation</h2>
+            <div class="fade-in visible">
+                <h2 style="font-size: 2rem; margin-bottom: 48px; text-align: center;" class="">Technical Implementation
+                </h2>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px;">
+            <!-- Stacked for better expandability -->
+            <div style="display: flex; flex-direction: column; gap: 24px; max-width: 800px; margin: 0 auto;">
 
-                <!-- Physics Card -->
-                <div class="fade-in img-placeholder" style="
+                <!-- Chaos Physics Card -->
+                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="
                     background: var(--bg-card);
                     border: 1px solid var(--border-subtle);
                     border-radius: 16px;
                     padding: 32px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    position: relative;
                 ">
-                    <div style="
-                        width: 48px;
-                        height: 48px;
-                        background: var(--system-purge-glow);
-                        border-radius: 12px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin-bottom: 24px;
-                    ">
-                        <i class="fas fa-car" style="color: var(--system-purge-accent); font-size: 1.25rem;"></i>
+                    <div style="display: flex; align-items: flex-start; gap: 24px;">
+                        <div style="
+                            width: 48px;
+                            height: 48px;
+                            background: var(--system-purge-glow);
+                            border-radius: 12px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-shrink: 0;
+                        ">
+                            <i class="fas fa-car" style="color: var(--system-purge-accent); font-size: 1.25rem;"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <h3 style="font-size: 1.25rem; margin: 0;" class="">Chaos Hover Physics</h3>
+                                <i class="fas fa-chevron-down tech-arrow"
+                                    style="color: var(--text-muted); transition: transform 0.3s;"></i>
+                            </div>
+                            <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;" class="">
+                                Custom 5-point suspension system with PD-Control orientation and Root Motion
+                                integration.
+                            </p>
+                        </div>
                     </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 12px;">Custom Physics Model</h3>
-                    <p style="color: var(--text-secondary); line-height: 1.7;">
-                        Implemented a custom drift physics system using slip angle calculations and
-                        tire friction curves to achieve arcade-style handling within a realistic physics engine.
-                    </p>
+
+                    <!-- Expandable Detail -->
+                    <div class="tech-detail" style="
+                        max-height: 0;
+                        overflow: hidden;
+                        transition: max-height 0.4s ease-out;
+                        margin-top: 0;
+                        padding-left: 72px; /* Align with text */
+                    ">
+                        <div
+                            style="padding-top: 24px; color: var(--text-secondary); line-height: 1.7; border-top: 1px solid var(--border-subtle); margin-top: 24px;">
+                            <p>Analyzed from <code>ChaosHoverMode.cpp</code>, this module replaces standard movement
+                                with a robust physics simulation:</p>
+                            <ul style="margin-top: 16px; padding-left: 20px;">
+                                <li><strong>5-Point Raycast:</strong> Detects ground at corners + center for stability.
+                                </li>
+                                <li><strong>Diagonal Cross-Product Normal:</strong>
+                                    <code>CalculateVehicleTiltNormal</code> uses diagonals (FL-BR, FR-BL) to calculate a
+                                    jitter-free ground normal.
+                                </li>
+                                <li><strong>Inertial Rotation:</strong> Custom PD Controller (Spring-Damper) aligns
+                                    vehicle to terrain without snapping.</li>
+                                <li><strong>Root Motion Mix:</strong> <code>FChaosMoverHoverRootMotionInput</code>
+                                    blends animation data with physics forces.</li>
+                            </ul>
+
+                            <!-- Editable Media -->
+                            <div class="img-placeholder" style="
+                                aspect-ratio: 16/9;
+                                background: var(--bg-tertiary);
+                                border: 1px solid var(--border-subtle);
+                                border-radius: 12px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: var(--text-muted);
+                                margin-top: 24px;
+                            ">
+                                <i class="fas fa-image" style="margin-right: 8px;"></i>
+                                <span>Add Physics Demo GIF/Video</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Replication Card -->
-                <div class="fade-in img-placeholder" style="
+                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="
                     background: var(--bg-card);
                     border: 1px solid var(--border-subtle);
                     border-radius: 16px;
                     padding: 32px;
+                    cursor: pointer;
+                    transition: all 0.2s;
                 ">
-                    <div style="
-                        width: 48px;
-                        height: 48px;
-                        background: var(--system-purge-glow);
-                        border-radius: 12px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin-bottom: 24px;
-                    ">
-                        <i class="fas fa-network-wired"
-                            style="color: var(--system-purge-accent); font-size: 1.25rem;"></i>
+                    <div style="display: flex; align-items: flex-start; gap: 24px;">
+                        <div style="
+                            width: 48px;
+                            height: 48px;
+                            background: var(--system-purge-glow);
+                            border-radius: 12px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-shrink: 0;
+                        ">
+                            <i class="fas fa-network-wired"
+                                style="color: var(--system-purge-accent); font-size: 1.25rem;"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <h3 style="font-size: 1.25rem; margin: 0;" class="">Network Replication</h3>
+                                <i class="fas fa-chevron-down tech-arrow"
+                                    style="color: var(--text-muted); transition: transform 0.3s;"></i>
+                            </div>
+                            <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;" class="">
+                                Server-authoritative movement with client-side prediction and lag compensation.
+                            </p>
+                        </div>
                     </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 12px;">Network Replication</h3>
-                    <p style="color: var(--text-secondary); line-height: 1.7;">
-                        Server-authoritative movement with client-side prediction and lag compensation.
-                        Designed for smooth gameplay even under high latency conditions.
-                    </p>
+
+                    <!-- Expandable Detail -->
+                    <div class="tech-detail" style="
+                        max-height: 0;
+                        overflow: hidden;
+                        transition: max-height 0.4s ease-out;
+                        margin-top: 0;
+                        padding-left: 72px;
+                    ">
+                        <div
+                            style="padding-top: 24px; color: var(--text-secondary); line-height: 1.7; border-top: 1px solid var(--border-subtle); margin-top: 24px;">
+                            <p>To ensure fairness in a competitive environment, the movement system is fully
+                                server-authoritative. Clients simulate locally for immediate feedback (prediction) and
+                                reconcile with server state corrections if desync occurs.</p>
+                            <ul style="margin-top: 16px; padding-left: 20px;">
+                                <li>Client Prediction & Reconciliation (CMC-style)</li>
+                                <li>Bandwidth optimization via quantized state updates</li>
+                                <li>Lag compensation for hit registration</li>
+                            </ul>
+
+                            <!-- Editable Media -->
+                            <div class="img-placeholder" style="
+                                aspect-ratio: 16/9;
+                                background: var(--bg-tertiary);
+                                border: 1px solid var(--border-subtle);
+                                border-radius: 12px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: var(--text-muted);
+                                margin-top: 24px;
+                            ">
+                                <i class="fas fa-image" style="margin-right: 8px;"></i>
+                                <span>Add Network Demo GIF/Video</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GAS Card -->
+                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-subtle);
+                    border-radius: 16px;
+                    padding: 32px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                ">
+                    <div style="display: flex; align-items: flex-start; gap: 24px;">
+                        <div style="
+                            width: 48px;
+                            height: 48px;
+                            background: var(--system-purge-glow);
+                            border-radius: 12px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-shrink: 0;
+                        ">
+                            <i class="fas fa-bolt" style="color: var(--system-purge-accent); font-size: 1.25rem;"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <h3 style="font-size: 1.25rem; margin: 0;" class="">Gameplay Ability System</h3>
+                                <i class="fas fa-chevron-down tech-arrow"
+                                    style="color: var(--text-muted); transition: transform 0.3s;"></i>
+                            </div>
+                            <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;" class="">
+                                Deep integration of UE5 GAS for complex RPG mechanics and modular attributes.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Expandable Detail -->
+                    <div class="tech-detail" style="
+                        max-height: 0;
+                        overflow: hidden;
+                        transition: max-height 0.4s ease-out;
+                        margin-top: 0;
+                        padding-left: 72px;
+                    ">
+                        <div
+                            style="padding-top: 24px; color: var(--text-secondary); line-height: 1.7; border-top: 1px solid var(--border-subtle); margin-top: 24px;">
+                            <p>Utilizes <code>UAuraAbilitySystemComponent</code> and multiple <code>AttributeSets</code>
+                                to manage granular stats like Torque, Hull Integrity, and Resource Cargo. All gameplay
+                                interactions—from damage to vehicle boosting—are driven by Gameplay Tags and Effects.
+                            </p>
+                            <ul style="margin-top: 16px; padding-left: 20px;">
+                                <li><strong>Unified Registry:</strong> <code>UAuraItemDefinition</code> is the
+                                    polymorphic base class for all items, defining Identity (UI), Requirements (Mastery
+                                    Level), and Abilities in a single asset.</li>
+                                <li><strong>Weapon Inheritance:</strong> <code>UWeaponItemDefinition</code> extends the
+                                    base class to add "Hybrid Ballistics" config (Hitscan vs Projectile threshold) and
+                                    "Overheat vs Reload" logic.</li>
+                                <li><strong>Tag-Based State:</strong> Replaces boolean flags with hierarchical Gameplay
+                                    Tags (e.g., <code>Item.Weapon.Rifle</code>) for cleaner state management.</li>
+                            </ul>
+
+                            <!-- Editable Media -->
+                            <div class="img-placeholder" style="
+                                aspect-ratio: 16/9;
+                                background: var(--bg-tertiary);
+                                border: 1px solid var(--border-subtle);
+                                border-radius: 12px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: var(--text-muted);
+                                margin-top: 24px;
+                            ">
+                                <i class="fas fa-image" style="margin-right: 8px;"></i>
+                                <span>Add GAS Demo GIF/Video</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Card -->
+                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-subtle);
+                    border-radius: 16px;
+                    padding: 32px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                ">
+                    <div style="display: flex; align-items: flex-start; gap: 24px;">
+                        <div style="
+                            width: 48px;
+                            height: 48px;
+                            background: var(--system-purge-glow);
+                            border-radius: 12px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-shrink: 0;
+                        ">
+                            <i class="fas fa-robot" style="color: var(--system-purge-accent); font-size: 1.25rem;"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <h3 style="font-size: 1.25rem; margin: 0;" class="">Horde AI Architecture</h3>
+                                <i class="fas fa-chevron-down tech-arrow"
+                                    style="color: var(--text-muted); transition: transform 0.3s;"></i>
+                            </div>
+                            <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;" class="">
+                                Optimized <strong>StateTree</strong> AI supporting hundreds of active agents.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Expandable Detail -->
+                    <div class="tech-detail" style="
+                        max-height: 0;
+                        overflow: hidden;
+                        transition: max-height 0.4s ease-out;
+                        margin-top: 0;
+                        padding-left: 72px;
+                    ">
+                        <div
+                            style="padding-top: 24px; color: var(--text-secondary); line-height: 1.7; border-top: 1px solid var(--border-subtle); margin-top: 24px;">
+                            <p>Swarm enemies utilize a custom <code>UHordeMovementComponent</code> based on Boids
+                                flocking behavior, completely replacing the expensive standard CharacterMovement. Logic
+                                is driven by StateTrees for performance-friendly decision making.</p>
+                            <ul style="margin-top: 16px; padding-left: 20px;">
+                                <li><strong>Tick Throttling:</strong> Distance-based update frequency (up to 0.15s for
+                                    distant enemies).</li>
+                                <li><strong>Fake Physics:</strong> "Impact Impulse" system simulates physical knockback
+                                    without enabling expensive Ragdoll physics.</li>
+                                <li><strong>Pooling:</strong> Custom <code>GTEnemyPoolSubsystem</code> manages thousands
+                                    of lifecycle events.</li>
+                            </ul>
+
+                            <!-- Editable Media -->
+                            <div class="img-placeholder" style="
+                                aspect-ratio: 16/9;
+                                background: var(--bg-tertiary);
+                                border: 1px solid var(--border-subtle);
+                                border-radius: 12px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: var(--text-muted);
+                                margin-top: 24px;
+                            ">
+                                <i class="fas fa-image" style="margin-right: 8px;"></i>
+                                <span>Add AI Swarm Demo GIF/Video</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Weapons Card -->
-                <div class="fade-in img-placeholder" style="
+                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="
                     background: var(--bg-card);
                     border: 1px solid var(--border-subtle);
                     border-radius: 16px;
                     padding: 32px;
+                    cursor: pointer;
+                    transition: all 0.2s;
                 ">
+                    <div style="display: flex; align-items: flex-start; gap: 24px;">
+                        <div style="
+                            width: 48px;
+                            height: 48px;
+                            background: var(--system-purge-glow);
+                            border-radius: 12px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-shrink: 0;
+                        ">
+                            <i class="fas fa-crosshairs"
+                                style="color: var(--system-purge-accent); font-size: 1.25rem;"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <h3 style="font-size: 1.25rem; margin: 0;" class="">Hybrid Weapon System</h3>
+                                <i class="fas fa-chevron-down tech-arrow"
+                                    style="color: var(--text-muted); transition: transform 0.3s;"></i>
+                            </div>
+                            <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;" class="">
+                                Advanced ballistic simulation with Client-Side Prediction, Auto-Hitscan Switching, and
+                                Melee "Cleave Mass" logic.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Expandable Detail -->
+                    <div class="tech-detail" style="
+                        max-height: 0;
+                        overflow: hidden;
+                        transition: max-height 0.4s ease-out;
+                        margin-top: 0;
+                        padding-left: 72px;
+                    ">
+                        <div
+                            style="padding-top: 24px; color: var(--text-secondary); line-height: 1.7; border-top: 1px solid var(--border-subtle); margin-top: 24px;">
+                            <p>Analyzed from <code>PlayerRangeAbility.cpp</code> and
+                                <code>PlayerMeleeAbility.cpp</code>, the weapon system handles complex networking and
+                                physics interactions:
+                            </p>
+                            <ul style="margin-top: 16px; padding-left: 20px;">
+                                <li><strong>Hybrid Ballistics:</strong> Automatically switches from Projectile to
+                                    Hitscan for targets within 15m (100ms travel time) to ensure responsiveness.</li>
+                                <li><strong>Networked Recoil:</strong> Uses Unreliable RPCs for high-frequency fire
+                                    events (>300 RPM) to prevent buffer overflows, with Server-Side Ammo validation.
+                                </li>
+                                <li><strong>Melee Physics:</strong> "Cleave Mass" budget system limits how many enemies
+                                    a single swing can hit, calculated via <code>UPlayMeleeAttackTask</code>.</li>
+                                <li><strong>Predictive Knockback:</strong> Clients apply immediate visual impulse while
+                                    waiting for Server Authority confirmation to minimize felt latency.</li>
+                            </ul>
+
+                            <!-- Editable Media -->
+                            <div class="img-placeholder" style="
+                                aspect-ratio: 16/9;
+                                background: var(--bg-tertiary);
+                                border: 1px solid var(--border-subtle);
+                                border-radius: 12px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: var(--text-muted);
+                                margin-top: 24px;
+                            ">
+                                <i class="fas fa-image" style="margin-right: 8px;"></i>
+                                <span>Add Weapon Demo GIF/Video</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            function toggleTechDetail(card) {
+                // If editing, don't toggle
+                if (document.body.classList.contains('editing-mode')) return;
+
+                const detail = card.querySelector('.tech-detail');
+                const arrow = card.querySelector('.tech-arrow');
+
+                if (detail.style.maxHeight === '0px' || detail.style.maxHeight === '') {
+                    // Open
+                    detail.style.maxHeight = detail.scrollHeight + 'px';
+                    arrow.style.transform = 'rotate(180deg)';
+                    card.style.borderColor = 'var(--system-purge-accent)';
+                } else {
+                    // Close
+                    detail.style.maxHeight = '0px';
+                    arrow.style.transform = 'rotate(0deg)';
+                    card.style.borderColor = 'var(--border-subtle)';
+                }
+            }
+        </script>
+    </section>
+
+
+
+    <!-- Dev Blog -->
+    <section style="padding: 80px 0; background: var(--bg-tertiary);">
+        <div class="container" style="max-width: 800px;">
+            <div class="fade-in" style="text-align: center;">
+                <h2 style="font-size: 2rem; margin-bottom: 24px;">Development Log</h2>
+
+                <button id="dev-log-toggle" onclick="toggleDevLog()" style="
+                    background: transparent;
+                    border: 1px solid var(--system-purge-accent);
+                    color: var(--system-purge-accent);
+                    padding: 8px 16px;
+                    border-radius: 20px;
+                    cursor: pointer;
+                    font-size: 0.875rem;
+                    margin-bottom: 32px;
+                    transition: all 0.2s;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                ">
+                    <span>Show Dev Log</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+
+            <!-- Scrollable Container -->
+            <div id="dev-log-container" style="
+                max-height: 0;
+                overflow-y: auto;
+                transition: max-height 0.5s ease-in-out, opacity 0.5s ease;
+                opacity: 0;
+                padding-right: 16px; /* Space for scrollbar */
+                border-radius: 8px;
+            ">
+
+                <!-- Add Entry Button (Visible only in Edit Mode) -->
+                <button class="add-entry-trigger" onclick="addDevDiaryEntry()"
+                    style="margin-bottom: 32px; width: 100%;">
+                    <i class="fas fa-plus"></i> Add New Entry
+                </button>
+
+                <!-- Blog Entry Template -->
+                <div class="dev-log-entry fade-in" style="
+                    border-left: 2px solid var(--border-subtle);
+                    padding-left: 32px;
+                    margin-bottom: 64px;
+                    position: relative;
+                ">
+                    <!-- Timeline Dot -->
                     <div style="
-                        width: 48px;
-                        height: 48px;
-                        background: var(--system-purge-glow);
+                        position: absolute;
+                        left: -11px;
+                        top: 0;
+                        width: 20px;
+                        height: 20px;
+                        background: var(--system-purge-accent);
+                        border-radius: 50%;
+                        border: 4px solid var(--bg-tertiary);
+                    "></div>
+
+                    <div style="margin-bottom: 16px;">
+                        <span
+                            style="color: var(--system-purge-accent); font-family: var(--font-mono); font-size: 0.875rem;">March
+                            15, 2024</span>
+                        <h3 style="font-size: 1.5rem; margin-top: 8px;">Network Replication Refactor</h3>
+                    </div>
+
+                    <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 24px;">
+                        Started refactoring the movement component to support client-side prediction for high-latency
+                        connections.
+                        The previous implementation had rubber-banding issues when ping exceeded 100ms.
+                    </p>
+
+                    <div class="img-placeholder" style="
+                        aspect-ratio: 16/9;
+                        background: var(--bg-card);
+                        border: 1px solid var(--border-subtle);
                         border-radius: 12px;
                         display: flex;
                         align-items: center;
                         justify-content: center;
+                        color: var(--text-muted);
                         margin-bottom: 24px;
                     ">
-                        <i class="fas fa-crosshairs" style="color: var(--system-purge-accent); font-size: 1.25rem;"></i>
+                        <i class="fas fa-image" style="margin-right: 8px;"></i>
+                        <span>Add Progress Image</span>
                     </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 12px;">Modular Weapon System</h3>
-                    <p style="color: var(--text-secondary); line-height: 1.7;">
-                        Data-driven weapon system using Data Assets, allowing easy iteration on weapon
-                        stats, projectile behaviors, and visual effects without code changes.
+
+                    <p style="color: var(--text-secondary); line-height: 1.8;">
+                        Moved the simulation step to a shared function that both client and server can call.
+                        Testing confirms much smoother results.
                     </p>
                 </div>
 
-            </div>
-        </div>
-    </section>
-
-    <!-- Code Snippet -->
-    <section style="padding: 80px 0;">
-        <div class="container" style="max-width: 900px;">
-            <div class="fade-in">
-                <h2 style="font-size: 2rem; margin-bottom: 24px;">Code Highlight</h2>
-                <p style="color: var(--text-secondary); margin-bottom: 32px;">
-                    The core drift mechanics implementation using slip angle calculations:
-                </p>
-
-                <div style="
-                    background: #1e1e1e;
-                    border-radius: 12px;
-                    border: 1px solid var(--border-subtle);
-                    overflow: hidden;
+                <!-- Blog Entry 2 -->
+                <div class="dev-log-entry fade-in" style="
+                    border-left: 2px solid var(--border-subtle);
+                    padding-left: 32px;
+                    margin-bottom: 0;
+                    position: relative;
                 ">
+                    <!-- Timeline Dot -->
                     <div style="
-                        padding: 12px 16px;
-                        background: var(--bg-tertiary);
-                        border-bottom: 1px solid var(--border-subtle);
+                        position: absolute;
+                        left: -11px;
+                        top: 0;
+                        width: 20px;
+                        height: 20px;
+                        background: var(--border-subtle);
+                        border-radius: 50%;
+                        border: 4px solid var(--bg-tertiary);
+                    "></div>
+
+                    <div style="margin-bottom: 16px;">
+                        <span
+                            style="color: var(--text-muted); font-family: var(--font-mono); font-size: 0.875rem;">February
+                            28, 2024</span>
+                        <h3 style="font-size: 1.5rem; margin-top: 8px;">Weapon System Prototyping</h3>
+                    </div>
+
+                    <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 24px;">
+                        Initial tests for the modular weapon system. Created a Data Asset structure to define firing
+                        rates,
+                        projectile classes, and recoil patterns easily.
+                    </p>
+
+                    <div class="img-placeholder" style="
+                        aspect-ratio: 16/9;
+                        background: var(--bg-card);
+                        border: 1px solid var(--border-subtle);
+                        border-radius: 12px;
                         display: flex;
                         align-items: center;
-                        gap: 8px;
+                        justify-content: center;
+                        color: var(--text-muted);
                     ">
-                        <i class="fas fa-code" style="color: var(--text-muted);"></i>
-                        <span class="font-mono"
-                            style="color: var(--text-muted); font-size: 0.875rem;">VehicleMovement.cpp</span>
+                        <i class="fas fa-image" style="margin-right: 8px;"></i>
+                        <span>Add Weapon Test GIF</span>
                     </div>
-                    <pre style="
-                        padding: 24px;
-                        margin: 0;
-                        overflow-x: auto;
-                        font-family: var(--font-mono);
-                        font-size: 0.875rem;
-                        line-height: 1.7;
-                        color: #e5e7eb;
-                    "><code><span style="color: #c084fc;">void</span> ACombatVehicle::CalculateDriftForces(<span style="color: #c084fc;">float</span> DeltaTime)
-{
-    <span style="color: #6b7280;">// Get local velocity relative to actor rotation</span>
-    FVector LocalVel = GetActorTransform().InverseTransformVector(Velocity);
-
-    <span style="color: #6b7280;">// Calculate slip angle based on lateral velocity</span>
-    <span style="color: #c084fc;">float</span> SlipAngle = FMath::Atan2(LocalVel.Y, LocalVel.X);
-
-    <span style="color: #6b7280;">// Apply counter-force based on friction curve</span>
-    <span style="color: #c084fc;">float</span> GripFactor = TireFrictionCurve->GetFloatValue(SlipAngle);
-    AddForce(GetActorRightVector() * -LocalVel.Y * GripFactor);
-}</code></pre>
                 </div>
+
             </div>
         </div>
-    </section>
 
-    <!-- Gallery -->
-    <section style="padding: 80px 0; background: var(--bg-secondary);">
-        <div class="container">
-            <div class="fade-in">
-                <h2 style="font-size: 2rem; margin-bottom: 48px; text-align: center;">Gallery</h2>
-            </div>
+        <script>
+            function toggleDevLog() {
+                const container = document.getElementById('dev-log-container');
+                const btn = document.getElementById('dev-log-toggle');
+                const icon = btn.querySelector('i');
+                const text = btn.querySelector('span');
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
-                <div class="fade-in img-placeholder" style="
-                    aspect-ratio: 16/9;
-                    background: var(--bg-tertiary);
-                    border-radius: 12px;
-                    border: 1px solid var(--border-subtle);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: var(--text-muted);
-                ">
-                    <span>Screenshot 1</span>
-                </div>
-                <div class="fade-in img-placeholder" style="
-                    aspect-ratio: 16/9;
-                    background: var(--bg-tertiary);
-                    border-radius: 12px;
-                    border: 1px solid var(--border-subtle);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: var(--text-muted);
-                ">
-                    <span>Screenshot 2</span>
-                </div>
-                <div class="fade-in img-placeholder" style="
-                    aspect-ratio: 16/9;
-                    background: var(--bg-tertiary);
-                    border-radius: 12px;
-                    border: 1px solid var(--border-subtle);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: var(--text-muted);
-                ">
-                    <span>Screenshot 3</span>
-                </div>
-            </div>
-        </div>
+                if (container.style.maxHeight === '0px' || container.style.maxHeight === '') {
+                    // Expand
+                    container.style.maxHeight = '600px';
+                    container.style.opacity = '1';
+                    text.innerText = 'Hide Dev Log';
+                    icon.className = 'fas fa-chevron-up';
+                    btn.style.background = 'var(--system-purge-accent)';
+                    btn.style.color = 'white';
+                } else {
+                    // Collapse
+                    container.style.maxHeight = '0px';
+                    container.style.opacity = '0';
+                    text.innerText = 'Show Dev Log';
+                    icon.className = 'fas fa-chevron-down';
+                    btn.style.background = 'transparent';
+                    btn.style.color = 'var(--system-purge-accent)';
+                }
+            }
+
+            // Apply custom scrollbar style to this specific container
+            const style = document.createElement('style');
+            style.innerHTML = `
+                #dev-log-container::-webkit-scrollbar {
+                    width: 8px;
+                }
+                #dev-log-container::-webkit-scrollbar-track {
+                    background: rgba(0,0,0,0.1);
+                    border-radius: 4px;
+                }
+                #dev-log-container::-webkit-scrollbar-thumb {
+                    background: var(--border-subtle);
+                    border-radius: 4px;
+                }
+                #dev-log-container::-webkit-scrollbar-thumb:hover {
+                    background: var(--system-purge-accent);
+                }
+            `;
+            document.head.appendChild(style);
+        </script>
     </section>
 
     <!-- Navigation Footer -->
