@@ -370,7 +370,7 @@
 
             <div class="control-group">
                 <button onclick="document.getElementById('img-upload-input').click()">Select Image / Video / GIF</button>
-                <input type="file" id="img-upload-input" accept="image/*,video/*,.gif">
+                <input type="file" id="img-upload-input" accept="image/*,video/*,.gif,.mpg">
             </div>
 
             <div class="control-group">
@@ -1002,7 +1002,7 @@
             // Filter for media files only
             const mediaFiles = files.filter(f => {
                 const ext = f.name.toLowerCase().split('.').pop();
-                return ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'webm', 'mov'].includes(ext);
+                return ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'webm', 'mov', 'mpg'].includes(ext);
             });
 
             if (mediaFiles.length === 0) {
@@ -1012,7 +1012,7 @@
             // Build asset list HTML
             browser.innerHTML = mediaFiles.map(file => {
                 const ext = file.name.toLowerCase().split('.').pop();
-                const isVideo = ['mp4', 'webm', 'mov'].includes(ext);
+                const isVideo = ['mp4', 'webm', 'mov', 'mpg'].includes(ext);
                 const previewTag = isVideo
                     ? `<video src="${file.download_url}" muted></video>`
                     : `<img src="${file.download_url}" alt="${file.name}">`;
