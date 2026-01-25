@@ -1,83 +1,82 @@
 document.addEventListener('DOMContentLoaded', () => {
-    initGalleryZoom();
+    initGalleryLightbox();
 });
 
-function initGalleryZoom() {
+function initGalleryLightbox() {
     const container = document.body;
-    let activeItem = null;
+    let lightbox = document.getElementById('lightbox');
 
-    // Use event delegation for dynamic items (editor mode)
+    // Create lightbox if it doesn't exist
+    if (!lightbox) {
+        lightbox = document.createElement('div');
+        lightbox.id = 'lightbox';
+        lightbox.innerHTML = `
+            <div class="lightbox-content">
+                <img id="lightbox-img" src="" alt="Full size render">
+                <button class="lightbox-close">&times;</button>
+            </div>
+        `;
+        document.body.appendChild(lightbox);
+
+        // Close on background click
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox || e.target.classList.contains('lightbox-close')) {
+                closeLightbox();
+            }
+        });
+    }
+
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    // Use event delegation for dynamic items
     container.addEventListener('click', (e) => {
-        // If we are currently zoomed, any click should close it (unless it's on the item itself? No, even then better to close usually, or toggle)
-        if (activeItem) {
-            deactivateZoom(activeItem);
-            activeItem = null;
-            return;
-        }
-
         const item = e.target.closest('.gallery-zoom-item');
         if (!item) return;
 
-        // Don't zoom if we are editing text inside or doing something else
+        // Don't open if editing text
         if (item.getAttribute('contenteditable') === 'true') return;
 
-        // Toggle Zoom
-        if (item.classList.contains('zoomed')) {
-            deactivateZoom(item);
-            activeItem = null;
-        } else {
-            activateZoom(item);
-            activeItem = item;
-            e.stopPropagation(); // Prevent immediate closing by document listener if we had one
+        // Extract image URL from background-image
+        const style = window.getComputedStyle(item);
+        const bgImage = style.backgroundImage;
+
+        // Extract url(...) content
+        // Computed style format is usually: url("http://...")
+        const urlMatch = bgImage.match(/url\((['"]?)(.*?)\1\)/);
+
+        if (urlMatch && urlMatch[2]) {
+            const imageUrl = urlMatch[2];
+            lightboxImg.src = imageUrl;
+            openLightbox();
         }
     });
 
-    // Handle ESC key to close
+    // Handle ESC key
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && activeItem) {
-            deactivateZoom(activeItem);
-            activeItem = null;
+        if (e.key === 'Escape') {
+            closeLightbox();
         }
     });
 }
 
-function activateZoom(element) {
-    const rect = element.getBoundingClientRect();
-    const winW = window.innerWidth;
-    const winH = window.innerHeight;
-
-    // Target dimensions (85% of viewport)
-    const targetW = winW * 0.85;
-    const targetH = winH * 0.85;
-
-    // Calculate scale to fit
-    const scaleX = targetW / rect.width;
-    const scaleY = targetH / rect.height;
-    const scale = Math.min(scaleX, scaleY); // Fit within both dimensions
-
-    // Calculate translation to center
-    // Current center
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-
-    // Window center
-    const wcX = winW / 2;
-    const wcY = winH / 2;
-
-    // Delta
-    const tx = wcX - cx;
-    const ty = wcY - cy;
-
-    // Apply variables
-    element.style.setProperty('--zoom-scale', scale);
-    element.style.setProperty('--zoom-tx', `${tx}px`);
-    element.style.setProperty('--zoom-ty', `${ty}px`);
-
-    element.classList.add('zoomed');
+function openLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox) {
+        lightbox.classList.add('visible');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
 }
 
-function deactivateZoom(element) {
-    element.classList.remove('zoomed');
-    // Optional: wait for transition to finish before removing vars? 
-    // Not strictly necessary if variables default to identity in CSS.
+function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox) {
+        lightbox.classList.remove('visible');
+        document.body.style.overflow = ''; // Restore scrolling
+
+        // Optional: clear src after animation to prevent flashing old image next open
+        setTimeout(() => {
+            const img = document.getElementById('lightbox-img');
+            if (img) img.src = '';
+        }, 300);
+    }
 }
