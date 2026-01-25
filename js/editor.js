@@ -16,11 +16,18 @@
     let pendingFile = null;
     let isDragMode = false;
 
-    // Drag State
+    // Drag State (Image Content)
     let dragStartX = 0;
     let dragStartY = 0;
     let initialPosX = 50;
     let initialPosY = 50;
+
+    // Drag State (Toolbar Window)
+    let toolbarDragStartX = 0;
+    let toolbarDragStartY = 0;
+    let toolbarInitialLeft = 0;
+    let toolbarInitialTop = 0;
+    let isToolbarDragging = false;
 
     function injectStyles() {
         if (document.getElementById('editor-styles')) return;
@@ -103,7 +110,8 @@
                 position: fixed;
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%);
+                /* We remove transform translate here so we can control top/left explicitly for dragging.
+                   Instead, we set initial margins or rely on JS to center it first. */
                 background: #111827;
                 padding: 20px;
                 border-radius: 12px;
@@ -117,12 +125,27 @@
                 color: white;
                 font-family: sans-serif;
             }
-            #image-toolbar h3 { margin: 0 0 10px 0; font-size: 18px; text-align: center; color: white; }
+            #image-toolbar h3 {
+                margin: 0 0 10px 0;
+                font-size: 18px;
+                text-align: center;
+                color: white;
+                cursor: grab; /* Indicates draggable */
+                user-select: none;
+                background: #1f2937;
+                margin: -20px -20px 10px -20px; /* Stretch to edges */
+                padding: 15px;
+                border-radius: 12px 12px 0 0;
+                border-bottom: 1px solid #374151;
+            }
+            #image-toolbar h3:active { cursor: grabbing; }
+
             #image-toolbar .control-group { display: flex; flex-direction: column; gap: 5px; }
             #image-toolbar label { font-size: 12px; color: #9ca3af; display: flex; justify-content: space-between; }
             #image-toolbar input[type="range"] { width: 100%; cursor: pointer; }
             #image-toolbar .actions { display: flex; gap: 10px; justify-content: center; margin-top: 10px; flex-wrap: wrap;}
             #image-toolbar .status-msg { font-size: 12px; text-align: center; margin-top: 5px; min-height: 1.5em; word-break: break-word;}
+
             .status-error { color: #ef4444; }
             .status-success { color: #10b981; }
             .status-loading { color: #3b82f6; }
@@ -165,7 +188,7 @@
             el.classList.add('editable-img');
             el.onclick = function(e) {
                 if(!isEditing) return;
-                // If in drag mode, don't reopen toolbar, let the drag handler work (or stop propagation)
+                // If in drag mode (content), don't reopen toolbar
                 if(isDragMode) return;
 
                 e.stopPropagation();
@@ -188,7 +211,6 @@
             el.onclick = null;
         });
 
-        // Force exit drag mode
         if(isDragMode) toggleDragMode();
     }
 
@@ -219,7 +241,7 @@
         imageToolbar = document.createElement('div');
         imageToolbar.id = 'image-toolbar';
         imageToolbar.innerHTML = `
-            <h3>Image Editor</h3>
+            <h3 id="toolbar-header">Image Editor</h3>
 
             <div class="control-group">
                 <button onclick="document.getElementById('img-upload-input').click()">Select Local Image</button>
@@ -248,7 +270,53 @@
         // Event Listeners
         document.getElementById('img-upload-input').addEventListener('change', handleFileSelect);
         document.getElementById('img-scale').addEventListener('input', updateImageStyle);
+
+        // Toolbar Drag Listener
+        document.getElementById('toolbar-header').addEventListener('mousedown', onToolbarDragStart);
     }
+
+    // --- Toolbar Drag Logic ---
+    function onToolbarDragStart(e) {
+        e.preventDefault();
+        isToolbarDragging = true;
+
+        toolbarDragStartX = e.clientX;
+        toolbarDragStartY = e.clientY;
+
+        const toolbar = document.getElementById('image-toolbar');
+        const rect = toolbar.getBoundingClientRect();
+
+        // We set styles to fixed left/top based on current rect to ensure smooth pickup
+        toolbar.style.left = rect.left + 'px';
+        toolbar.style.top = rect.top + 'px';
+        toolbar.style.transform = 'none'; // Clear any centering transform
+
+        toolbarInitialLeft = rect.left;
+        toolbarInitialTop = rect.top;
+
+        window.addEventListener('mousemove', onToolbarDragMove);
+        window.addEventListener('mouseup', onToolbarDragEnd);
+    }
+
+    function onToolbarDragMove(e) {
+        if (!isToolbarDragging) return;
+        e.preventDefault();
+
+        const deltaX = e.clientX - toolbarDragStartX;
+        const deltaY = e.clientY - toolbarDragStartY;
+
+        const toolbar = document.getElementById('image-toolbar');
+        toolbar.style.left = (toolbarInitialLeft + deltaX) + 'px';
+        toolbar.style.top = (toolbarInitialTop + deltaY) + 'px';
+    }
+
+    function onToolbarDragEnd(e) {
+        isToolbarDragging = false;
+        window.removeEventListener('mousemove', onToolbarDragMove);
+        window.removeEventListener('mouseup', onToolbarDragEnd);
+    }
+
+    // --- End Toolbar Drag Logic ---
 
     window.openImageToolbar = function(el) {
         currentEditingImage = el;
@@ -257,18 +325,24 @@
         const toolbar = document.getElementById('image-toolbar');
         toolbar.style.display = 'flex';
 
+        // Center it initially if it hasn't been moved manually yet
+        // If left/top are empty strings, it means it's first open
+        if (!toolbar.style.left) {
+             toolbar.style.left = '50%';
+             toolbar.style.top = '50%';
+             toolbar.style.transform = 'translate(-50%, -50%)';
+        }
+
         document.getElementById('img-status-msg').innerText = '';
         document.getElementById('img-status-msg').className = 'status-msg';
-        document.getElementById('btn-upload-img').style.display = 'none'; // Hide upload until file selected
+        document.getElementById('btn-upload-img').style.display = 'none';
 
-        // Ensure Drag Mode is OFF when opening
         if (isDragMode) toggleDragMode();
 
-        // Parse current styles to set slider values
-        // Size
+        // Parse current styles
         let size = el.style.backgroundSize;
         if (!size || size === 'cover') {
-            document.getElementById('img-scale').value = 100; // Treat cover as 100 roughly
+            document.getElementById('img-scale').value = 100;
             document.getElementById('val-scale').innerText = 'Cover';
         } else {
             let num = parseInt(size);
@@ -281,11 +355,11 @@
 
     window.closeImageToolbar = function() {
         document.getElementById('image-toolbar').style.display = 'none';
-        if(isDragMode) toggleDragMode(); // Ensure we exit drag mode
+        if(isDragMode) toggleDragMode();
         currentEditingImage = null;
     }
 
-    // --- Drag Logic ---
+    // --- Content Drag Logic (Image) ---
 
     window.toggleDragMode = function() {
         if(!currentEditingImage) return;
@@ -298,20 +372,16 @@
             btn.style.background = "#10b981"; // Green
             currentEditingImage.classList.add('drag-active');
 
-            // Parse current position
             let pos = currentEditingImage.style.backgroundPosition || '50% 50%';
             let parts = pos.split(' ');
             initialPosX = parseFloat(parts[0]) || 50;
             initialPosY = parseFloat(parts[1]) || 50;
 
-            // Attach Drag Listeners
             currentEditingImage.addEventListener('mousedown', onDragStart);
         } else {
             btn.innerText = "Enable Drag Move";
             btn.style.background = "#8b5cf6"; // Purple
             currentEditingImage.classList.remove('drag-active');
-
-            // Remove Drag Listeners
             currentEditingImage.removeEventListener('mousedown', onDragStart);
         }
     };
@@ -323,7 +393,6 @@
         dragStartX = e.clientX;
         dragStartY = e.clientY;
 
-        // Update initial pos in case it changed
         let pos = currentEditingImage.style.backgroundPosition || '50% 50%';
         let parts = pos.split(' ');
         initialPosX = parseFloat(parts[0]) || 50;
@@ -340,19 +409,12 @@
         const deltaX = e.clientX - dragStartX;
         const deltaY = e.clientY - dragStartY;
 
-        // Convert pixels to percentage change
-        // We assume typical range. Moving Right (+X) -> means shifting viewport Left -> decreasing %.
-        // Sensitivity factor: 0.2 works well for "feeling"
         const rect = currentEditingImage.getBoundingClientRect();
         const percentChangeX = (deltaX / rect.width) * 100 * -1;
         const percentChangeY = (deltaY / rect.height) * 100 * -1;
 
         let newX = initialPosX + percentChangeX;
         let newY = initialPosY + percentChangeY;
-
-        // Clamp 0-100? No, background-position can go beyond
-        // But usually we want to stay within reasonable bounds.
-        // Let's not clamp for maximum freedom.
 
         currentEditingImage.style.backgroundPosition = `${newX.toFixed(1)}% ${newY.toFixed(1)}%`;
     }
@@ -361,16 +423,13 @@
         window.removeEventListener('mousemove', onDragMove);
         window.removeEventListener('mouseup', onDragEnd);
 
-        // Update "initial" to current so next drag starts from here
-        // (Actually, logic uses initialPos + delta. If we stop, we need to commit the new position
-        // as the new baseline if we drag again without toggling off/on)
         let pos = currentEditingImage.style.backgroundPosition || '50% 50%';
         let parts = pos.split(' ');
         initialPosX = parseFloat(parts[0]) || 50;
         initialPosY = parseFloat(parts[1]) || 50;
     }
 
-    // --- End Drag Logic ---
+    // --- End Content Drag Logic ---
 
 
     function handleFileSelect(e) {
@@ -383,15 +442,12 @@
         reader.onload = function(evt) {
             if (currentEditingImage) {
                 currentEditingImage.style.backgroundImage = `url('${evt.target.result}')`;
-                // Reset to cover/center for new image
                 currentEditingImage.style.backgroundSize = 'cover';
                 currentEditingImage.style.backgroundPosition = 'center';
 
-                // Update sliders
                 document.getElementById('img-scale').value = 100;
                 document.getElementById('val-scale').innerText = 'Cover';
 
-                // Show Upload Button
                 document.getElementById('btn-upload-img').style.display = 'inline-block';
                 showStatus("Preview loaded. Adjust and click Upload.", "status-loading");
             }
@@ -403,11 +459,8 @@
         if (!currentEditingImage) return;
 
         const scale = document.getElementById('img-scale').value;
-
-        // Preserve current position
         const currentPos = currentEditingImage.style.backgroundPosition || '50% 50%';
 
-        // Visual feedback
         document.getElementById('val-scale').innerText = scale + '%';
 
         currentEditingImage.style.backgroundSize = `${scale}%`;
@@ -423,11 +476,9 @@
     // --- Core Functions ---
 
     function getCleanHTML() {
-        // Temporarily disable editing to clean up DOM
         disableEditing();
         document.body.classList.remove('editing-mode');
 
-        // Remove UI elements so they aren't saved
         const ui = document.getElementById('editor-ui');
         if(ui) ui.remove();
 
@@ -437,10 +488,8 @@
         const styles = document.getElementById('editor-styles');
         if(styles) styles.remove();
 
-        // Get HTML
         const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
 
-        // Restore UI state
         injectStyles();
         if (ui) document.body.appendChild(ui);
         if (toolbar) document.body.appendChild(toolbar);
@@ -473,13 +522,11 @@
         return window.btoa(unescape(encodeURIComponent(str)));
     }
 
-    // Convert File to Base64 for API
     function fileToBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = () => {
-                // Remove prefix "data:*/*;base64,"
                 let encoded = reader.result.toString().replace(/^data:(.*,)?/, '');
                 if ((encoded.length % 4) > 0) {
                     encoded += '='.repeat(4 - (encoded.length % 4));
@@ -536,17 +583,13 @@
             }
 
             const data = await response.json();
-            // Use download_url or raw URL
-            // data.content.download_url gives the raw link
             const rawUrl = data.content.download_url;
 
-            // Update CSS with new URL
             currentEditingImage.style.backgroundImage = `url('${rawUrl}')`;
 
             showStatus("Success! URL updated.", "status-success");
             alert("Image uploaded successfully! \n\nThe background-image URL has been updated to the GitHub version.\n\nIMPORTANT: Click 'Save Page' in the main menu to persist this change to your website.");
 
-            // Clear pending
             pendingFile = null;
             btn.style.display = 'none';
 
@@ -572,7 +615,6 @@
         try {
             const content = getCleanHTML();
 
-            // 1. Get current SHA
             const getResp = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
                 headers: {
                     'Authorization': `token ${token}`,
@@ -591,7 +633,6 @@
             const getData = await getResp.json();
             const sha = getData.sha;
 
-            // 2. Upload new content
             const putResp = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
                 method: 'PUT',
                 headers: {
