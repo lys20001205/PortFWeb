@@ -130,6 +130,21 @@
                 #dev-log-container::-webkit-scrollbar-thumb:hover {
                     background: var(--system-purge-accent);
                 }
+            </style><style>
+                #dev-log-container::-webkit-scrollbar {
+                    width: 8px;
+                }
+                #dev-log-container::-webkit-scrollbar-track {
+                    background: rgba(0,0,0,0.1);
+                    border-radius: 4px;
+                }
+                #dev-log-container::-webkit-scrollbar-thumb {
+                    background: var(--border-subtle);
+                    border-radius: 4px;
+                }
+                #dev-log-container::-webkit-scrollbar-thumb:hover {
+                    background: var(--system-purge-accent);
+                }
             </style></head>
 
 <body class="">
@@ -343,14 +358,7 @@
                 </div>
 
                 <!-- GAS Card -->
-                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="
-                    background: var(--bg-card);
-                    border: 1px solid var(--border-subtle);
-                    border-radius: 16px;
-                    padding: 32px;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                ">
+                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="background: var(--bg-card); border-color: var(--system-purge-accent); border-top-style: ; border-top-width: ; border-right-style: ; border-right-width: ; border-bottom-style: ; border-bottom-width: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 16px; padding: 32px; cursor: pointer; transition: 0.2s;">
                     <div style="display: flex; align-items: flex-start; gap: 24px;">
                         <div style="
                             width: 48px;
@@ -367,7 +375,7 @@
                         <div style="flex: 1;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                                 <h3 style="font-size: 1.25rem; margin: 0;" class="">Gameplay Ability System</h3>
-                                <i class="fas fa-chevron-down tech-arrow" style="color: var(--text-muted); transition: transform 0.3s;"></i>
+                                <i class="fas fa-chevron-down tech-arrow" style="color: var(--text-muted); transition: transform 0.3s; transform: rotate(180deg);"></i>
                             </div>
                             <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;" class="">
                                 Deep integration of UE5 GAS for complex RPG mechanics and modular attributes.
@@ -376,13 +384,7 @@
                     </div>
 
                     <!-- Expandable Detail -->
-                    <div class="tech-detail" style="
-                        max-height: 0;
-                        overflow: hidden;
-                        transition: max-height 0.4s ease-out;
-                        margin-top: 0;
-                        padding-left: 72px;
-                    ">
+                    <div class="tech-detail" style="max-height: 706px; overflow: hidden; transition: max-height 0.4s ease-out; margin-top: 0px; padding-left: 72px;">
                         <div style="padding-top: 24px; color: var(--text-secondary); line-height: 1.7; border-top: 1px solid var(--border-subtle); margin-top: 24px;">
                             <p class="">Utilizes <code>UAuraAbilitySystemComponent</code> and multiple
                                 <code>AttributeSets</code>
@@ -422,14 +424,7 @@
                 </div>
 
                 <!-- AI Card -->
-                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="
-                    background: var(--bg-card);
-                    border: 1px solid var(--border-subtle);
-                    border-radius: 16px;
-                    padding: 32px;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                ">
+                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="background: var(--bg-card); border-color: var(--system-purge-accent); border-top-style: ; border-top-width: ; border-right-style: ; border-right-width: ; border-bottom-style: ; border-bottom-width: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 16px; padding: 32px; cursor: pointer; transition: 0.2s;">
                     <div style="display: flex; align-items: flex-start; gap: 24px;">
                         <div style="
                             width: 48px;
@@ -446,7 +441,7 @@
                         <div style="flex: 1;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                                 <h3 style="font-size: 1.25rem; margin: 0;" class="">Horde AI Architecture</h3>
-                                <i class="fas fa-chevron-down tech-arrow" style="color: var(--text-muted); transition: transform 0.3s;"></i>
+                                <i class="fas fa-chevron-down tech-arrow" style="color: var(--text-muted); transition: transform 0.3s; transform: rotate(180deg);"></i>
                             </div>
                             <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;" class="">
                                 Optimized <strong>StateTree</strong> AI supporting hundreds of active agents.
@@ -455,13 +450,7 @@
                     </div>
 
                     <!-- Expandable Detail -->
-                    <div class="tech-detail" style="
-                        max-height: 0;
-                        overflow: hidden;
-                        transition: max-height 0.4s ease-out;
-                        margin-top: 0;
-                        padding-left: 72px;
-                    ">
+                    <div class="tech-detail" style="max-height: 652px; overflow: hidden; transition: max-height 0.4s ease-out; margin-top: 0px; padding-left: 72px;">
                         <div style="padding-top: 24px; color: var(--text-secondary); line-height: 1.7; border-top: 1px solid var(--border-subtle); margin-top: 24px;">
                             <p class="">Swarm enemies utilize a custom <code>UHordeMovementComponent</code> based on
                                 Boids
@@ -480,33 +469,16 @@
                             </ul>
 
                             <!-- Editable Media -->
-                            <div class="img-placeholder" style="
-                                aspect-ratio: 16/9;
-                                background: var(--bg-tertiary);
-                                border: 1px solid var(--border-subtle);
-                                border-radius: 12px;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                color: var(--text-muted);
-                                margin-top: 24px;
-                            ">
-                                <i class="fas fa-image" style="margin-right: 8px;"></i>
-                                <span class="">Add AI Swarm Demo GIF/Video</span>
-                            </div>
+                            <div class="img-placeholder" style="aspect-ratio: 16 / 9; background-position-x: ; background-position-y: ; background-size: ; background-repeat: ; background-attachment: ; background-origin: ; background-clip: ; background-color: ; border: 1px solid var(--border-subtle); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); margin-top: 24px;" data-media-type="video">
+                                
+                                
+                            <video class="media-preview" src="https://raw.githubusercontent.com/lys20001205/PortFWeb/main/assets/uploads/1769376345725_4_4.mp4" autoplay="" loop="" playsinline="" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; object-fit: cover; z-index: 1;"></video></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Weapons Card -->
-                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="
-                    background: var(--bg-card);
-                    border: 1px solid var(--border-subtle);
-                    border-radius: 16px;
-                    padding: 32px;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                ">
+                <div class="tech-card fade-in img-placeholder visible" onclick="toggleTechDetail(this)" style="background: var(--bg-card); border-color: var(--system-purge-accent); border-top-style: ; border-top-width: ; border-right-style: ; border-right-width: ; border-bottom-style: ; border-bottom-width: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 16px; padding: 32px; cursor: pointer; transition: 0.2s;">
                     <div style="display: flex; align-items: flex-start; gap: 24px;">
                         <div style="
                             width: 48px;
@@ -523,7 +495,7 @@
                         <div style="flex: 1;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                                 <h3 style="font-size: 1.25rem; margin: 0;" class="">Hybrid Weapon System</h3>
-                                <i class="fas fa-chevron-down tech-arrow" style="color: var(--text-muted); transition: transform 0.3s;"></i>
+                                <i class="fas fa-chevron-down tech-arrow" style="color: var(--text-muted); transition: transform 0.3s; transform: rotate(180deg);"></i>
                             </div>
                             <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;" class="">
                                 Advanced ballistic simulation with Client-Side Prediction, Auto-Hitscan Switching, and
@@ -533,13 +505,7 @@
                     </div>
 
                     <!-- Expandable Detail -->
-                    <div class="tech-detail" style="
-                        max-height: 0;
-                        overflow: hidden;
-                        transition: max-height 0.4s ease-out;
-                        margin-top: 0;
-                        padding-left: 72px;
-                    ">
+                    <div class="tech-detail" style="max-height: 733px; overflow: hidden; transition: max-height 0.4s ease-out; margin-top: 0px; padding-left: 72px;">
                         <div style="padding-top: 24px; color: var(--text-secondary); line-height: 1.7; border-top: 1px solid var(--border-subtle); margin-top: 24px;">
                             <p class="">Analyzed from <code>PlayerRangeAbility.cpp</code> and
                                 <code>PlayerMeleeAbility.cpp</code>, the weapon system handles complex networking and
