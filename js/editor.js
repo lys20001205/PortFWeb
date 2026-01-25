@@ -2,8 +2,19 @@
     // Configuration
     const REPO_OWNER = 'lys20001205';
     const REPO_NAME = 'PortFWeb';
-    const FILE_PATH = 'index.html';
     const UPLOAD_DIR = 'assets/uploads/';
+
+    // Dynamically detect current file path from URL
+    function getCurrentFilePath() {
+        let path = window.location.pathname;
+        // Remove leading slash
+        if (path.startsWith('/')) path = path.substring(1);
+        // Handle root/empty path
+        if (!path || path === '' || path.endsWith('/')) path = 'index.html';
+        // Decode URL encoding
+        path = decodeURIComponent(path);
+        return path;
+    }
 
     // State
     let isEditing = false;
@@ -839,10 +850,14 @@
         btn.innerText = 'Saving...';
         btn.disabled = true;
 
+        // Dynamically get the current file path
+        const filePath = getCurrentFilePath();
+        console.log('Saving to file:', filePath);
+
         try {
             const content = getCleanHTML();
 
-            const getResp = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+            const getResp = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filePath}`, {
                 headers: {
                     'Authorization': `token ${token}`,
                     'Accept': 'application/vnd.github.v3+json'
@@ -860,7 +875,7 @@
             const getData = await getResp.json();
             const sha = getData.sha;
 
-            const putResp = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+            const putResp = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filePath}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `token ${token}`,
@@ -868,7 +883,7 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    message: 'Update content via Web Editor',
+                    message: `Update ${filePath} via Web Editor`,
                     content: utf8_to_b64(content),
                     sha: sha
                 })
@@ -890,7 +905,7 @@
                 throw new Error(`Failed to upload: ${errorMsg}`);
             }
 
-            alert('Successfully saved to GitHub! Render will redeploy your site in a few minutes.');
+            alert(`Successfully saved ${filePath} to GitHub! Your site will redeploy in a few minutes.`);
 
         } catch (e) {
             console.error(e);
