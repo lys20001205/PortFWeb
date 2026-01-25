@@ -1,4 +1,4 @@
-(function() {
+(function () {
     // Configuration
     const REPO_OWNER = 'lys20001205';
     const REPO_NAME = 'PortFWeb';
@@ -152,11 +152,46 @@
 
             /* File Input Hidden */
             #img-upload-input { display: none; }
+
+            /* Asset Browser */
+            #asset-browser {
+                max-height: 200px;
+                overflow-y: auto;
+                background: #1f2937;
+                border: 1px solid #374151;
+                border-radius: 6px;
+                padding: 8px;
+                display: none;
+            }
+            #asset-browser.visible { display: block; }
+            .asset-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            .asset-item:hover { background: #374151; }
+            .asset-item img, .asset-item video {
+                width: 50px;
+                height: 50px;
+                object-fit: cover;
+                border-radius: 4px;
+                border: 1px solid #4b5563;
+            }
+            .asset-item span {
+                font-size: 11px;
+                color: #9ca3af;
+                word-break: break-all;
+                flex: 1;
+            }
         `;
         document.head.appendChild(styleElement);
     }
 
-    window.toggleEditor = function() {
+    window.toggleEditor = function () {
         isEditing = !isEditing;
         const body = document.body;
 
@@ -186,10 +221,10 @@
         const placeholders = document.querySelectorAll('.img-placeholder');
         placeholders.forEach(el => {
             el.classList.add('editable-img');
-            el.onclick = function(e) {
-                if(!isEditing) return;
+            el.onclick = function (e) {
+                if (!isEditing) return;
                 // If in drag mode (content), don't reopen toolbar
-                if(isDragMode) return;
+                if (isDragMode) return;
 
                 e.stopPropagation();
                 openImageToolbar(el);
@@ -211,7 +246,7 @@
             el.onclick = null;
         });
 
-        if(isDragMode) toggleDragMode();
+        if (isDragMode) toggleDragMode();
     }
 
     function showUI() {
@@ -222,6 +257,7 @@
                 <span style="color:white; align-self:center; margin-right:10px;">Editing Mode</span>
                 <button onclick="saveToGitHub()" class="save-btn" title="Save page HTML to GitHub">Save Page</button>
                 <button onclick="downloadBackup()" class="download-btn" title="Download local copy">Backup</button>
+                <button onclick="clearCredentials()" style="background:#ef4444;" title="Clear saved GitHub token">Clear Token</button>
                 <button onclick="toggleEditor()">Exit</button>
             `;
             document.body.appendChild(editorUI);
@@ -241,11 +277,16 @@
         imageToolbar = document.createElement('div');
         imageToolbar.id = 'image-toolbar';
         imageToolbar.innerHTML = `
-            <h3 id="toolbar-header">Image Editor</h3>
+            <h3 id="toolbar-header">Media Editor</h3>
 
             <div class="control-group">
-                <button onclick="document.getElementById('img-upload-input').click()">Select Local Image</button>
-                <input type="file" id="img-upload-input" accept="image/*">
+                <button onclick="document.getElementById('img-upload-input').click()">Select Image / Video / GIF</button>
+                <input type="file" id="img-upload-input" accept="image/*,video/*,.gif">
+            </div>
+
+            <div class="control-group">
+                <button id="btn-browse-assets" onclick="fetchGitHubAssets()" style="background:#6366f1;">Browse GitHub Assets</button>
+                <div id="asset-browser"></div>
             </div>
 
             <div class="control-group">
@@ -318,7 +359,7 @@
 
     // --- End Toolbar Drag Logic ---
 
-    window.openImageToolbar = function(el) {
+    window.openImageToolbar = function (el) {
         currentEditingImage = el;
         pendingFile = null;
 
@@ -328,9 +369,9 @@
         // Center it initially if it hasn't been moved manually yet
         // If left/top are empty strings, it means it's first open
         if (!toolbar.style.left) {
-             toolbar.style.left = '50%';
-             toolbar.style.top = '50%';
-             toolbar.style.transform = 'translate(-50%, -50%)';
+            toolbar.style.left = '50%';
+            toolbar.style.top = '50%';
+            toolbar.style.transform = 'translate(-50%, -50%)';
         }
 
         document.getElementById('img-status-msg').innerText = '';
@@ -353,21 +394,21 @@
         }
     }
 
-    window.closeImageToolbar = function() {
+    window.closeImageToolbar = function () {
         document.getElementById('image-toolbar').style.display = 'none';
-        if(isDragMode) toggleDragMode();
+        if (isDragMode) toggleDragMode();
         currentEditingImage = null;
     }
 
     // --- Content Drag Logic (Image) ---
 
-    window.toggleDragMode = function() {
-        if(!currentEditingImage) return;
+    window.toggleDragMode = function () {
+        if (!currentEditingImage) return;
 
         isDragMode = !isDragMode;
         const btn = document.getElementById('btn-drag-toggle');
 
-        if(isDragMode) {
+        if (isDragMode) {
             btn.innerText = "Confirm Position";
             btn.style.background = "#10b981"; // Green
             currentEditingImage.classList.add('drag-active');
@@ -438,18 +479,53 @@
         const file = e.target.files[0];
         pendingFile = file;
 
+        const isVideo = file.type.startsWith('video/');
+
         const reader = new FileReader();
-        reader.onload = function(evt) {
+        reader.onload = function (evt) {
             if (currentEditingImage) {
-                currentEditingImage.style.backgroundImage = `url('${evt.target.result}')`;
-                currentEditingImage.style.backgroundSize = 'cover';
-                currentEditingImage.style.backgroundPosition = 'center';
+                // Clear any existing video element
+                const existingVideo = currentEditingImage.querySelector('video.media-preview');
+                if (existingVideo) {
+                    existingVideo.remove();
+                }
+
+                // Remove placeholder icon/text children (they shouldn't remain after upload)
+                Array.from(currentEditingImage.children).forEach(child => {
+                    if (!child.classList.contains('media-preview')) {
+                        child.remove();
+                    }
+                });
+
+                if (isVideo) {
+                    // For videos, create a video element
+                    currentEditingImage.style.backgroundImage = '';
+
+                    const video = document.createElement('video');
+                    video.className = 'media-preview';
+                    video.src = evt.target.result;
+                    video.autoplay = true;
+                    video.loop = true;
+                    video.muted = true;
+                    video.playsInline = true;
+                    video.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1;';
+
+                    currentEditingImage.appendChild(video);
+                    currentEditingImage.dataset.mediaType = 'video';
+                } else {
+                    // For images/GIFs, use background-image
+                    currentEditingImage.style.backgroundImage = `url('${evt.target.result}')`;
+                    currentEditingImage.style.backgroundSize = 'cover';
+                    currentEditingImage.style.backgroundPosition = 'center';
+                    currentEditingImage.dataset.mediaType = 'image';
+                }
 
                 document.getElementById('img-scale').value = 100;
                 document.getElementById('val-scale').innerText = 'Cover';
 
                 document.getElementById('btn-upload-img').style.display = 'inline-block';
-                showStatus("Preview loaded. Adjust and click Upload.", "status-loading");
+                const mediaType = isVideo ? 'Video' : 'Image';
+                showStatus(`${mediaType} preview loaded. Adjust and click Upload.`, "status-loading");
             }
         };
         reader.readAsDataURL(file);
@@ -480,13 +556,13 @@
         document.body.classList.remove('editing-mode');
 
         const ui = document.getElementById('editor-ui');
-        if(ui) ui.remove();
+        if (ui) ui.remove();
 
         const toolbar = document.getElementById('image-toolbar');
-        if(toolbar) toolbar.remove();
+        if (toolbar) toolbar.remove();
 
         const styles = document.getElementById('editor-styles');
-        if(styles) styles.remove();
+        if (styles) styles.remove();
 
         const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
 
@@ -498,12 +574,12 @@
         enableEditing();
         document.body.classList.add('editing-mode');
 
-        if(toolbar) toolbar.style.display = 'none';
+        if (toolbar) toolbar.style.display = 'none';
 
         return htmlContent;
     }
 
-    window.downloadBackup = function() {
+    window.downloadBackup = function () {
         const htmlContent = getCleanHTML();
         const blob = new Blob([htmlContent], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
@@ -514,6 +590,11 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+    };
+
+    window.clearCredentials = function () {
+        localStorage.removeItem('github_pat');
+        alert('GitHub token cleared! You will be prompted for a new token on the next save/upload operation.');
     };
 
     // --- GitHub Integration ---
@@ -548,7 +629,7 @@
         return token;
     }
 
-    window.uploadImageToGitHub = async function() {
+    window.uploadImageToGitHub = async function () {
         if (!pendingFile || !currentEditingImage) return;
 
         const token = getGitHubToken();
@@ -558,6 +639,8 @@
         btn.disabled = true;
         btn.innerText = 'Uploading...';
         showStatus("Uploading to GitHub...", "status-loading");
+
+        const isVideo = pendingFile.type.startsWith('video/');
 
         try {
             const fileName = Date.now() + '_' + pendingFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
@@ -572,7 +655,7 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    message: `Upload image ${fileName}`,
+                    message: `Upload media ${fileName}`,
                     content: contentBase64
                 })
             });
@@ -585,10 +668,20 @@
             const data = await response.json();
             const rawUrl = data.content.download_url;
 
-            currentEditingImage.style.backgroundImage = `url('${rawUrl}')`;
+            if (isVideo) {
+                // Update the video element src
+                const videoEl = currentEditingImage.querySelector('video.media-preview');
+                if (videoEl) {
+                    videoEl.src = rawUrl;
+                }
+            } else {
+                // Update background-image for images/GIFs
+                currentEditingImage.style.backgroundImage = `url('${rawUrl}')`;
+            }
 
+            const mediaType = isVideo ? 'Video' : 'Image';
             showStatus("Success! URL updated.", "status-success");
-            alert("Image uploaded successfully! \n\nThe background-image URL has been updated to the GitHub version.\n\nIMPORTANT: Click 'Save Page' in the main menu to persist this change to your website.");
+            alert(`${mediaType} uploaded successfully! \n\nThe URL has been updated to the GitHub version.\n\nIMPORTANT: Click 'Save Page' in the main menu to persist this change to your website.`);
 
             pendingFile = null;
             btn.style.display = 'none';
@@ -603,7 +696,140 @@
         }
     };
 
-    window.saveToGitHub = async function() {
+    window.fetchGitHubAssets = async function () {
+        const token = getGitHubToken();
+        if (!token) return;
+
+        const btn = document.getElementById('btn-browse-assets');
+        const browser = document.getElementById('asset-browser');
+
+        // Toggle visibility
+        if (browser.classList.contains('visible')) {
+            browser.classList.remove('visible');
+            browser.innerHTML = '';
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = 'Loading...';
+        showStatus("Fetching assets from GitHub...", "status-loading");
+
+        try {
+            const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${UPLOAD_DIR}`, {
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            if (!response.ok) {
+                if (response.status === 404) {
+                    throw new Error('No assets uploaded yet. Upload some images first!');
+                }
+                throw new Error(`Failed to fetch assets: ${response.statusText}`);
+            }
+
+            const files = await response.json();
+
+            if (!Array.isArray(files) || files.length === 0) {
+                throw new Error('No assets found in the uploads folder.');
+            }
+
+            // Filter for media files only
+            const mediaFiles = files.filter(f => {
+                const ext = f.name.toLowerCase().split('.').pop();
+                return ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'webm', 'mov'].includes(ext);
+            });
+
+            if (mediaFiles.length === 0) {
+                throw new Error('No media files found.');
+            }
+
+            // Build asset list HTML
+            browser.innerHTML = mediaFiles.map(file => {
+                const ext = file.name.toLowerCase().split('.').pop();
+                const isVideo = ['mp4', 'webm', 'mov'].includes(ext);
+                const previewTag = isVideo
+                    ? `<video src="${file.download_url}" muted></video>`
+                    : `<img src="${file.download_url}" alt="${file.name}">`;
+
+                return `
+                    <div class="asset-item" onclick="applyGitHubAsset('${file.download_url}', ${isVideo})">
+                        ${previewTag}
+                        <span>${file.name}</span>
+                    </div>
+                `;
+            }).join('');
+
+            browser.classList.add('visible');
+            showStatus(`Found ${mediaFiles.length} asset(s). Click to apply.`, "status-success");
+
+        } catch (e) {
+            console.error(e);
+            showStatus(`Error: ${e.message}`, "status-error");
+            browser.innerHTML = '';
+            browser.classList.remove('visible');
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'Browse GitHub Assets';
+        }
+    };
+
+    window.applyGitHubAsset = function (url, isVideo) {
+        if (!currentEditingImage) return;
+
+        // Remove placeholder children
+        Array.from(currentEditingImage.children).forEach(child => {
+            if (!child.classList.contains('media-preview')) {
+                child.remove();
+            }
+        });
+
+        // Remove existing video if any
+        const existingVideo = currentEditingImage.querySelector('video.media-preview');
+        if (existingVideo) {
+            existingVideo.remove();
+        }
+
+        if (isVideo) {
+            currentEditingImage.style.backgroundImage = '';
+
+            const video = document.createElement('video');
+            video.className = 'media-preview';
+            video.src = url;
+            video.autoplay = true;
+            video.loop = true;
+            video.muted = true;
+            video.playsInline = true;
+            video.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1;';
+
+            currentEditingImage.appendChild(video);
+            currentEditingImage.dataset.mediaType = 'video';
+        } else {
+            currentEditingImage.style.backgroundImage = `url('${url}')`;
+            currentEditingImage.style.backgroundSize = 'cover';
+            currentEditingImage.style.backgroundPosition = 'center';
+            currentEditingImage.dataset.mediaType = 'image';
+        }
+
+        // Reset scale
+        document.getElementById('img-scale').value = 100;
+        document.getElementById('val-scale').innerText = 'Cover';
+
+        // Hide asset browser
+        const browser = document.getElementById('asset-browser');
+        browser.classList.remove('visible');
+        browser.innerHTML = '';
+
+        // Clear pending file since we're using an existing asset
+        pendingFile = null;
+        document.getElementById('btn-upload-img').style.display = 'none';
+
+        const mediaType = isVideo ? 'Video' : 'Image';
+        showStatus(`${mediaType} applied! Adjust position/zoom, then click Done.`, "status-success");
+    };
+
+    window.saveToGitHub = async function () {
         const token = getGitHubToken();
         if (!token) return;
 
@@ -624,8 +850,8 @@
 
             if (!getResp.ok) {
                 if (getResp.status === 401 || getResp.status === 403) {
-                     alert("Authentication failed. Please check your token.");
-                     localStorage.removeItem('github_pat');
+                    alert("Authentication failed. Please check your token.");
+                    localStorage.removeItem('github_pat');
                 }
                 throw new Error(`Failed to fetch file info: ${getResp.statusText}`);
             }
@@ -654,7 +880,7 @@
                     if (errorData.message) {
                         errorMsg = `${errorData.message} (${putResp.status})`;
                         if (errorData.errors) {
-                             errorMsg += '\nDetails: ' + JSON.stringify(errorData.errors);
+                            errorMsg += '\nDetails: ' + JSON.stringify(errorData.errors);
                         }
                     }
                 } catch (jsonErr) {
