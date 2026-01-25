@@ -648,7 +648,19 @@
             });
 
             if (!putResp.ok) {
-                throw new Error(`Failed to upload: ${putResp.statusText}`);
+                let errorMsg = putResp.statusText;
+                try {
+                    const errorData = await putResp.json();
+                    if (errorData.message) {
+                        errorMsg = `${errorData.message} (${putResp.status})`;
+                        if (errorData.errors) {
+                             errorMsg += '\nDetails: ' + JSON.stringify(errorData.errors);
+                        }
+                    }
+                } catch (jsonErr) {
+                    // ignore json parse error, stick to statusText
+                }
+                throw new Error(`Failed to upload: ${errorMsg}`);
             }
 
             alert('Successfully saved to GitHub! Render will redeploy your site in a few minutes.');
