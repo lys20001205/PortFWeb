@@ -428,12 +428,13 @@ section {
 }
 
 .about-image {
-    width: 100%;
-    aspect-ratio: 4/5;
+    width: 280px;
+    aspect-ratio: 1/1;
     background: var(--bg-tertiary);
-    border-radius: 16px;
+    border-radius: 50%;
     overflow: hidden;
     border: 1px solid var(--border-subtle);
+    margin: 0 auto;
 }
 
 .about-image img {
