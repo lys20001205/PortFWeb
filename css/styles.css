@@ -415,32 +415,15 @@ section {
    About Section
    ============================================ */
 .about-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 64px;
+    display: flex;
+    justify-content: center;
     align-items: center;
+    padding: 64px 0;
 }
 
-@media (min-width: 768px) {
-    .about-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-.about-image {
-    width: 280px;
-    aspect-ratio: 1/1;
-    background: var(--bg-tertiary);
-    border-radius: 50%;
-    overflow: hidden;
-    border: 1px solid var(--border-subtle);
-    margin: 0 auto;
-}
-
-.about-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.about-content {
+    max-width: 800px;
+    text-align: center;
 }
 
 .about-content h2 {
@@ -457,6 +440,7 @@ section {
 .skills-list {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 12px;
     margin-top: 32px;
 }
@@ -645,6 +629,13 @@ section {
     }
 }
 
+@keyframes float-drift {
+    0% { transform: translate(0, 0) scale(1); opacity: 0.05; }
+    33% { transform: translate(30px, -50px) scale(1.1); opacity: 0.08; }
+    66% { transform: translate(-20px, 20px) scale(0.95); opacity: 0.04; }
+    100% { transform: translate(0, 0) scale(1); opacity: 0.05; }
+}
+
 /* ============================================
    Section Headers
    ============================================ */
@@ -687,6 +678,7 @@ section {
     opacity: 0.05;
     filter: blur(100px);
     pointer-events: none;
+    animation: float-drift 20s infinite ease-in-out;
 }
 
 /* ============================================
