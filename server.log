@@ -1,0 +1,15 @@
+127.0.0.1 - - [29/Jan/2026 08:02:08] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jan/2026 08:02:08] "GET /css/styles.css HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jan/2026 08:02:08] "GET /js/editor.js HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jan/2026 08:02:08] "GET /js/animations.js HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jan/2026 08:02:08] "GET /css/lightbox.css HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jan/2026 09:51:41] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jan/2026 09:51:41] "GET /css/styles.css HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jan/2026 09:51:41] "GET /js/editor.js HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jan/2026 09:51:41] "GET /js/animations.js HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jan/2026 09:51:41] "GET /css/lightbox.css HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jan/2026 09:51:58] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jan/2026 09:51:58] "GET /js/editor.js HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jan/2026 09:51:58] "GET /css/styles.css HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jan/2026 09:51:58] "GET /js/animations.js HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jan/2026 09:51:58] "GET /css/lightbox.css HTTP/1.1" 200 -
