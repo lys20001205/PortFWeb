@@ -1,0 +1,46 @@
+'use strict';
+// Compact, dependency-free WebGL renderer. World: X east, Y up, Z north.
+const M = (() => {
+ const add=(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]], sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]], mul=(a,s)=>[a[0]*s,a[1]*s,a[2]*s];
+ const dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2], cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+ const len=a=>Math.hypot(...a), norm=a=>mul(a,1/(len(a)||1));
+ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)), mix=(a,b,t)=>a+(b-a)*t, smooth=(a,b,x)=>{let t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)};
+ const ident=()=>new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
+ function matmul(a,b){let o=new Float32Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++)o[c*4+r]=a[r]*b[c*4]+a[4+r]*b[c*4+1]+a[8+r]*b[c*4+2]+a[12+r]*b[c*4+3];return o}
+ function basis(yaw,pitch,bank){const sy=Math.sin(yaw),cy=Math.cos(yaw),sp=Math.sin(pitch),cp=Math.cos(pitch),sb=Math.sin(bank),cb=Math.cos(bank);let f=[sy*cp,sp,cy*cp],r0=[cy,0,-sy],u0=[-sy*sp,cp,-cy*sp];return {f,r:add(mul(r0,cb),mul(u0,-sb)),u:add(mul(r0,sb),mul(u0,cb))}}
+ function model(p,yaw=0,pitch=0,bank=0,scale=1){let b=basis(yaw,pitch,bank);return new Float32Array([...mul(b.r,scale),0,...mul(b.u,scale),0,...mul(b.f,scale),0,...p,1])}
+ function camera(eye,target,up,fov,aspect,near=.3,far=38000){let f=norm(sub(target,eye)),r=norm(cross(up,f)),u=cross(f,r);let view=new Float32Array([r[0],u[0],-f[0],0,r[1],u[1],-f[1],0,r[2],u[2],-f[2],0,-dot(r,eye),-dot(u,eye),dot(f,eye),1]);let t=1/Math.tan(fov/2);let proj=new Float32Array([t/aspect,0,0,0,0,t,0,0,0,0,(far+near)/(near-far),-1,0,0,2*far*near/(near-far),0]);return {vp:matmul(proj,view),eye,f,r,u,fov,aspect}}
+ return {add,sub,mul,dot,cross,len,norm,clamp,mix,smooth,ident,matmul,basis,model,camera};
+})();
+const DEG=Math.PI/180;
+function seeded(seed=41){return ()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296}}
+class Geometry {
+ constructor(){this.a=[]}
+ tri(a,b,c,col,n){n=n||M.norm(M.cross(M.sub(b,a),M.sub(c,a)));for(const p of [a,b,c])this.a.push(...p,...n,...col);return this}
+ quad(a,b,c,d,col){this.tri(a,b,c,col);this.tri(a,c,d,col);return this}
+ box(x,y,z,w,h,d,col,yaw=0){let pts=[[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]].map(p=>{let X=p[0]*w/2,Z=p[2]*d/2;return [x+X*Math.cos(yaw)+Z*Math.sin(yaw),y+p[1]*h/2,z-X*Math.sin(yaw)+Z*Math.cos(yaw)]});for(let f of [[0,3,2,1],[4,5,6,7],[0,4,7,3],[1,2,6,5],[3,7,6,2],[0,1,5,4]])this.quad(...f.map(i=>pts[i]),col);return this}
+ cone(x,y,z,r,h,col,n=8,rTop=0){for(let i=0;i<n;i++){let a=i*2*Math.PI/n,b=(i+1)*2*Math.PI/n;let p=[x+Math.cos(a)*r,y,z+Math.sin(a)*r],q=[x+Math.cos(b)*r,y,z+Math.sin(b)*r],u=[x+Math.cos(a)*rTop,y+h,z+Math.sin(a)*rTop],v=[x+Math.cos(b)*rTop,y+h,z+Math.sin(b)*rTop];this.quad(p,u,v,q,col);this.tri([x,y,z],p,q,col);if(rTop)this.tri([x,y+h,z],v,u,col)}return this}
+ ellipsoid(x,y,z,rx,ry,rz,col,seg=12,rings=6){for(let j=0;j<rings;j++)for(let i=0;i<seg;i++){let at=(a,b)=>[x+rx*Math.sin(b)*Math.cos(a),y+ry*Math.cos(b),z+rz*Math.sin(b)*Math.sin(a)];let a=i/seg*Math.PI*2,b=(i+1)/seg*Math.PI*2,c=j/rings*Math.PI,d=(j+1)/rings*Math.PI;let A=at(a,c),B=at(b,c),C=at(b,d),D=at(a,d);for(let P of [A,B,C,A,C,D]){let n=M.norm([(P[0]-x)/(rx*rx),(P[1]-y)/(ry*ry),(P[2]-z)/(rz*rz)]);this.a.push(...P,...n,...col)}}return this}
+ ring(x,y,z,r,t,col,n=48){for(let i=0;i<n;i++){let a=i/n*Math.PI*2,b=(i+1)/n*Math.PI*2;this.quad([x+Math.cos(a)*r,y+Math.sin(a)*r,z],[x+Math.cos(b)*r,y+Math.sin(b)*r,z],[x+Math.cos(b)*(r+t),y+Math.sin(b)*(r+t),z],[x+Math.cos(a)*(r+t),y+Math.sin(a)*(r+t),z],col)}return this}
+}
+class Engine {
+ constructor(canvas){
+  this.canvas=canvas;this.gl=canvas.getContext('webgl',{antialias:true,alpha:false,powerPreference:'high-performance',preserveDrawingBuffer:false});
+  if(!this.gl)throw new Error('此浏览器未启用 WebGL。请用支持 WebGL 的浏览器打开。');let gl=this.gl;
+  const vs=`attribute vec3 aP;attribute vec3 aN;attribute vec3 aC;uniform mat4 uVP,uModel;varying vec3 vP,vN,vC;void main(){vec4 p=uModel*vec4(aP,1.);vP=p.xyz;vN=mat3(uModel)*aN;vC=aC;gl_Position=uVP*p;}`;
+  const fs=`precision highp float;varying vec3 vP,vN,vC;uniform vec3 uEye,uSun,uSky,uHorizon;uniform float uTime,uFog,uNight,uKind,uAlpha;void main(){vec3 n=normalize(vN);vec3 c=vC;float diffuse=max(dot(n,uSun),0.);float light=.44+diffuse*.60;vec3 color=c*light;if(uKind>0.5&&uKind<1.5){vec2 p=vP.xz;float wave=sin(p.x*.013+uTime*.38)*sin(p.y*.02+uTime*.32)+sin(p.x*.057-p.y*.036+uTime*.9)*.32;n=normalize(vec3(cos(p.x*.013+uTime*.38)*.07,1.,sin(p.y*.02+uTime*.32)*.05));vec3 view=normalize(uEye-vP);float fres=pow(1.-max(dot(view,n),0.),3.);color=mix(vec3(.025,.32,.40),uHorizon*.78,fres*.62);color+=vec3(.027,.072,.069)*wave;float shine=pow(max(dot(reflect(-uSun,n),view),0.),120.);color+=vec3(1.,.88,.65)*shine*.9;}if(uKind>1.5)color=c;float dist=length(vP-uEye);float fog=1.-exp(-dist*uFog);vec3 fogColor=mix(uHorizon,uSky,clamp((vP.y-1000.)/13000.,0.,1.));color=mix(color*(1.-uNight*.7),fogColor,clamp(fog,0.,.97));gl_FragColor=vec4(color,uAlpha);}`;
+  this.prog=this.program(vs,fs);this.loc={};for(let s of ['uVP','uModel','uEye','uSun','uSky','uHorizon','uTime','uFog','uNight','uKind','uAlpha'])this.loc[s]=gl.getUniformLocation(this.prog,s);this.attrs=['aP','aN','aC'].map(n=>gl.getAttribLocation(this.prog,n));
+  this.skyProg=this.program(`attribute vec2 aP;varying vec2 vUV;void main(){vUV=aP;gl_Position=vec4(aP,1.,1.);}`,`precision highp float;varying vec2 vUV;uniform vec3 uF,uR,uU,uSun,uSky,uHorizon;uniform float uAspect,uTan,uNight;void main(){vec3 ray=normalize(uF+uR*vUV.x*uAspect*uTan+uU*vUV.y*uTan);float h=clamp(ray.y,0.,1.);vec3 col=mix(uHorizon,uSky,pow(h,.47));float s=max(dot(ray,uSun),0.);col+=vec3(1.,.83,.54)*pow(s,500.)*(1.-uNight)*.75+vec3(.9,.65,.33)*pow(s,14.)*(1.-uNight)*.11;gl_FragColor=vec4(col,1.);}`);
+  this.skyAttrs=gl.getAttribLocation(this.skyProg,'aP');this.skyLoc={};for(let s of ['uF','uR','uU','uSun','uSky','uHorizon','uAspect','uTan','uNight'])this.skyLoc[s]=gl.getUniformLocation(this.skyProg,s);
+  this.skyBuf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,this.skyBuf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);this.identity=M.ident();this.quality=1;this.lost=false;this.drawCalls=0;canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();this.lost=true;document.dispatchEvent(new CustomEvent('graphicslost'))});
+ }
+ program(v,f){let gl=this.gl;let make=(kind,src)=>{let s=gl.createShader(kind);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s};let p=gl.createProgram();gl.attachShader(p,make(gl.VERTEX_SHADER,v));gl.attachShader(p,make(gl.FRAGMENT_SHADER,f));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p}
+ mesh(g){let gl=this.gl,b=gl.createBuffer(),a=new Float32Array(g.a);gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,a,gl.STATIC_DRAW);return {b,count:a.length/9}}
+ resize(w,h){let d=Math.min(devicePixelRatio||1,this.quality);let cw=Math.round(w*d),ch=Math.round(h*d);if(this.canvas.width!==cw||this.canvas.height!==ch){this.canvas.width=cw;this.canvas.height=ch;this.gl.viewport(0,0,cw,ch)}}
+ begin(cam,time,style){let gl=this.gl;if(this.lost)return;this.drawCalls=0;gl.clearColor(...style.sky,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.disable(gl.DEPTH_TEST);gl.useProgram(this.skyProg);for(let a of this.attrs)gl.disableVertexAttribArray(a);gl.bindBuffer(gl.ARRAY_BUFFER,this.skyBuf);gl.enableVertexAttribArray(this.skyAttrs);gl.vertexAttribPointer(this.skyAttrs,2,gl.FLOAT,false,0,0);
+  for(let [k,v] of Object.entries({uF:cam.f,uR:cam.r,uU:cam.u,uSun:style.sun,uSky:style.sky,uHorizon:style.horizon}))gl.uniform3fv(this.skyLoc[k],v);gl.uniform1f(this.skyLoc.uAspect,cam.aspect);gl.uniform1f(this.skyLoc.uTan,Math.tan(cam.fov/2));gl.uniform1f(this.skyLoc.uNight,style.night);gl.drawArrays(gl.TRIANGLES,0,3);gl.disableVertexAttribArray(this.skyAttrs);gl.enable(gl.DEPTH_TEST);gl.useProgram(this.prog);for(let a of this.attrs)gl.enableVertexAttribArray(a);
+  gl.uniformMatrix4fv(this.loc.uVP,false,cam.vp);for(let [k,v] of Object.entries({uEye:cam.eye,uSun:style.sun,uSky:style.sky,uHorizon:style.horizon}))gl.uniform3fv(this.loc[k],v);gl.uniform1f(this.loc.uTime,time);gl.uniform1f(this.loc.uFog,style.fog);gl.uniform1f(this.loc.uNight,style.night);
+ }
+ draw(mesh,model=this.identity,kind=0,alpha=1,bias=0){if(!mesh||this.lost)return;let gl=this.gl;gl.bindBuffer(gl.ARRAY_BUFFER,mesh.b);for(let i=0;i<3;i++)gl.vertexAttribPointer(this.attrs[i],3,gl.FLOAT,false,36,i*12);gl.uniformMatrix4fv(this.loc.uModel,false,model);gl.uniform1f(this.loc.uKind,kind);gl.uniform1f(this.loc.uAlpha,alpha);if(alpha<1){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.depthMask(false)}if(bias){gl.enable(gl.POLYGON_OFFSET_FILL);gl.polygonOffset(bias,bias*2)}gl.drawArrays(gl.TRIANGLES,0,mesh.count);if(bias)gl.disable(gl.POLYGON_OFFSET_FILL);if(alpha<1){gl.disable(gl.BLEND);gl.depthMask(true)}this.drawCalls++}
+}
