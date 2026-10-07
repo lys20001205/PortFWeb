@@ -1,0 +1,13 @@
+{
+  "startupVersion": "1.2.1",
+  "flightCoreVersion": "1.2.0",
+  "environment": "Chromium + Xvfb + SwiftShader, emulated touch; local intercepted HTML/JS resources",
+  "startupBrowser": {"passed": 22, "failed": 0},
+  "externalResources": {"passed": 3, "failed": 0},
+  "baselinePhysics": {"passed": 18, "failed": 0},
+  "routePhysics": {"passed": 11, "failed": 0},
+  "oldFailureReproducedWith": "Content Security Policy script-src 'none'",
+  "specificUserDeviceCauseConfirmed": false,
+  "physicalIPhoneSafariTested": false,
+  "remoteHostingVerified": false
+}

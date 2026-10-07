@@ -1,10 +1,17 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#102f39"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="description" content="云际飞行：手机触屏优先的 3D 飞行小游戏，A320-216 亚庇至广州 T3 航线版。"><title>云际飞行 · Cloudline 3D</title><link rel="stylesheet" href="./style.css"></head>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#102f39"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="description" content="云际飞行：手机触屏优先的 3D 飞行小游戏，A320-216 亚庇至广州 T3 航线版。"><title>云际飞行 · A320 启动修复版 1.2.1</title><link rel="stylesheet" href="./style.css?v=1.2.1"><style>
+/* Startup status remains readable even when every script is blocked. */
+#bootPanel{position:fixed;inset:0;z-index:150;display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:rgba(9,29,39,.97);touch-action:pan-y;overflow:auto;pointer-events:auto}
+#bootPanel .boot-card{max-width:560px;width:100%;max-height:95dvh;overflow:auto;touch-action:pan-y;padding:18px;border:1px solid #587c83;border-radius:14px;background:#102f39}
+#bootPanel h2{font-size:20px;margin:10px 0}#bootPanel p{line-height:1.7;font-size:13px;margin:9px 0;white-space:pre-wrap;overflow-wrap:anywhere}
+#bootDetails{font:11px/1.5 monospace;max-height:105px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;color:#c2ded5;user-select:text;-webkit-user-select:text;touch-action:pan-y}
+#bootPanel .boot-actions{display:flex;align-items:center;gap:14px;margin-top:12px}#bootPanel .boot-actions a{font-size:12px;color:#a6e3cd;text-decoration:underline}#bootPanel summary{cursor:pointer;font-size:12px;color:#b1d2cb;touch-action:manipulation}
+</style></head>
 <body>
 <canvas id="scene" aria-label="三维飞行场景"></canvas><div id="screenShade"></div><canvas id="overlay"></canvas>
-<div id="loading">正在建立飞机与机场…</div>
+<div id="loading" class="hidden">正在启动游戏…</div>
 <div id="menu">
- <div class="menu-head"><div class="logo"><i class="logo-mark"></i>CLOUDLINE</div><div class="edition">A320 ROUTE EDITION / 1.2</div></div>
+ <div class="menu-head"><div class="logo"><i class="logo-mark"></i>CLOUDLINE</div><div class="edition">A320 ROUTE EDITION / 1.2.1</div></div>
  <div class="menu-content">
   <div class="hero"><div class="eyebrow">云际飞行 · MOBILE EDITION</div><h1>亚庇起飞，<br>广州落地。</h1><p class="sub">驾驶 A320-216，从沙巴海岸飞越南海。<br>降落广州白云，滑行至 T3 模拟机位。</p><div class="hero-rule"></div><div class="hero-bottom"><div><b>03</b>可驾驶机型</div><div><b>04</b>飞行视角</div><div><b>内置</b>无需第三方运行库</div></div><button class="help-link" id="menuHelp">首次驾驶？查看触屏操作说明 →</button></div>
   <div class="setup"><h2>准备你的飞行</h2>
@@ -40,6 +47,17 @@
 <div id="resultModal" class="modal hidden"><div class="modal-card" style="max-width:450px"><div class="eyebrow" id="resultEyebrow">FLIGHT REPORT</div><h2 id="resultTitle" style="margin:10px 0">本次飞行结束</h2><div class="result-number" id="resultNumber">—</div><p id="resultReason"></p><div class="result-stats" id="resultStats"></div><div class="modal-actions"><button class="primary" id="retryResult">重试本场景</button><button id="freeResult">从空中开始</button><button id="hangarResult">机库</button></div></div></div>
 <div id="fatal" class="hidden"><div class="inner"><h2>场景暂时无法运行</h2><p id="fatalText"></p><button onclick="location.reload()">重新加载</button></div></div>
 <noscript><div style="position:fixed;inset:0;background:#12323e;color:white;padding:40px;z-index:200">此游戏需要运行 JavaScript 和 WebGL。附件预览不一定支持，请在支持执行 HTML 的浏览器环境打开。</div></noscript>
+
+<div id="bootPanel" role="status" aria-live="polite" style="position:fixed;inset:0;z-index:150;display:flex;background:#102f39;color:#ebf3f1;padding:20px;overflow:auto">
+ <div class="boot-card"><div class="eyebrow">CLOUDLINE · 启动修复 1.2.1</div>
+ <h2 id="bootTitle">尚未确认游戏脚本启动</h2>
+ <p id="bootStep">这段是静态页面说明，不是加载进度。若一直停在这里，当前打开方式可能未执行 JavaScript，或启动脚本未能加载。</p>
+ <p id="bootAdvice">聊天附件预览可能只显示页面。游戏需要能够执行 JavaScript 和 WebGL 的浏览器环境；延长等待不能解除脚本限制。</p>
+ <details open><summary>启动诊断</summary><pre id="bootDetails">状态：未检测到启动脚本执行。</pre></details>
+ <div class="boot-actions"><button id="bootCopy" disabled>复制诊断信息</button><a href="">重新打开本页</a></div>
+ </div>
+</div>
+<script src="./boot.js?v=1.2.1"></script>
 <script src="./engine.js"></script>
 <script src="./world.js"></script>
 <script src="./routes.js"></script>
