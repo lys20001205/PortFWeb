@@ -1,0 +1,11 @@
+{
+  "version": "1.2.0",
+  "scope": "Local validation of the game, not flight certification or remote deployment confirmation",
+  "physics": {"passed": 18, "failed": 0, "command": "node regression.js"},
+  "route": {"passed": 11, "failed": 0, "command": "node route_regression.js", "fullGuideWeather": "deterministic calm"},
+  "browser": {"passed": 31, "failed": 0, "environment": "Chromium + SwiftShader WebGL under Xvfb, touch emulation", "viewports": [[844,390],[390,844],[375,667],[1365,768]]},
+  "publishedLayoutSmoke": {"passed": 4, "failed": 0, "scope": "Independent CSS and five JS resources fulfilled through browser request interception; A320 BKI starts; cruise transfer; no JS or WebGL errors"},
+  "physicalIPhoneTested": false,
+  "remoteDeploymentVerified": false,
+  "notes": "Full local JSON reports, browser test scripts and screenshots are included in the downloadable source package. CI results are separate and must be read from GitHub Actions."
+}

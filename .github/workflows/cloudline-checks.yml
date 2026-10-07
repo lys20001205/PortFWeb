@@ -1,0 +1,26 @@
+name: Cloudline checks
+on:
+  push:
+    branches: [main]
+    paths: ['cloudline/**', '.github/workflows/cloudline-checks.yml']
+  pull_request:
+    paths: ['cloudline/**', '.github/workflows/cloudline-checks.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  simulation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: |
+          for file in cloudline/*.js; do node --check "$file"; done
+      - name: Baseline flight regression
+        run: node cloudline/regression.js
+      - name: A320 BKI-CAN T3 regression
+        run: node cloudline/route_regression.js
